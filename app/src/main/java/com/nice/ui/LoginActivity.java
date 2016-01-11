@@ -1,5 +1,6 @@
 package com.nice.ui;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
+import com.nice.model.NiceUser;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
