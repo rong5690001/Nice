@@ -5,6 +5,6 @@ package com.nice.util;
  */
 public class NiceApiUtil {
 
-
+    public static String IMG_SERVER_URL = "";
 
 }
