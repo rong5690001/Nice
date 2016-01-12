@@ -1,13 +1,11 @@
 package com.nice.model;
 
-import android.databinding.BaseObservable;
-
 import java.io.Serializable;
 
 /**
  * Created by chen on 2015/12/16.
  */
-public class NiceUser extends BaseObservable implements Serializable{
+public class NiceUser implements Serializable{
 
     public String uiId;
     public String uiCellPhone;
