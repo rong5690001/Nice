@@ -5,10 +5,231 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.nice.ui.MainActivity">
 
     <include layout="@layout/title"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="23sp"
+        android:gravity="center"
+        android:background="@color/blue"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:text="我的问卷库"/>
     
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical">
+
+        <com.nice.widget.NiceImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_new"/>
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/simple_blue"
+            android:gravity="center_vertical">
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="23sp"
+                android:text="新问卷"
+                android:textColor="@color/black"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/num_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/arrows_new"
+                android:text="15份"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/arrows_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text=">"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical">
+
+        <com.nice.widget.NiceImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_incomplete"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/simple_blue"
+            android:gravity="center_vertical">
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="23sp"
+                android:text="新问卷"
+                android:textColor="@color/black"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/num_incomplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/arrows_incomplete"
+                android:text="15份"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/arrows_incomplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text=">"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical">
+
+        <com.nice.widget.NiceImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_uploaded"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/simple_blue"
+            android:gravity="center_vertical">
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="23sp"
+                android:text="新问卷"
+                android:textColor="@color/black"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/num_uploaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/arrows_uploaded"
+                android:text="15份"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/arrows_uploaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text=">"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical">
+
+        <com.nice.widget.NiceImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_archived"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/simple_blue"
+            android:gravity="center_vertical">
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="23sp"
+                android:text="新问卷"
+                android:textColor="@color/black"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/num_archived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/arrows_archived"
+                android:text="15份"/>
+
+            <com.nice.widget.NiceTextView
+                android:id="@+id/arrows_archived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/deep_blue"
+                android:textSize="20sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text=">"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>
