@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center_vertical"
+    android:background="@color/blue">
 
     <com.nice.widget.NiceImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:id="@+id/back_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dp"
+        android:src="@mipmap/icon_back"/>
+
+    <com.nice.widget.NiceTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/back_icon"
+        android:layout_alignRight="@+id/back_icon"
+        android:layout_below="@+id/back_icon"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="返回"/>
+
+    <com.nice.widget.NiceTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="38sp"
+        android:text="title"/>
+
+    <com.nice.widget.NiceImageView
+        android:id="@+id/right_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_back"/>
+
+    <com.nice.widget.NiceTextView
+        android:id="@+id/right_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/right_icon"
+        android:layout_alignRight="@+id/right_icon"
+        android:layout_below="@+id/right_icon"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="退出"/>
 
 
 </RelativeLayout>
