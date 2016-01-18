@@ -12,9 +12,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
 
-    @Bind(R.id.title_layout)
-    LinearLayout titleLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
