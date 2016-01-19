@@ -2,21 +2,32 @@ package com.nice.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.BinderThread;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
+import com.nice.widget.NiceImageView;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.submit_btn)
     Button submitBtn;
+
+    @Bind(R.id.rem_layout)
+    LinearLayout remLayout;
+
+    @Bind(R.id.rem_icon)
+    NiceImageView remIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +65,24 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.rem_layout:
+                remOnclick();
+                break;
+        }
+    }
+
+    private void remOnclick(){
+        if("rem".equals(remIcon.getTag())){
+            remIcon.setImageResource(R.mipmap.radio);
+            remIcon.setTag(null);
+        } else {
+            remIcon.setImageResource(R.mipmap.radio_check);
+            remIcon.setTag("rem");
+        }
     }
 }
