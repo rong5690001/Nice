@@ -1,55 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center_vertical"
     android:layout_height="70dp"
-    android:background="@color/blue">
+    android:background="@color/blue"
+    android:gravity="center_vertical">
 
-    <com.nice.widget.NiceImageView
-        android:id="@+id/back_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="15dp"
-        android:src="@mipmap/icon_back"/>
-
-    <com.nice.widget.NiceTextView
+    <RelativeLayout
+        android:id="@+id/back_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/back_icon"
-        android:layout_alignRight="@+id/back_icon"
-        android:layout_below="@+id/back_icon"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:text="返回"/>
+        android:layout_height="wrap_content">
+
+        <com.nice.widget.NiceImageView
+            android:id="@+id/back_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_back" />
+
+        <com.nice.widget.NiceTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/back_icon"
+            android:layout_alignRight="@+id/back_icon"
+            android:layout_below="@+id/back_icon"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
 
     <com.nice.widget.NiceTextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:text="title"
         android:textColor="@color/white"
-        android:textSize="38sp"
-        android:text="title"/>
+        android:textSize="38sp" />
 
-    <com.nice.widget.NiceImageView
-        android:id="@+id/right_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginRight="15dp"
-        android:layout_alignParentRight="true"
-        android:src="@mipmap/icon_back"/>
-
-    <com.nice.widget.NiceTextView
-        android:id="@+id/right_text"
+    <RelativeLayout
+        android:id="@+id/right_btn_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/right_icon"
-        android:layout_alignRight="@+id/right_icon"
-        android:layout_below="@+id/right_icon"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="退出"/>
+        android:layout_height="wrap_content">
+
+        <com.nice.widget.NiceImageView
+            android:id="@+id/right_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_back" />
+
+        <com.nice.widget.NiceTextView
+            android:id="@+id/right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/right_icon"
+            android:layout_alignRight="@+id/right_icon"
+            android:layout_below="@+id/right_icon"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="退出"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
 
 </RelativeLayout>
