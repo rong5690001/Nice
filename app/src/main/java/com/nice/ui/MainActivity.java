@@ -3,6 +3,7 @@ package com.nice.ui;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.nice.R;
@@ -12,7 +13,7 @@ import com.nice.widget.NiceTextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     @Bind(R.id.back_icon)
     NiceImageView backIcon;
@@ -57,6 +58,22 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.back_layout:
+                finish();
+                break;
+            case R.id.right_btn_layout:
+                finish();
+                break;
+            case R.id.new_contrainer:
+                break;
+        }
 
     }
 }
