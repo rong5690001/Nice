@@ -8,7 +8,8 @@
     <RelativeLayout
         android:id="@+id/back_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="onClick">
 
         <com.nice.widget.NiceImageView
             android:id="@+id/back_icon"
@@ -42,7 +43,8 @@
     <RelativeLayout
         android:id="@+id/right_btn_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="onClick">
 
         <com.nice.widget.NiceImageView
             android:id="@+id/right_icon"
@@ -50,7 +52,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:src="@mipmap/icon_back" />
+            android:src="@mipmap/trigger_blue" />
 
         <com.nice.widget.NiceTextView
             android:id="@+id/right_text"
