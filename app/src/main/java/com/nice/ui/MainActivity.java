@@ -3,11 +3,8 @@ package com.nice.ui;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
 import com.nice.R;
 import com.nice.ui.fragment.MainFragment;
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {

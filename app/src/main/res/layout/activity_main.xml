@@ -53,21 +53,19 @@
                 android:id="@+id/num_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@+id/arrows_new"
                 android:text="15份"/>
 
-            <com.nice.widget.NiceTextView
+            <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/deep_blue"
-                android:textSize="20sp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:text=">"/>
+                android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
 
@@ -100,28 +98,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:textSize="23sp"
-                android:text="新问卷"
+                android:text="未完成问卷"
                 android:textColor="@color/black"/>
 
             <com.nice.widget.NiceTextView
                 android:id="@+id/num_incomplete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@+id/arrows_incomplete"
                 android:text="15份"/>
 
-            <com.nice.widget.NiceTextView
+            <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_incomplete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/deep_blue"
-                android:textSize="20sp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:text=">"/>
+                android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
     </LinearLayout>
@@ -152,28 +148,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:textSize="23sp"
-                android:text="新问卷"
+                android:text="已上传问卷"
                 android:textColor="@color/black"/>
 
             <com.nice.widget.NiceTextView
                 android:id="@+id/num_uploaded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/deep_blue"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@+id/arrows_uploaded"
                 android:text="15份"/>
 
-            <com.nice.widget.NiceTextView
+            <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_uploaded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/deep_blue"
-                android:textSize="20sp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:text=">"/>
+                android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
 
