@@ -8,7 +8,8 @@
     android:background="@color/white"
     tools:context="com.nice.ui.MainActivity">
 
-    <include layout="@layout/title"/>
+    <include
+        layout="@layout/title"/>
 
     <TextView
         android:layout_width="match_parent"

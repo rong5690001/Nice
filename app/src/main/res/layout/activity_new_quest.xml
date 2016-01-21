@@ -4,37 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.nice.ui.NewQuestActivity">
 
-    <include layout="@layout/title"/>
+    <include layout="@layout/title" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="5dp"
         android:background="@color/blue"
-        android:layout_marginTop="5dp">
+        android:gravity="center_vertical">
 
-        
-        <com.nice.widget.NiceImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@mipmap/checkmark_blue"/>
-        
+        <RelativeLayout
+            android:id="@+id/all_choose_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <com.nice.widget.NiceImageView
+                android:id="@+id/all_choose_icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/checkmark" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/all_choose_icon"
+                android:text="全选"
+                android:textColor="@color/white"
+                android:textSize="21sp" />
+
+        </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:textSize="23sp"
-            android:gravity="center"
             android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="接收问卷"
             android:textColor="@color/white"
-            android:text="我的问卷库"/>
+            android:textSize="23sp" />
 
     </RelativeLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
 
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

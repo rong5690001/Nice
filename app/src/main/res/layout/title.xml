@@ -52,7 +52,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:src="@mipmap/trigger_blue" />
+            android:src="@mipmap/trigger_white" />
 
         <com.nice.widget.NiceTextView
             android:id="@+id/right_text"
