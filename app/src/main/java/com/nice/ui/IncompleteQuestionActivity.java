@@ -1,13 +1,14 @@
 package com.nice.ui;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.RelativeLayout;
 
 import com.nice.R;
-import com.nice.adapter.NewQuestionAdapter;
+import com.nice.adapter.IncompleteQuestionAdapter;
 import com.nice.model.NiceQuestion;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
@@ -18,7 +19,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class NewQuestActivity extends AppCompatActivity {
+/**
+ * Created by jiao on 2016/1/21.
+ */
+public class IncompleteQuestionActivity extends AppCompatActivity {
+
 
     @Bind(R.id.back_icon)
     NiceImageView backIcon;
@@ -32,29 +37,25 @@ public class NewQuestActivity extends AppCompatActivity {
     NiceTextView rightText;
     @Bind(R.id.right_btn_layout)
     RelativeLayout rightBtnLayout;
-    @Bind(R.id.all_choose_icon)
-    NiceImageView allChooseIcon;
-    @Bind(R.id.all_choose_layout)
-    RelativeLayout allChooseLayout;
-    @Bind(R.id.recyclerview)
-    RecyclerView recyclerview;
+    @Bind(R.id.recyclerview_incomplete)
+    RecyclerView recyclerviewIncomplete;
 
-    private NewQuestionAdapter mAdapter;
+    private IncompleteQuestionAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_quest);
+
+        setContentView(R.layout.activity_incomplete_quest);
         ButterKnife.bind(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerview.setLayoutManager(layoutManager);
+        recyclerviewIncomplete.setLayoutManager(layoutManager);
 
-        mAdapter = new NewQuestionAdapter(getData(), this, R.layout.item_new_question);
+        mAdapter = new IncompleteQuestionAdapter(getData(), this, R.layout.item_incomplete_question);
 
-        recyclerview.setAdapter(mAdapter);
-
+        recyclerviewIncomplete.setAdapter(mAdapter);
     }
 
     private List<NiceQuestion> getData(){
@@ -67,5 +68,4 @@ public class NewQuestActivity extends AppCompatActivity {
 
         return datas;
     }
-
 }

@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 NiceRxApi.login();
             }
         });
+
     }
 
     @Override
@@ -66,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onClick(View v) {

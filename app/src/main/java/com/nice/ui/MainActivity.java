@@ -1,5 +1,6 @@
 package com.nice.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -72,7 +73,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
                 finish();
                 break;
             case R.id.new_contrainer:
+                startActivity(new Intent(MainActivity.this, NewQuestActivity.class));
                 break;
+            case R.id.incomplete_contrainer:
+                startActivity(new Intent(MainActivity.this, IncompleteQuestionActivity.class));
+                break;
+
         }
 
     }

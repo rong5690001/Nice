@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/item_new_question_choose_layout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center">
+
+            <com.nice.widget.NiceImageView
+                android:id="@+id/item_new_question_choose_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/checkmark_side_black"/>
+
+        </RelativeLayout>
+
+        <com.nice.widget.NiceTextView
+            android:id="@+id/item_new_question_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:text="this is name"/>
+
+        <com.nice.widget.NiceTextView
+            android:id="@+id/item_new_question_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:text="2015:15:15"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+
+</LinearLayout>
