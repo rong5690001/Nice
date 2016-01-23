@@ -22,9 +22,15 @@ public class RequestHelper {
     private static final String OS_VERSION_REQ = "qs-os-version";
     private static final String COOKIE_KEY_REQ = "Cookie";
     private static final String COOKIE_KEY_RES = "Set-Cookie";
+    private static final String CONTENT_TYPE = "Content-type";
+    private static final String CONTENT_TYPE_VALUE = "application/json";
+    private static final String CHARSET = "charset";
+    private static final String UTF8 = "utf-8";
 
     public static void beforeParseNetworkResponse(Map<String, String> headers) {
         _parseCookie(headers);
+        headers.put(CONTENT_TYPE, CONTENT_TYPE_VALUE);
+        headers.put(CHARSET, UTF8);
     }
 
     public static Map<String, String> beforeGetHeaders(Map<String, String> headers) {

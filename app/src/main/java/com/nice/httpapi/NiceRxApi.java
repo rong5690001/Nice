@@ -1,35 +1,39 @@
 package com.nice.httpapi;
 
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.nice.httpapi.request.QSJsonObjectRequest;
 import com.nice.httpapi.request.RequestQueueManager;
-import com.nice.httpapi.request.RxRequest;
-import com.nice.httpapi.response.dataparser.NiceUserPaser;
 import com.nice.model.NiceUser;
-
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import rx.Observable;
-import rx.functions.Func1;
 
 public class NiceRxApi {
 
     private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
-    private static final String LOGIN_URL = HOST_NAME + "/IOSADataService.ashx?"
-            +"clientTimeStamp=1450015351071&method=uUserInfo&mode=2001&clientType=ios&version=1.0" +
-            "&encryptCode=0284c86a3ee1f5273ebc887797032948&transfer=121212" +
-            "&requestJson={uiCellPhone:13000000000,uiPassword:098f6bcd4621d373cade4e832627b4f6}";
+    private static final String LOGIN_URL = HOST_NAME + "/IOSADataService.ashx";
+//            +"clientTimeStamp=1450015351071&method=uUserInfo&mode=2001&clientType=ios&version=1.0" +
+//            "&encryptCode=0284c86a3ee1f5273ebc887797032948&transfer=121212" +
+//            "&requestJson={uiCellPhone:13000000000,uiPassword:098f6bcd4621d373cade4e832627b4f6}";
 
     public static Observable<NiceUser> login(){
 
-        QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(LOGIN_URL, null, new Response.Listener<JSONObject>() {
+        Map params = new HashMap();
+
+        params.put("clientTimeStamp","1450015351071");
+        params.put("method","uUserInfo");
+        params.put("mode","2001");
+        params.put("clientType","android");
+        params.put("version","1.0");
+        params.put("encryptCode","0284c86a3ee1f5273ebc887797032948");
+        params.put("transfer","121212");
+//        Map<String, String> requestJson = new HashMap<>();
+//        requestJson.put("uiCellPhone", "13000000000");
+//        requestJson.put("uiPassword", "098f6bcd4621d373cade4e832627b4f6");
+//        params.put("requestJson",requestJson);
+
+        QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(LOGIN_URL, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 System.out.println("response:" + response);

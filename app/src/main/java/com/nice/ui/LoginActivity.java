@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NiceRxApi.login();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 Toast.makeText(LoginActivity.this, "sub", Toast.LENGTH_SHORT).show();
                 NiceRxApi.login();
