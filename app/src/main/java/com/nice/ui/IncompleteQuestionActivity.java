@@ -1,10 +1,13 @@
 package com.nice.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.nice.R;
@@ -22,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by jiao on 2016/1/21.
  */
-public class IncompleteQuestionActivity extends AppCompatActivity {
+public class IncompleteQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     @Bind(R.id.back_icon)
@@ -61,11 +64,21 @@ public class IncompleteQuestionActivity extends AppCompatActivity {
     private List<NiceQuestion> getData(){
         List<NiceQuestion> datas = new ArrayList<>();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 4; i++) {
             NiceQuestion niceQuestion = new NiceQuestion("this is " + i, String.valueOf(i));
             datas.add(niceQuestion);
         }
 
         return datas;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.incomplete_quest:
+                startActivity(new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class));
+                break;
+
+        }
     }
 }

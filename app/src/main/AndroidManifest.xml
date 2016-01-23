@@ -24,13 +24,21 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-        android:name=".ui.NewQuestActivity"
-        android:label="@string/title_activity_new_quest"
-        android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-
+            android:name=".ui.NewQuestActivity"
+            android:label="@string/title_activity_new_quest"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.IncompleteQuestionActivity"
             android:label="@string/title_activity_incomplete_quest"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ui.QuestionNoteActivity" />
+        <activity
+            android:name=".ui.QuestionSignActivity"
+            android:label="@string/title_activity_question_sign"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.QuestionContextActivity"
+            android:label="@string/title_activity_question_context"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 

@@ -60,7 +60,7 @@ public class NewQuestActivity extends AppCompatActivity {
     private List<NiceQuestion> getData(){
         List<NiceQuestion> datas = new ArrayList<>();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 4; i++) {
             NiceQuestion niceQuestion = new NiceQuestion("this is " + i, String.valueOf(i));
             datas.add(niceQuestion);
         }

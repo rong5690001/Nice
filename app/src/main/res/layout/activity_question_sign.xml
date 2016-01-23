@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/blue">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="25dp"
+                android:gravity="center"
+                android:text="日期："
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="2015-05-10"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="时间："
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="25sp"
+                android:gravity="center"
+                android:text="16:49:50"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- 地图 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical">
+
+        <com.nice.widget.NiceImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@mipmap/photo_01" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <com.nice.widget.NiceImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/loaction_blue" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="上海市浦东新区世纪大道1号东方明珠1号门"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 拍照 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <com.nice.widget.NiceImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/video_blue" />
+    </RelativeLayout>
+    <!-- 底部bottom -->
+    <LinearLayout
+        android:id="@+id/sign_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="@color/blue"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/rephoto_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:onClick="onClick"
+            android:orientation="vertical">
+
+            <com.nice.widget.NiceImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:src="@mipmap/video_white" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="重拍" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sign_commit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
+            android:onClick="onClick"
+            android:orientation="vertical">
+
+            <com.nice.widget.NiceImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:src="@mipmap/checkmark" />
+
+            <com.nice.widget.NiceTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="提交" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
