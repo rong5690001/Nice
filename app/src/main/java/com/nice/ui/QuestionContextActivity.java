@@ -9,6 +9,8 @@ import com.nice.R;
 
 public class QuestionContextActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

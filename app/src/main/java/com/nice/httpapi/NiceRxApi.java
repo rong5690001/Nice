@@ -6,33 +6,34 @@ import com.nice.httpapi.request.RequestQueueManager;
 import com.nice.model.NiceUser;
 import org.json.JSONObject;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import rx.Observable;
 
 public class NiceRxApi {
 
     private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
-    private static final String LOGIN_URL = HOST_NAME + "/IOSADataService.ashx";
+    private static final String LOGIN_URL = HOST_NAME + "/IOSAndroidDataService.ashx";
 //            +"clientTimeStamp=1450015351071&method=uUserInfo&mode=2001&clientType=ios&version=1.0" +
 //            "&encryptCode=0284c86a3ee1f5273ebc887797032948&transfer=121212" +
 //            "&requestJson={uiCellPhone:13000000000,uiPassword:098f6bcd4621d373cade4e832627b4f6}";
 
     public static Observable<NiceUser> login(){
 
-        Map params = new HashMap();
-
+        Map params = new LinkedHashMap();
+        params.put("encryptCode","0284c86a3ee1f5273ebc887797032948");
+        params.put("transfer","121212");
         params.put("clientTimeStamp","1450015351071");
         params.put("method","uUserInfo");
         params.put("mode","2001");
         params.put("clientType","android");
         params.put("version","1.0");
-        params.put("encryptCode","0284c86a3ee1f5273ebc887797032948");
-        params.put("transfer","121212");
-//        Map<String, String> requestJson = new HashMap<>();
-//        requestJson.put("uiCellPhone", "13000000000");
-//        requestJson.put("uiPassword", "098f6bcd4621d373cade4e832627b4f6");
-//        params.put("requestJson",requestJson);
 
+        Map requestJson = new LinkedHashMap();
+        requestJson.put("uiCellPhone", "13000000000");
+        requestJson.put("uiPassword", "098f6bcd4621d373cade4e832627b4f6");
+        params.put("requestJson",requestJson);
+        System.out.println(new JSONObject(params));
         QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(LOGIN_URL, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
