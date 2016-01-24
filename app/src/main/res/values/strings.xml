@@ -12,4 +12,6 @@
     <string name="title_activity_incomplete_quest">NewQuestActivity</string>
     <string name="title_activity_question_sign">QuestionSignActivity</string>
     <string name="title_activity_question_context">QuestionContextActivity</string>
+    <string name="title_activity_question_upload">QuestionUploadActivity</string>
+    <string name="title_activity_sign_name">SignNameActivity</string>
 </resources>
