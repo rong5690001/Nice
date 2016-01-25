@@ -8,14 +8,18 @@
         android:id="@+id/quest_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
         android:text="题目："/>
 
     <com.nice.widget.NiceEditText
         android:id="@+id/quest_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:gravity="top"
+        android:layout_margin="10dp"
         android:background="@drawable/u15_gray_btn"
+        android:textColor="@color/black"
         android:minHeight="150dp"/>
 
 </LinearLayout>

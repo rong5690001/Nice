@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
@@ -17,6 +18,7 @@
             android:textSize="20dp"
             android:text="选择说明题："/>
         <LinearLayout
+            android:id="@+id/muti_selected_layout_ok"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
@@ -25,12 +27,12 @@
                 android:layout_width="30dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
-                android:onClick="onClicks"
                 android:gravity="center">
             <com.nice.widget.NiceImageView
+                android:id="@+id/muti_selected_ok_image"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/checkmark_side_black"/>
+                android:src="@drawable/radio_btn_bg"/>
             </RelativeLayout>
             <com.nice.widget.NiceTextView
                 android:layout_width="30dp"
@@ -40,8 +42,9 @@
                 android:textColor="@color/black"
                 android:text="是"/>
             <com.nice.widget.NiceEditText
+                android:id="@+id/muti_selected_layout_ok_editText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:layout_marginRight="15dp"
                 android:textColor="@color/black"
                 android:textSize="18dp"
@@ -51,6 +54,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/muti_selected_layout_not"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
@@ -59,12 +63,12 @@
                 android:layout_width="30dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
-                android:onClick="onClicks"
                 android:gravity="center">
                 <com.nice.widget.NiceImageView
+                    android:id="@+id/muti_selected_not_image"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@mipmap/checkmark_black"/>
+                    android:src="@drawable/radio_btn_bg"/>
             </RelativeLayout>
             <com.nice.widget.NiceTextView
                 android:layout_width="30dp"
@@ -74,8 +78,9 @@
                 android:textColor="@color/black"
                 android:text="否"/>
             <com.nice.widget.NiceEditText
+                android:id="@+id/muti_selected_layout_not_editText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:layout_marginRight="15dp"
                 android:textColor="@color/black"
                 android:textSize="18dp"

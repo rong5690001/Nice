@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-    <include
-        layout="@layout/title"/>
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/title" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -14,74 +16,84 @@
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:textSize="18sp"
-            android:textColor="@color/white"
             android:layout_marginLeft="5sp"
             android:gravity="center|left"
-            android:text="订单编号："/>
+            android:text="订单编号："
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textColor="@color/white"
             android:gravity="center|left"
-            android:text="dw2016011121"/>
+            android:text="dw2016011121"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:textSize="18sp"
-            android:textColor="@color/white"
             android:gravity="center"
-            android:text="问卷完成度："/>
+            android:text="问卷完成度："
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:textSize="18sp"
-            android:textColor="@color/white"
             android:layout_marginRight="5sp"
             android:gravity="center"
-            android:text="0%"/>
+            android:text="0%"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <!-- 中间内容 -->
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"></RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
     <!-- 底部分组列表和扫一扫 -->
     <LinearLayout
         android:id="@+id/sign_bottom_tab"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_gravity="bottom"
         android:background="@color/blue"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom">
+        android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/group_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
-            android:onClick="onClick"
             android:gravity="center"
+            android:onClick="onClick"
             android:orientation="vertical">
+
             <com.nice.widget.NiceImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:src="@mipmap/data"/>
+                android:src="@mipmap/data" />
+
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/white"
-                android:text="分组列表"/>
+                android:text="分组列表"
+                android:textColor="@color/white" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"></LinearLayout>
+
         <LinearLayout
             android:id="@+id/siweep_btn"
             android:layout_width="wrap_content"
@@ -90,17 +102,19 @@
             android:gravity="center"
             android:onClick="onClick"
             android:orientation="vertical">
+
             <com.nice.widget.NiceImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:src="@mipmap/pinpoint"/>
+                android:src="@mipmap/pinpoint" />
+
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/white"
-                android:text="扫一扫"/>
+                android:text="扫一扫"
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </LinearLayout>

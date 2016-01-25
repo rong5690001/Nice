@@ -19,4 +19,5 @@ public class NiceImageView extends ImageView {
     public NiceImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
 }
