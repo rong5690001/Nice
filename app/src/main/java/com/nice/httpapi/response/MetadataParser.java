@@ -16,29 +16,29 @@ import java.util.GregorianCalendar;
 public class MetadataParser {
     public static boolean hasError(JSONObject response) {
         try {
-            return response.getJSONObject("metadata").has("error");
+            return response.getJSONObject("status").has("1");
         } catch (JSONException e) {
             return false;
         }
     }
 
-    public static int getError(String response) {
+    public static String getError(String response) {
         try {
             return getError(new JSONObject(response));
         } catch (JSONException e) {
         }
-        return -1;
+        return "-22";
     }
 
-    public static int getError(JSONObject response) {
+    public static String getError(JSONObject response) {
         try {
-            if (response.getJSONObject("metadata").has("error")) {
-                return response.getJSONObject("metadata").getInt("error");
+            if (response.has("errMsg")) {
+                return response.getString("errMsg");
             } else {
-                return -1;
+                return "-22";
             }
         } catch (JSONException e) {
-            return -1;
+            return "-22";
         }
     }
 

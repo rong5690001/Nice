@@ -62,4 +62,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.alexbbb:uploadservice:1.6'
     compile 'com.android.support:design:23.1.1'
+
+    compile 'org.byteam.superadapter:superadapter:2.2.3'
 }

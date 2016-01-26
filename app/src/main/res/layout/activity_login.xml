@@ -45,8 +45,11 @@
                 android:textSize="16sp" />
 
             <com.nice.widget.NiceEditText
+                android:id="@+id/uiCode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/gary"
+                android:text="testgroupaadmin"/>
 
         </LinearLayout>
 
@@ -74,8 +77,11 @@
                 android:textSize="16sp" />
 
             <com.nice.widget.NiceEditText
+                android:id="@+id/uiPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/gary"
+                android:text="098f6bcd4621d373cade4e832627b4f6"/>
 
         </LinearLayout>
 

@@ -53,14 +53,20 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"/>
+
+    <com.nice.widget.NiceButton
+        android:id="@+id/submit_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
-
-
-    </android.support.v7.widget.RecyclerView>
-
+        android:layout_margin="40dp"
+        android:textSize="20sp"
+        android:background="@drawable/blue_btn"
+        android:text="下载问卷"/>
 
 </LinearLayout>

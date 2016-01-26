@@ -54,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        initLayout();
+    }
 
+    private void initLayout(){
+        title.setText("问卷");
     }
 
     @Override
