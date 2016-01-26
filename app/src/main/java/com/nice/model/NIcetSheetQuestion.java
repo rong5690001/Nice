@@ -1,6 +1,7 @@
 package com.nice.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 问卷问题表
@@ -17,4 +18,6 @@ public class NIcetSheetQuestion implements Serializable {
     public int sqStatus;          //状态  1:有效0:无效-1:删除
     public String rbTime;         //记录生成时间  Default CURRENT DATATIME
     public String ruTime;         //记录变更时间  Default CURRENT DATATIME
+
+    public List<NiceSheetQuestionOption> SheetQuestionOption; //选项
 }

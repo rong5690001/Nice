@@ -6,8 +6,13 @@ import com.nice.httpapi.request.QSJsonObjectRequest;
 import com.nice.httpapi.request.RequestQueueManager;
 import com.nice.httpapi.request.RxRequest;
 import com.nice.httpapi.response.dataparser.NiceUserPaser;
+import com.nice.httpapi.response.dataparser.NicetSheetPaser;
 import com.nice.model.NiceUser;
+import com.nice.model.NicetSheet;
+
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,26 +30,26 @@ public class NiceRxApi {
 //            "&encryptCode=0284c86a3ee1f5273ebc887797032948&transfer=121212" +
 //            "&requestJson={uiCellPhone:13000000000,uiPassword:098f6bcd4621d373cade4e832627b4f6}";
 
-    private static Map getParams(){
+    private static Map getParams() {
         Map params = new LinkedHashMap();
-        params.put("encryptCode","0284c86a3ee1f5273ebc887797032948");
-        params.put("transfer","121212");
-        params.put("clientTimeStamp",String.valueOf(System.currentTimeMillis()));
-        params.put("clientType","android");
-        params.put("version","1.0");
+        params.put("encryptCode", "0284c86a3ee1f5273ebc887797032948");
+        params.put("transfer", "121212");
+        params.put("clientTimeStamp", String.valueOf(System.currentTimeMillis()));
+        params.put("clientType", "android");
+        params.put("version", "1.0");
         return params;
     }
 
-    public static Observable<NiceUser> login(String uiCode, String uiPassword){
+    public static Observable<NiceUser> login(String uiCode, String uiPassword) {
 
         Map params = getParams();
-        params.put("method","uUserInfo");
-        params.put("mode","2001");
+        params.put("method", "uUserInfo");
+        params.put("mode", "2001");
 
         Map requestJson = new LinkedHashMap();
         requestJson.put("uiCode", uiCode);
         requestJson.put("uiPassword", uiPassword);
-        params.put("requestJson",requestJson);
+        params.put("requestJson", requestJson);
         System.out.println(new JSONObject(params));
 //        QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(LOGIN_URL, new JSONObject(params), new Response.Listener<JSONObject>() {
 //            @Override
@@ -65,22 +70,34 @@ public class NiceRxApi {
                 });
     }
 
-    public static Observable<Object> Download(List<String> shIds){
+    public static Observable<JSONObject> Download(List<String> shIds) {
+
+        shIds.add("400100000000001");
+        shIds.add("400100000000002");
 
         Map params = getParams();
 
-        params.put("method","uSheet");
-        params.put("mode","1001");
+        params.put("method", "uSheet");
+        params.put("mode", "1001");
 
-        params.put("requestJson", shIds);
+        Map shIdMap = new HashMap();
 
+        for (String shid : shIds) {
+            shIdMap.put("shId", shid);
+        }
+
+        List<Map> shIdList = new ArrayList<>();
+        shIdList.add(shIdMap);
+        params.put("requestJson",shIdList );
+
+        System.out.println(new JSONObject(params));
         return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
-                .map(new Func1<JSONObject, Object>() {
+                .map(new Func1<JSONObject, JSONObject>() {
                     @Override
-                    public NiceUser call(JSONObject jsonObject) {
+                    public JSONObject call(JSONObject jsonObject) {
                         System.out.println("jsonObject" + jsonObject);
 //                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
-                        return NiceUserPaser.paserNiceUser(jsonObject).get(0);
+                        return jsonObject;
                     }
                 });
 

@@ -7,12 +7,22 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.nice.R;
+import com.nice.httpapi.NiceRxApi;
+import com.nice.model.NicetSheet;
+import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscriber;
 
 public class NewQuestActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -44,7 +54,7 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_new_quest);
         ButterKnife.bind(this);
 
-
+        initLayout();
     }
 
     private void initLayout(){
@@ -61,7 +71,26 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
             case R.id.all_choose_layout:
                 allChooseIcon.setSelected(!allChooseIcon.isSelected());
                 break;
+            case R.id.submit_btn:
+                NiceRxApi.Download(new ArrayList<String>()).subscribe(new Subscriber<JSONObject>() {
 
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(JSONObject jsonObject) {
+                        System.out.println(QuestionUtil.saveQuestion(jsonObject));
+                    }
+                });
+                break;
         }
     }
 }

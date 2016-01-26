@@ -49,6 +49,10 @@
         <activity
             android:name=".ui.SignNameActivity"
             android:label="@string/title_activity_sign_name"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.fragment.FinishQuestActivity"
+            android:label="@string/title_activity_finish_quest"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 

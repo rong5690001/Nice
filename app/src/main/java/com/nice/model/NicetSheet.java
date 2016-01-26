@@ -1,6 +1,7 @@
 package com.nice.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 问卷主体信息
@@ -19,4 +20,6 @@ public class NicetSheet implements Serializable {
     public String rbTime;       //记录生成时间  Default CURRENT DATATIME
     public String ruTime;       //记录变更时间  Default CURRENT DATATIME
     public int shQaaStatus;     //审核状态  0未审核 1 已通过 2 未通过
+
+    public List<NicetSheetQuestionGroup> SheetQuestionGroup; //问题组
 }

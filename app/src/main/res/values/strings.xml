@@ -14,4 +14,5 @@
     <string name="title_activity_question_context">QuestionContextActivity</string>
     <string name="title_activity_question_upload">QuestionUploadActivity</string>
     <string name="title_activity_sign_name">SignNameActivity</string>
+    <string name="title_activity_finish_quest">FinishQuestActivity</string>
 </resources>
