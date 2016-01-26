@@ -1,14 +1,21 @@
 package com.nice.httpapi;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.nice.httpapi.request.QSJsonObjectRequest;
 import com.nice.httpapi.request.RequestQueueManager;
+import com.nice.httpapi.request.RxRequest;
+import com.nice.httpapi.response.dataparser.NiceUserPaser;
 import com.nice.model.NiceUser;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import rx.Observable;
+import rx.functions.Func1;
 
 public class NiceRxApi {
 
@@ -18,41 +25,65 @@ public class NiceRxApi {
 //            "&encryptCode=0284c86a3ee1f5273ebc887797032948&transfer=121212" +
 //            "&requestJson={uiCellPhone:13000000000,uiPassword:098f6bcd4621d373cade4e832627b4f6}";
 
-    public static Observable<NiceUser> login(){
-
+    private static Map getParams(){
         Map params = new LinkedHashMap();
         params.put("encryptCode","0284c86a3ee1f5273ebc887797032948");
         params.put("transfer","121212");
-        params.put("clientTimeStamp","1450015351071");
-        params.put("method","uUserInfo");
-        params.put("mode","2001");
+        params.put("clientTimeStamp",String.valueOf(System.currentTimeMillis()));
         params.put("clientType","android");
         params.put("version","1.0");
+        return params;
+    }
+
+    public static Observable<NiceUser> login(String uiCode, String uiPassword){
+
+        Map params = getParams();
+        params.put("method","uUserInfo");
+        params.put("mode","2001");
 
         Map requestJson = new LinkedHashMap();
-        requestJson.put("uiCellPhone", "13000000000");
-        requestJson.put("uiPassword", "098f6bcd4621d373cade4e832627b4f6");
+        requestJson.put("uiCode", uiCode);
+        requestJson.put("uiPassword", uiPassword);
         params.put("requestJson",requestJson);
         System.out.println(new JSONObject(params));
-        QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(LOGIN_URL, new JSONObject(params), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("response:" + response);
-            }
-        });
+//        QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(LOGIN_URL, new JSONObject(params), new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                System.out.println("response:" + response);
+//            }
+//        });
 
 
-        RequestQueueManager.INSTANCE.getQueue().add(jsonObjectRequest);
-        return null;
-//        return RxRequest.createJsonRequest(Method.GET, LOGIN_URL, null)
-//                .map(new Func1<JSONObject, NiceUser>() {
-//                    @Override
-//                    public NiceUser call(JSONObject jsonObject) {
-//                        System.out.println("jsonObject" + jsonObject);
-////                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
-//                        return NiceUserPaser.paserNiceUser(jsonObject).get(0);
-//                    }
-//                });
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, NiceUser>() {
+                    @Override
+                    public NiceUser call(JSONObject jsonObject) {
+                        System.out.println("jsonObject" + jsonObject);
+//                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
+                        return NiceUserPaser.paserNiceUser(jsonObject).get(0);
+                    }
+                });
+    }
+
+    public static Observable<Object> Download(List<String> shIds){
+
+        Map params = getParams();
+
+        params.put("method","uSheet");
+        params.put("mode","1001");
+
+        params.put("requestJson", shIds);
+
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, Object>() {
+                    @Override
+                    public NiceUser call(JSONObject jsonObject) {
+                        System.out.println("jsonObject" + jsonObject);
+//                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
+                        return NiceUserPaser.paserNiceUser(jsonObject).get(0);
+                    }
+                });
+
     }
 
 //    public static Observable<List<FeedingAggregation>> queryFeedingaggregationLatest(){

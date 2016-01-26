@@ -3,6 +3,8 @@ package com.nice.httpapi.request;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.nice.httpapi.response.MetadataParser;
+
 import org.json.JSONObject;
 import java.util.HashMap;
 import rx.Observable;
@@ -22,13 +24,12 @@ public class RxRequest {
                 QSJsonObjectRequest jsonObjectRequest = new QSJsonObjectRequest(method, url, jsonRequest, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("response:" + response);
-//                        if (MetadataParser.hasError(response)){
-//                            //errorCode became the msg
-//                            Throwable errorCode = new Throwable(String.valueOf(MetadataParser.getError(response)));
-//                            subscriber.onError(errorCode);
-//                            subscriber.onCompleted();
-//                        }
+                        if (MetadataParser.hasError(response)){
+                            //errorCode became the msg
+                            Throwable errorCode = new Throwable(String.valueOf(MetadataParser.getError(response)));
+                            subscriber.onError(errorCode);
+                            subscriber.onCompleted();
+                        }
                         subscriber.onNext(response);
                         subscriber.onCompleted();
                     }

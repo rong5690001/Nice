@@ -6,12 +6,8 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.nice.httpapi.response.QSRequestListener;
 import com.nice.httpapi.response.error.QSResponseErrorListener;
-
 import org.json.JSONObject;
 import java.util.Map;
-
-import rx.Observable;
-import rx.functions.Func1;
 
 public class QSJsonObjectRequest extends JsonObjectRequest {
 
