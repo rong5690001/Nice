@@ -6,28 +6,28 @@ import android.support.v7.widget.RecyclerView;
 
 import com.nice.R;
 import com.nice.model.NiceQuestion;
+import com.nice.model.NicetSheet;
+
+import org.byteam.superadapter.list.BaseViewHolder;
+import org.byteam.superadapter.list.SuperAdapter;
 
 import java.util.List;
 
 /**
  * Created by jiao on 2016/1/22.
  */
-public class IncompleteQuestionAdapter extends AbsAdapter<NiceQuestion> {
+public class IncompleteQuestionAdapter extends SuperAdapter<NicetSheet> {
 
 
-    public IncompleteQuestionAdapter(@NonNull List datas, Context context, int... layoutId) {
-        super(datas, context, layoutId);
+    public IncompleteQuestionAdapter(Context context, List<NicetSheet> data, int layoutResId) {
+        super(context, data, layoutResId);
     }
 
 
     @Override
-    public int getItemViewType(int position) {
-        return 0;
+    protected void onBind(int viewType, BaseViewHolder holder, int position, NicetSheet item) {
+        holder.setText(R.id.item_incomplete_question_name, item.shName);
+        holder.setText(R.id.item_incomplete_question_time, item.rbTime);
     }
 
-    @Override
-    public void onBindViewHolder(AbsViewHolder holder, int position) {
-        holder.setText(R.id.item_incomplete_question_name, datas.get(position).name);
-        holder.setText(R.id.item_incomplete_question_time, datas.get(position).name);
-    }
 }

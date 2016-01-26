@@ -5,15 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
 import com.nice.R;
 import com.nice.adapter.FinishQuestAdapter;
 import com.nice.model.NicetSheet;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
-
 import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

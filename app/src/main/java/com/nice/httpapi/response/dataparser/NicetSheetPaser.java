@@ -18,20 +18,15 @@ import java.util.List;
 public class NicetSheetPaser {
 
 
-    public static List<NicetSheet> paser(JSONObject response){
+    public static NicetSheet paser(JSONObject response){
 
-        try {
             Gson gson = QSGsonFactory.create();
 
-            String nicetSheet = response.getJSONArray("result").toString();
-            Type type = new TypeToken<List<NicetSheet>>() {
+            String nicetSheet = response.toString();
+            Type type = new TypeToken<NicetSheet>() {
             }.getType();
 
             return gson.fromJson(nicetSheet, type);
-
-        } catch (JSONException e) {
-            return null;
-        }
 
 
     }

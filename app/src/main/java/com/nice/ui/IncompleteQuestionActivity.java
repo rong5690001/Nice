@@ -8,11 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.nice.R;
 import com.nice.adapter.IncompleteQuestionAdapter;
 import com.nice.model.NiceQuestion;
+import com.nice.model.NicetSheet;
+import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
@@ -40,8 +43,8 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
     NiceTextView rightText;
     @Bind(R.id.right_btn_layout)
     RelativeLayout rightBtnLayout;
-    @Bind(R.id.recyclerview_incomplete)
-    RecyclerView recyclerviewIncomplete;
+    @Bind(R.id.listView)
+    ListView listView;
 
     private IncompleteQuestionAdapter mAdapter;
 
@@ -52,24 +55,14 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
         setContentView(R.layout.activity_incomplete_quest);
         ButterKnife.bind(this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerviewIncomplete.setLayoutManager(layoutManager);
+        mAdapter = new IncompleteQuestionAdapter(this, getData(), R.layout.item_incomplete_question);
 
-        mAdapter = new IncompleteQuestionAdapter(getData(), this, R.layout.item_incomplete_question);
-
-        recyclerviewIncomplete.setAdapter(mAdapter);
+        listView.setAdapter(mAdapter);
     }
 
-    private List<NiceQuestion> getData(){
-        List<NiceQuestion> datas = new ArrayList<>();
+    private List<NicetSheet> getData(){
 
-        for (int i = 0; i < 4; i++) {
-            NiceQuestion niceQuestion = new NiceQuestion("this is " + i, String.valueOf(i));
-            datas.add(niceQuestion);
-        }
-
-        return datas;
+        return QuestionUtil.getQusetions();
     }
 
     @Override
