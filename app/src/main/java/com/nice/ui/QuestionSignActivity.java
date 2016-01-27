@@ -90,6 +90,10 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 1);
                 break;
+            case R.id.quest_sign_retakephoto:
+                Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent2, 1);
+                break;
         }
     }
 }

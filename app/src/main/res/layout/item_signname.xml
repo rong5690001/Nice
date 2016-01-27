@@ -17,6 +17,7 @@
             android:textSize="20dp"
             android:text="签名："/>
         <com.nice.widget.NiceImageView
+            android:id="@+id/signname_btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"

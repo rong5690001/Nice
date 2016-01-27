@@ -76,11 +76,14 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <com.nice.widget.NiceImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/zhangsan" />
+        <SurfaceView
+            android:id="@+id/surfVDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"/>
     </RelativeLayout>
     <!-- 底部bottom -->
     <LinearLayout
@@ -92,7 +95,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/rephoto_btn"
+            android:id="@+id/resigname_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"

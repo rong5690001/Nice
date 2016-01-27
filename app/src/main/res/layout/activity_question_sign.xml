@@ -117,8 +117,10 @@
             android:orientation="vertical">
 
             <com.nice.widget.NiceImageView
+                android:id="@+id/quest_sign_retakephoto"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:onClick="onClick"
                 android:layout_marginTop="5dp"
                 android:src="@mipmap/video_white" />
 
