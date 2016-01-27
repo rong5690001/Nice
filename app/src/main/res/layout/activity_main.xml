@@ -40,7 +40,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/simple_blue"
+            android:background="@drawable/corner_bg"
             android:gravity="center_vertical">
 
             <com.nice.widget.NiceTextView
@@ -67,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="4dp"
                 android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
@@ -93,7 +94,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/simple_blue"
+            android:background="@drawable/corner_bg"
             android:gravity="center_vertical">
 
             <com.nice.widget.NiceTextView
@@ -119,6 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="15dp"
                 android:src="@mipmap/arrow"/>
 
@@ -142,9 +144,10 @@
             android:src="@mipmap/icon_uploaded"/>
 
         <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/simple_blue"
+            android:background="@drawable/corner_bg"
             android:gravity="center_vertical">
 
             <com.nice.widget.NiceTextView
@@ -171,6 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="4dp"
                 android:src="@mipmap/arrow"/>
 
         </RelativeLayout>

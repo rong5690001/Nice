@@ -58,6 +58,12 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
         mAdapter = new IncompleteQuestionAdapter(this, getData(), R.layout.item_incomplete_question);
 
         listView.setAdapter(mAdapter);
+        initLayout();
+    }
+
+    private void initLayout(){
+        title.setText("未完成问卷");
+        rightBtnLayout.setVisibility(View.GONE);
     }
 
     private List<NicetSheet> getData(){
@@ -68,6 +74,9 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.back_layout:
+                finish();
+                break;
             case R.id.incomplete_quest:
                 startActivity(new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class));
                 break;

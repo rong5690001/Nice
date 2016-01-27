@@ -14,8 +14,8 @@
         android:orientation="vertical">
 
         <com.nice.widget.NiceImageView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_width="280dp"
+            android:layout_height="80dp"
             android:src="@mipmap/user_top"/>
 
         <com.nice.widget.NiceImageView

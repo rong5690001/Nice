@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -72,6 +73,8 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_name);
+        surfVDraw.setZOrderOnTop(true);//设置画布  背景透明
+        surfVDraw.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         ButterKnife.bind(this);
         surHolder = surfVDraw.getHolder();
 
