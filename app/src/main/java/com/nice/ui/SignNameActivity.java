@@ -169,6 +169,12 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                 return true;
             }
         });
+        initLayout();
+    }
+
+    private void initLayout() {
+        title.setText("签到");
+        rightBtnLayout.setVisibility(View.GONE);
     }
 
     public void myDraw() {
@@ -234,6 +240,9 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.back_layout:
+                finish();
+                break;
             case R.id.sign_commit_btn:
                 try {
 

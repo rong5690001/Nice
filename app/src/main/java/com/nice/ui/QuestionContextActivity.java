@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -13,12 +14,13 @@ import com.nice.widget.NiceCompletionNormalView;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class QuestionContextActivity extends AppCompatActivity {
+public class QuestionContextActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.back_icon)
     NiceImageView backIcon;
@@ -55,7 +57,23 @@ public class QuestionContextActivity extends AppCompatActivity {
                 , R.layout.item_selectinstruction,
                 R.layout.view_completion_normal);
         recyclerview.setAdapter(adapter);
+        initLayout();
+    }
+
+    private void initLayout() {
+        title.setText("问卷调查");
+        rightBtnLayout.setVisibility(View.GONE);
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.back_layout:
+                finish();
+                break;
+
+
+        }
+    }
 }

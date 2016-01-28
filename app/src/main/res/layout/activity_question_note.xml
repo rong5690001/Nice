@@ -166,11 +166,12 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="10dp"
-        android:background="@color/green_btn">
+        android:background="@drawable/textview_bg">
     <com.nice.widget.NiceTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:text="456156456564564564654654654654654654654"/>
@@ -178,21 +179,31 @@
 
     <!-- 退回订单，开始操作 -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
         <com.nice.widget.NiceButton
             android:id="@+id/info_back_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:onClick="onClick"
+            android:scaleType="fitXY"
+            android:background="@drawable/button_left_bg"
+            android:textColor="@color/white"
             android:text="退回订单"/>
         <com.nice.widget.NiceButton
             android:id="@+id/info_go_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:onClick="onClick"
+            android:textColor="@color/white"
+            android:scaleType="fitXY"
+            android:background="@drawable/button_right_bg"
+            android:layout_weight="1"
             android:text="开始操作"/>
     </LinearLayout>
 </LinearLayout>
