@@ -45,8 +45,9 @@
 
     <RelativeLayout
         android:id="@+id/right_btn_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:onClick="onClick">
 
         <com.nice.widget.NiceImageView

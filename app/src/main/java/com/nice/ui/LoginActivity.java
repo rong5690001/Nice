@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onCompleted() {
                         if(remIcon.isSelected()){
-                            SharedPreferences.Editor editor = NiceApplication.instance().getEditor();
+                            SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
                             editor.putString("uiCode", uiCode);
                             editor.putString("uiPassword", uiPassword);
                             editor.commit();

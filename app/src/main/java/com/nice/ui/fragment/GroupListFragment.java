@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.nice.R;
 import com.nice.adapter.GroupAdapter;
+import com.nice.model.Event.SwitchGroupEvent;
 import com.nice.model.NicetSheet;
 import com.nice.model.NicetSheetQuestionGroup;
 import java.util.ArrayList;
@@ -76,7 +77,8 @@ public class GroupListFragment extends Fragment {
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    EventBus.getDefault().post("跳转到examFragment");
+                    SwitchGroupEvent event = new SwitchGroupEvent(position);
+                    EventBus.getDefault().post(event);
                 }
             });
         }

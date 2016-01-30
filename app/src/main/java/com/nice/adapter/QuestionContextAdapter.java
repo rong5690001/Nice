@@ -4,25 +4,23 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.nice.R;
 import com.nice.model.NIcetSheetQuestion;
 import com.nice.model.NiceSheetQuestionOption;
 import com.nice.util.Denisty;
 import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import de.greenrobot.event.EventBus;
 
 /**
@@ -30,22 +28,30 @@ import de.greenrobot.event.EventBus;
  */
 public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
-    private Map<Long, String> selectedValues = new HashMap<>();
-    private Map<Long, String> selectedStrutionValues = new HashMap<>();
+    public Map<Long, String> selectedValues = new HashMap<>();
+    public Map<Long, String> selectedStrutionValues = new HashMap<>();
     private Map<Long, List<NiceImageView>> singleSelectImageViewMap = new HashMap<>();
     private Map<Long, List<NiceEditText>> selectEditTextMap = new HashMap<>();
     private DatePickerDialog datePickerDialog;
+    private boolean isLastGroup = false;
+    private String groupName;
 
-    public QuestionContextAdapter(@NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
+    public QuestionContextAdapter(String groupName, boolean isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
         super(datas, context, layoutId);
+        this.isLastGroup = isLastGroup;
+        this.groupName = groupName;
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if(null != datas){
-            if(datas.size() == position)
+    public int getItemViewType(int index) {
+        if (null != datas) {
+            if (datas.size() + 1 == index)
                 return 6;
+            if(0 == index){
+                return 7;
+            }
         }
+        int position = index - 1;
         if (datas.get(position).sqType == 400600000000007L) {//单项选择题
             return 0;
         }
@@ -65,13 +71,19 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     }
 
     @Override
-    public void onBindViewHolder(AbsViewHolder holder, final int position) {
-        if(null != datas){
-            if(datas.size() == position) {
-                onBindViewHolder_bottom_btn(holder, position);
+    public void onBindViewHolder(AbsViewHolder holder, final int index) {
+        if (null != datas) {
+            if (datas.size() + 1 == index) {
+                onBindViewHolder_bottom_btn(holder, index);
+                return;
+            }
+            if(0 == index){
+                onBindViewHolder_group_name(holder, index);
                 return;
             }
         }
+        int position = index - 1;
+        Log.e("11", "sqType:" + datas.get(position).sqType);
         if (datas.get(position).sqType == 400600000000007L) {//单项选择题
             onBindViewHolder_singleSelected(holder, position);
             return;
@@ -257,6 +269,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     /**
      * 上一组|下一组
+     *
      * @param holder
      * @param position
      */
@@ -268,28 +281,46 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 EventBus.getDefault().post("reduceGroupIndex");
             }
         });
+        Log.e("11", "isLastGroup:" + isLastGroup);
+        if (isLastGroup) {
+            holder.setText(R.id.info_go_btn, "提交");
+            holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post("addGroupIndex");
-            }
-        });
+                }
+            });
+        } else {
+            holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post("addGroupIndex");
+                }
+            });
+        }
+    }
 
+    /**
+     * 分组名称
+     * @param holder
+     * @param position
+     */
+    private void onBindViewHolder_group_name(AbsViewHolder holder, final int position) {
+        holder.setText(R.id.group_name, groupName);
     }
 
     @Override
     public int getItemCount() {
-        return null == datas ? 0 : datas.size() + 1;
+        return null == datas ? 0 : datas.size() + 2;
     }
 
     /**
      * 显示时间控件
      */
-    private void showTimePicker(final long id){
+    private void showTimePicker(final long id) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 0);
-        if(null == datePickerDialog) {
+        if (null == datePickerDialog) {
             datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -298,7 +329,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 }
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         }
-        if(datePickerDialog.isShowing()) return;
+        if (datePickerDialog.isShowing()) return;
         datePickerDialog.show();
     }
 

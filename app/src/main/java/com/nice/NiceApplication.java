@@ -6,16 +6,20 @@ import android.content.SharedPreferences;
 import com.facebook.stetho.Stetho;
 import com.nice.model.NiceUser;
 
-import java.util.prefs.PreferencesFactory;
-
 /**
  * Created by chen on 2015/12/16.
  */
 public class NiceApplication extends Application {
+    
+    private static final String QUEST_TABLE = "quest_table";
+    private static final String VALUE_TABLE = "value_table";
 
     private static NiceApplication instance;
     public static NiceUser user;
-    private SharedPreferences preferences;
+    private SharedPreferences preferencesQuest;
+    private SharedPreferences preferencesValue;
+    
+    public long shId;
 
     public static NiceApplication instance(){
         return instance;
@@ -25,16 +29,27 @@ public class NiceApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        preferences = getSharedPreferences("nice", 0);
+        preferencesQuest = getSharedPreferences(QUEST_TABLE, 0);
+        preferencesValue = getSharedPreferences(VALUE_TABLE, 0);
         Stetho.initializeWithDefaults(this);
     }
 
 
-    public SharedPreferences.Editor getEditor(){
-        return preferences == null ? getSharedPreferences("nice", 0).edit() : preferences.edit();
+    public SharedPreferences.Editor getQuestEditor(){
+        return preferencesQuest == null ? getSharedPreferences(QUEST_TABLE, 0).edit() : preferencesQuest.edit();
     }
 
-    public SharedPreferences getPreferences(){
-        return preferences == null ? getSharedPreferences("nice", 0) : preferences;
+    public SharedPreferences getQuestPreferencesQuest(){
+        return preferencesQuest == null ? getSharedPreferences(QUEST_TABLE, 0) : preferencesQuest;
     }
+
+    public SharedPreferences.Editor getValueEditor(){
+        return preferencesQuest == null ? getSharedPreferences(VALUE_TABLE, 0).edit() : preferencesValue.edit();
+    }
+
+    public SharedPreferences getQuestValuePreferencesQuest(){
+        return preferencesQuest == null ? getSharedPreferences(VALUE_TABLE, 0) : preferencesValue;
+    }
+    
+    
 }

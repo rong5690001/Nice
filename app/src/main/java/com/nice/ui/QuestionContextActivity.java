@@ -9,7 +9,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.model.Event.SwitchGroupEvent;
 import com.nice.model.NicetSheet;
 import com.nice.ui.fragment.ExamFragment;
 import com.nice.ui.fragment.GroupListFragment;
@@ -51,6 +53,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     private NicetSheet entity;
     //第几个分组
     private int groupIndex;
+    public boolean isLastGroup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +62,8 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         entity = (NicetSheet) getIntent().getSerializableExtra("entity");
+        NiceApplication.instance().shId = entity.shId;
         Log.e(QuestionSignActivity.class.getSimpleName(), "订单ID：" + entity.shId);
-//        LinearLayoutManager manager = new LinearLayoutManager(this);
-//        manager.setOrientation(LinearLayoutManager.VERTICAL);
-//        frameLayout.setLayoutManager(manager);
-//        QuestionContextAdapter adapter = new QuestionContextAdapter(new ArrayList<String>(), this
-//                , R.layout.item_signleselect
-//                , R.layout.item_selectinstruction,
-//                R.layout.view_completion_normal);
-//        frameLayout.setAdapter(adapter);
         if (null != entity)
             initLayout();
     }
@@ -104,10 +100,35 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     }
 
     public void showExamFragment() {
-        ExamFragment examFragment = ExamFragment.newInstance(entity.SheetQuestionGroup.get(groupIndex));
+        if((entity.SheetQuestionGroup.size() - 1) == groupIndex){
+            isLastGroup = true;
+            showCommitBtn();
+        }else{
+            hideCommitBtn();
+        }
+        ExamFragment examFragment = ExamFragment.newInstance(entity.SheetQuestionGroup.get(groupIndex), isLastGroup);
         FragmentTransaction gp = getSupportFragmentManager().beginTransaction();
         gp.replace(R.id.frame_layout, examFragment);
         gp.commit();
+    }
+
+    public void hideCommitBtn(){
+        if(rightBtnLayout.getVisibility() == View.VISIBLE){
+            rightBtnLayout.setVisibility(View.GONE);
+            return;
+        }
+    }
+
+    public void showCommitBtn(){
+        rightBtnLayout.setVisibility(View.VISIBLE);
+        rightIcon.setImageResource(R.mipmap.checkmark_white);
+        rightText.setText("提交");
+        rightBtnLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void onEventMainThread(String event) {
@@ -122,6 +143,11 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
             if (groupIndex < 0) return;
             showExamFragment();
         }
+    }
+
+    public void onEventMainThread(SwitchGroupEvent event) {
+        groupIndex = event.groupIndex;
+        showExamFragment();
     }
 
     @Override
