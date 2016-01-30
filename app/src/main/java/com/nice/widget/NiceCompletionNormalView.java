@@ -14,7 +14,7 @@ public class NiceCompletionNormalView extends RelativeLayout {
 
     @Bind(R.id.quest_name)
     NiceTextView questName;
-    @Bind(R.id.quest_value)
+    @Bind(R.id.value)
     NiceEditText questValue;
 
     public NiceCompletionNormalView(Context context) {

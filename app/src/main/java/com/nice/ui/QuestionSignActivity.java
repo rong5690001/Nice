@@ -27,15 +27,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.nice.R;
+import com.nice.model.NicetSheet;
 
 public class QuestionSignActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+    private NicetSheet entity;
     @SuppressLint("SdCardPath")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_sign);
 
+        entity = (NicetSheet) getIntent().getSerializableExtra("entity");
+        if(null != entity)
+            initLayout();
+    }
+
+    private void initLayout(){
 
     }
 
@@ -84,7 +93,11 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.sign_commit_btn:
-                startActivity(new Intent(QuestionSignActivity.this, QuestionContextActivity.class));
+                Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("entity", entity);
+                intent1.putExtras(bundle);
+                startActivity(intent1);
                 break;
             case R.id.quest_sign_takephoto:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

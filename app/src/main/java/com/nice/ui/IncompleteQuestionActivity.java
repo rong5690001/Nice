@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -55,15 +56,26 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
         setContentView(R.layout.activity_incomplete_quest);
         ButterKnife.bind(this);
 
-        mAdapter = new IncompleteQuestionAdapter(this, getData(), R.layout.item_incomplete_question);
-
-        listView.setAdapter(mAdapter);
         initLayout();
     }
 
     private void initLayout(){
         title.setText("未完成问卷");
         rightBtnLayout.setVisibility(View.GONE);
+
+        mAdapter = new IncompleteQuestionAdapter(this, getData(), R.layout.item_incomplete_question);
+        listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("entity", mAdapter.getItem(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     private List<NicetSheet> getData(){
@@ -77,10 +89,6 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
             case R.id.back_layout:
                 finish();
                 break;
-            case R.id.incomplete_quest:
-                startActivity(new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class));
-                break;
-
         }
     }
 }

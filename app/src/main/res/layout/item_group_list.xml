@@ -31,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
                 android:textSize="23sp"
                 android:text="新问卷"/>
 

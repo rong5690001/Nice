@@ -62,6 +62,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.alexbbb:uploadservice:1.6'
     compile 'com.android.support:design:23.1.1'
-
     compile 'org.byteam.superadapter:superadapter:2.2.3'
+
+    compile 'com.squareup:android-times-square:1.6.4@aar'
+    compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
 }

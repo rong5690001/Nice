@@ -21,6 +21,7 @@
             android:gravity="center|left"
             android:text="订单编号："/>
         <com.nice.widget.NiceTextView
+            android:id="@+id/quest_id"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
@@ -36,6 +37,7 @@
             android:gravity="center"
             android:text="问卷完成度："/>
         <com.nice.widget.NiceTextView
+            android:id="@+id/quest_completeness"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:textSize="18sp"
@@ -63,6 +65,7 @@
                 android:textColor="@color/black"
                 android:text="1.订单名称："/>
             <com.nice.widget.NiceTextView
+                android:id="@+id/quest_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -84,6 +87,7 @@
                 android:textColor="@color/black"
                 android:text="2.到访地址："/>
             <com.nice.widget.NiceTextView
+                android:id="@+id/address"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -105,6 +109,7 @@
                 android:textColor="@color/black"
                 android:text="3.联系人："/>
             <com.nice.widget.NiceTextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -126,6 +131,7 @@
                 android:textColor="@color/black"
                 android:text="4.联系电话："/>
             <com.nice.widget.NiceTextView
+                android:id="@+id/phone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -147,6 +153,7 @@
                 android:textColor="@color/black"
                 android:text="5.起止日："/>
             <com.nice.widget.NiceTextView
+                android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -161,6 +168,7 @@
 
     <!-- 问卷备注 -->
     <LinearLayout
+        android:id="@+id/remark"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
         android:layout_marginLeft="50dp"

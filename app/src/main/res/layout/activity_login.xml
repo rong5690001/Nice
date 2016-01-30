@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     tools:context="com.nice.ui.LoginActivity">
 
     <LinearLayout
@@ -14,30 +14,26 @@
         android:orientation="vertical">
 
         <com.nice.widget.NiceImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_width="280dp"
+            android:layout_height="80dp"
             android:src="@mipmap/user_top"/>
 
         <com.nice.widget.NiceImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="20dp"
             android:src="@mipmap/head" />
         <!--用户名-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/u15_gray_btn"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:padding="10dp">
 
             <com.nice.widget.NiceImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/businessman_blue" />
 
             <com.nice.widget.NiceTextView
@@ -46,34 +42,31 @@
                 android:paddingLeft="5dp"
                 android:text="用户名"
                 android:textColor="@color/gary"
-                android:textSize="13dp" />
+                android:textSize="16sp" />
 
             <com.nice.widget.NiceEditText
                 android:id="@+id/uiCode"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
+                android:layout_height="wrap_content"
                 android:textColor="@color/gary"
-                android:textSize="13dp"
-                android:paddingLeft="10dp"
-                android:text="testgroupaadmin"/>
+                android:inputType="date"
+                android:text="zx0005"/>
 
         </LinearLayout>
 
         <!--密码-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="@drawable/u15_gray_btn"
             android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:orientation="horizontal"
             android:padding="10dp">
 
             <com.nice.widget.NiceImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/fraud_blue" />
 
             <com.nice.widget.NiceTextView
@@ -82,16 +75,13 @@
                 android:paddingLeft="5dp"
                 android:text="密   码"
                 android:textColor="@color/gary"
-                android:textSize="13dp" />
+                android:textSize="16sp" />
 
             <com.nice.widget.NiceEditText
                 android:id="@+id/uiPassword"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:inputType="textPassword"
+                android:layout_height="wrap_content"
                 android:textColor="@color/gary"
-                android:textSize="13dp"
-                android:paddingLeft="10dp"
                 android:text="098f6bcd4621d373cade4e832627b4f6"/>
 
         </LinearLayout>
@@ -102,21 +92,18 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:onClick="onClick"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:orientation="horizontal">
             <com.nice.widget.NiceImageView
                 android:id="@+id/rem_icon"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginLeft="10dp"
                 android:src="@mipmap/radio"
-                android:layout_gravity="center"/>
+                android:layout_marginTop="12dp"/>
             <com.nice.widget.NiceTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="13dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"
                 android:textColor="@color/gary"
                 android:layout_marginLeft="10dp"
                 android:text="记住我？"/>
@@ -127,10 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:background="@color/yellow_btn"
-            android:textSize="18dp"
             android:text="登 录" />
 
 

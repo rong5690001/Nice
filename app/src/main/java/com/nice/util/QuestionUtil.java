@@ -19,20 +19,20 @@ import java.util.List;
 public class QuestionUtil {
 
     public static boolean saveQuestion(JSONObject jsonObject) {
-
+        SharedPreferences preferences = NiceApplication.instance().getPreferences();
         SharedPreferences.Editor editor = NiceApplication.instance().getEditor();
         JSONArray result;
         try {
             result = jsonObject.getJSONArray("result");
             for (int i = 0; i < result.length(); i++) {
                 JSONObject questEntity = result.getJSONObject(i);
-                editor.putString(questEntity.getString("shId"), questEntity.toString());
-                String shIds = NiceApplication.instance().getPreferences().getString("shIds", "")
-                        + "|"
-                        + questEntity.getString("shId");
-                shIds = TextUtils.isEmpty(shIds) ? questEntity.getString("shId")
-                        : shIds + "|" + questEntity.getString("shId");
-                editor.putString("shIds", shIds);
+                if(!preferences.contains(questEntity.getString("shId"))) {
+                    editor.putString(questEntity.getString("shId"), questEntity.toString());
+                    String shIds = NiceApplication.instance().getPreferences().getString("shIds", "");
+                    shIds = TextUtils.isEmpty(shIds) ? questEntity.getString("shId")
+                            : shIds + "," + questEntity.getString("shId");
+                    editor.putString("shIds", shIds);
+                }
             }
             return editor.commit();
         } catch (JSONException e) {
@@ -51,11 +51,11 @@ public class QuestionUtil {
 
         List<NicetSheet> nicetSheetList = new ArrayList<>();
         try {
-            if (!shIdsStr.contains("|")) {
+            if (!shIdsStr.contains(",")) {
                 nicetSheetList.add(NicetSheetPaser.paser(new JSONObject(shIdsStr)));
                 return nicetSheetList;
             }
-            String[] shIds = shIdsStr.split("|");
+            String[] shIds = shIdsStr.split(",");
 
             for (String shId : shIds) {
                 if(preferences.contains(shId)) {
@@ -70,6 +70,4 @@ public class QuestionUtil {
         }
 
     }
-
-
 }

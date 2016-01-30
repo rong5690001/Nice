@@ -23,6 +23,7 @@
             android:textSize="18sp" />
 
         <com.nice.widget.NiceTextView
+            android:id="@+id/quest_id"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
@@ -40,6 +41,7 @@
             android:textSize="18sp" />
 
         <com.nice.widget.NiceTextView
+            android:id="@+id/quest_completeness"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginRight="5sp"

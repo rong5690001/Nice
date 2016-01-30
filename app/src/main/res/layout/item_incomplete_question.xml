@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="50dp"
     android:background="@color/white">
 
     <LinearLayout
@@ -10,21 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:padding="15dp"
-        android:onClick="onClick"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:id="@+id/item_incomplete_question_layout"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center">
-
-            <com.nice.widget.NiceImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center">
+            <com.github.lzyzsd.circleprogress.DonutProgress
                 android:id="@+id/item_in_question_precent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@mipmap/schedule"/>
+                custom:donut_unfinished_stroke_width="2dp"
+                custom:donut_finished_stroke_width="2dp"
+                custom:donut_text_size="10sp"/>
 
         </RelativeLayout>
 
@@ -32,11 +33,11 @@
             android:id="@+id/item_incomplete_question_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center|left"
+            android:gravity="center"
             android:layout_weight="1"
             android:textColor="@color/black"
             android:paddingLeft="10dp"
-            android:textSize="23sp"
+            android:textSize="15sp"
             android:text="this is name"/>
 
         <com.nice.widget.NiceTextView
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:textColor="@color/black"
-            android:textSize="23sp"
+            android:textSize="15sp"
             android:text="2015:15:15"/>
         <com.nice.widget.NiceImageView
             android:layout_width="wrap_content"

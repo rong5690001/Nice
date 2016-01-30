@@ -2,6 +2,7 @@ package com.nice.httpapi;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.nice.NiceApplication;
 import com.nice.httpapi.request.QSJsonObjectRequest;
 import com.nice.httpapi.request.RequestQueueManager;
 import com.nice.httpapi.request.RxRequest;
@@ -72,9 +73,6 @@ public class NiceRxApi {
 
     public static Observable<JSONObject> Download(List<String> shIds) {
 
-        shIds.add("400100000000001");
-        shIds.add("400100000000002");
-
         Map params = getParams();
 
         params.put("method", "uSheet");
@@ -100,6 +98,32 @@ public class NiceRxApi {
                         return jsonObject;
                     }
                 });
+
+    }
+
+    public static Observable<JSONObject> getNewQuestion() {
+
+        Map params = getParams();
+
+        params.put("method", "uUserInfo");
+        params.put("mode", "1002");
+
+        Map<String, String> requestJson = new HashMap<>();
+        requestJson.put("uiId", String.valueOf(NiceApplication.user.uiId));
+        params.put("requestJson", requestJson);
+
+        System.out.println("params:" + new JSONObject(params));
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, JSONObject>() {
+                    @Override
+                    public JSONObject call(JSONObject jsonObject) {
+                        System.out.println("新问卷_jsonObject" + jsonObject);
+//                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
+                        return jsonObject;
+                    }
+                });
+
+
 
     }
 

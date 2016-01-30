@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.nice.widget.NiceTextView
-        android:id="@+id/quest_name"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -13,13 +13,12 @@
         android:text="题目："/>
 
     <com.nice.widget.NiceEditText
-        android:id="@+id/quest_value"
+        android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
         android:layout_margin="10dp"
         android:background="@drawable/u15_gray_btn"
-        android:textColor="@color/black"
-        android:minHeight="150dp"/>
+        android:textColor="@color/black"/>
 
 </LinearLayout>

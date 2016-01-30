@@ -1,23 +1,22 @@
 package com.nice.ui.fragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-
 import com.nice.R;
 import com.nice.adapter.GroupAdapter;
-
+import com.nice.model.NicetSheet;
+import com.nice.model.NicetSheetQuestionGroup;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,30 +29,25 @@ import butterknife.ButterKnife;
 public class GroupListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "entity";
     @Bind(R.id.listview)
     ListView listview;
     private GroupAdapter groupAdapter;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private NicetSheet entity;
 
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param entity Parameter 2.
      * @return A new instance of fragment GroupListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GroupListFragment newInstance(String param1, String param2) {
+    public static GroupListFragment newInstance(NicetSheet entity) {
         GroupListFragment fragment = new GroupListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM1, entity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +60,7 @@ public class GroupListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            entity = (NicetSheet) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -75,18 +68,25 @@ public class GroupListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        groupAdapter = new GroupAdapter(getActivity(), getGroupNmae(), R.layout.item_group_list);
         View view = inflater.inflate(R.layout.fragment_group_list, container, false);
         ButterKnife.bind(this, view);
-        listview.setAdapter(groupAdapter);
+        if(null != entity) {
+            groupAdapter = new GroupAdapter(getActivity(), getGroupNmae(), R.layout.item_group_list);
+            listview.setAdapter(groupAdapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    EventBus.getDefault().post("跳转到examFragment");
+                }
+            });
+        }
         return view;
     }
 
     public List<String> getGroupNmae() {
         List<String> list = new ArrayList();
-        for (int i = 0; i < 5; i++) {
-            list.add("焦家斌");
-            Log.d("jiaojiabin", "getGroupNmae: "+list);
+        for (NicetSheetQuestionGroup group : entity.SheetQuestionGroup) {
+            list.add(group.qgName);
         }
         return list;
     }

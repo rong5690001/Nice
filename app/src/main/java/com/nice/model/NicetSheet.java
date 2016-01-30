@@ -22,4 +22,5 @@ public class NicetSheet implements Serializable {
     public int shQaaStatus;     //审核状态  0未审核 1 已通过 2 未通过
 
     public List<NicetSheetQuestionGroup> SheetQuestionGroup; //问题组
+    public NicetOrderInfo order; //订单信息
 }

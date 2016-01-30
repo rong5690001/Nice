@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.nice.R;
+import com.nice.model.NicetSheet;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
@@ -34,19 +36,41 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
     NiceButton infoBackBtn;
     @Bind(R.id.info_go_btn)
     NiceButton infoGoBtn;
+    @Bind(R.id.quest_id)
+    NiceTextView questId;
+    @Bind(R.id.quest_completeness)
+    NiceTextView questCompleteness;
+    @Bind(R.id.quest_name)
+    NiceTextView questName;
+    @Bind(R.id.address)
+    NiceTextView address;
+    @Bind(R.id.username)
+    NiceTextView username;
+    @Bind(R.id.phone)
+    NiceTextView phone;
+    @Bind(R.id.date)
+    NiceTextView date;
+    @Bind(R.id.remark)
+    LinearLayout remark;
+
+    private NicetSheet entity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_note);
         ButterKnife.bind(this);
-
-        initLayout();
+        entity = (NicetSheet) getIntent().getSerializableExtra("entity");
+        if(null != entity)
+            initLayout();
     }
 
     private void initLayout() {
         title.setText("问卷调查");
         rightBtnLayout.setVisibility(View.GONE);
+
+        questId.setText(String.valueOf(entity.shId));
+        questCompleteness.setText("50%");
     }
 
     @Override
@@ -56,7 +80,11 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
                 finish();
                 break;
             case R.id.info_go_btn:
-                startActivity(new Intent(QuestionNoteActivity.this, QuestionSignActivity.class));
+                Intent intent = new Intent(QuestionNoteActivity.this, QuestionSignActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("entity", entity);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
 
         }
