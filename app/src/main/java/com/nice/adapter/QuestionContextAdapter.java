@@ -31,7 +31,9 @@ import de.greenrobot.event.EventBus;
 public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     private Map<Long, String> selectedValues = new HashMap<>();
-    private Map<Integer, List<NiceImageView>> selectImageViewMap = new HashMap<>();
+    private Map<Long, String> selectedStrutionValues = new HashMap<>();
+    private Map<Long, List<NiceImageView>> singleSelectImageViewMap = new HashMap<>();
+    private Map<Long, List<NiceEditText>> selectEditTextMap = new HashMap<>();
     private DatePickerDialog datePickerDialog;
 
     public QuestionContextAdapter(@NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
@@ -40,6 +42,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     @Override
     public int getItemViewType(int position) {
+        if(null != datas){
+            if(datas.size() == position)
+                return 6;
+        }
         if (datas.get(position).sqType == 400600000000007L) {//单项选择题
             return 0;
         }
@@ -60,6 +66,12 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     @Override
     public void onBindViewHolder(AbsViewHolder holder, final int position) {
+        if(null != datas){
+            if(datas.size() == position) {
+                onBindViewHolder_bottom_btn(holder, position);
+                return;
+            }
+        }
         if (datas.get(position).sqType == 400600000000007L) {//单项选择题
             onBindViewHolder_singleSelected(holder, position);
             return;
@@ -91,41 +103,40 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private void onBindViewHolder_selectinStruction(final AbsViewHolder holder, final int position) {
         final long id = datas.get(position).sqId;
         holder.setText(R.id.title, datas.get(position).sqTitle + ":");
-        final String ok = datas.get(position).SheetQuestionOption.get(0).qoValue;
-        final String not = datas.get(position).SheetQuestionOption.get(1).qoValue;
-        if (ok.equals(selectedValues.containsKey(position) ? selectedValues.get(position) : null)) {
-            holder.getView(R.id.muti_selected_not_image).setSelected(false);
-            holder.getView(R.id.muti_selected_layout_not_editText).setVisibility(View.GONE);
-            holder.getView(R.id.muti_selected_layout_ok).setSelected(true);
-            holder.getView(R.id.muti_selected_layout_ok_editText).setVisibility(View.VISIBLE);
-        } else {
-            holder.getView(R.id.muti_selected_not_image).setSelected(true);
-            holder.getView(R.id.muti_selected_layout_not_editText).setVisibility(View.VISIBLE);
-            holder.getView(R.id.muti_selected_layout_ok).setSelected(false);
-            holder.getView(R.id.muti_selected_layout_ok_editText).setVisibility(View.GONE);
+        final LinearLayout linearLayout = holder.getView(R.id.muti_selected_layout);
+        linearLayout.removeAllViews();
+        List<NiceImageView> imageViewsTemp = new ArrayList<>();
+        List<NiceEditText> editTextViewsTemp = new ArrayList<>();
+        for (int i = 0; i < datas.get(position).SheetQuestionOption.size(); i++) {
+            final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
+            final View view = View.inflate(context, R.layout.option_selectinstruction, null);
+            final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.muti_selected_image);
+            final NiceEditText editText = (NiceEditText) view.findViewById(R.id.muti_selected_layout_editText);
+
+            imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(id) ? selectedValues.get(id) : null));
+            ((TextView) view.findViewById(R.id.name)).setText(option.qoText);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(id + ":" + option.qoValue);
+                    selectedValues.put(id, option.qoValue);
+                    int viewIndex = 0;
+                    for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
+                        imageView1.setSelected(false);
+                        selectEditTextMap.get(id).get(viewIndex).setVisibility(View.GONE);
+                        ++viewIndex;
+                    }
+                    imageView.setSelected(true);
+                    editText.setVisibility(View.VISIBLE);
+
+                }
+            });
+            imageViewsTemp.add(imageView);
+            editTextViewsTemp.add(editText);
+            linearLayout.addView(view);
         }
-        holder.getView(R.id.muti_selected_layout_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.getView(R.id.muti_selected_not_image).setSelected(false);
-                holder.getView(R.id.muti_selected_layout_not_editText).setVisibility(View.GONE);
-                holder.getView(R.id.muti_selected_layout_ok).setSelected(true);
-                holder.getView(R.id.muti_selected_layout_ok_editText).setVisibility(View.VISIBLE);
-                selectedValues.put(id, ok);
-            }
-        });
-
-        holder.getView(R.id.muti_selected_layout_not).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.getView(R.id.muti_selected_not_image).setSelected(true);
-                holder.getView(R.id.muti_selected_layout_not_editText).setVisibility(View.VISIBLE);
-                holder.getView(R.id.muti_selected_layout_ok).setSelected(false);
-                holder.getView(R.id.muti_selected_layout_ok_editText).setVisibility(View.GONE);
-                selectedValues.put(id, not);
-            }
-        });
-
+        singleSelectImageViewMap.put(id, imageViewsTemp);
+        selectEditTextMap.put(id, editTextViewsTemp);
     }
 
     /**
@@ -144,14 +155,14 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_single, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
-            imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(position) ? selectedValues.get(position) : null));
+            imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(id) ? selectedValues.get(id) : null));
             ((TextView) view.findViewById(R.id.item_new_question_name)).setText(option.qoText);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     System.out.println(id + ":" + option.qoValue);
                     selectedValues.put(id, option.qoValue);
-                    for (NiceImageView imageView1 : selectImageViewMap.get(position)) {
+                    for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
                         imageView1.setSelected(false);
                     }
                     imageView.setSelected(true);
@@ -160,7 +171,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             imageViewsTemp.add(imageView);
             linearLayout.addView(view);
         }
-        selectImageViewMap.put(position, imageViewsTemp);
+        singleSelectImageViewMap.put(id, imageViewsTemp);
     }
 
     /**
@@ -179,8 +190,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_multiple, null);
             NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
-            if (selectImageViewMap.containsKey(position)) {
-                for (NiceImageView imageView1 : selectImageViewMap.get(position)) {
+            if (singleSelectImageViewMap.containsKey(id)) {
+                for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
                     if (imageView1.isSelected()) {
                         imageView.setSelected(true);
                     }
@@ -201,7 +212,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             imageViewsTemp.add(imageView);
             linearLayout.addView(view);
         }
-        selectImageViewMap.put(position, imageViewsTemp);
+        singleSelectImageViewMap.put(id, imageViewsTemp);
     }
 
     /**
@@ -244,9 +255,32 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     }
 
+    /**
+     * 上一组|下一组
+     * @param holder
+     * @param position
+     */
+    private void onBindViewHolder_bottom_btn(AbsViewHolder holder, final int position) {
+
+        holder.getView(R.id.info_back_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post("reduceGroupIndex");
+            }
+        });
+
+        holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post("addGroupIndex");
+            }
+        });
+
+    }
+
     @Override
     public int getItemCount() {
-        return null == datas ? 0 : datas.size();
+        return null == datas ? 0 : datas.size() + 1;
     }
 
     /**

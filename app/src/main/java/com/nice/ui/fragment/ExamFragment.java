@@ -90,12 +90,13 @@ public class ExamFragment extends Fragment {
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         QuestionContextAdapter adapter = new QuestionContextAdapter(group.SheetQuestion, getActivity()
-                , R.layout.item_signleselect //	单项选择题
-                , R.layout.item_selectinstruction//单选说明题
-                , R.layout.view_completion_normal//简答题
-                , R.layout.item_signname//签名
-                , R.layout.item_takephoto//上传图片
-                , R.layout.item_multiple_select//多选
+                , R.layout.item_signleselect //	单项选择题 0
+                , R.layout.item_selectinstruction//单选说明题 1
+                , R.layout.view_completion_normal//简答题 2
+                , R.layout.item_signname//签名 3
+                , R.layout.item_takephoto//上传图片 4
+                , R.layout.item_multiple_select//多选 5
+                , R.layout.item_bottom_btn//底部按钮 6
         );
         recyclerView.setAdapter(adapter);
     }

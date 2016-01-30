@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <com.nice.widget.NiceTextView
             android:id="@+id/title"
@@ -19,74 +19,11 @@
             android:textSize="20dp"
             android:text="选择说明题："/>
         <LinearLayout
-            android:id="@+id/muti_selected_layout_ok"
+            android:id="@+id/muti_selected_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:id="@+id/item_selectinstruction_yes"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center">
-            <com.nice.widget.NiceImageView
-                android:id="@+id/muti_selected_ok_image"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/radio_btn_bg"/>
-            </RelativeLayout>
-            <com.nice.widget.NiceTextView
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:text="是"/>
-            <com.nice.widget.NiceEditText
-                android:id="@+id/muti_selected_layout_ok_editText"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginRight="15dp"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                android:paddingLeft="10dp"
-                android:text="句话回话会发"
-                android:background="@drawable/u15_gray_btn"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/muti_selected_layout_not"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:id="@+id/item_selectinstruction_no"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center">
-                <com.nice.widget.NiceImageView
-                    android:id="@+id/muti_selected_not_image"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/radio_btn_bg"/>
-            </RelativeLayout>
-            <com.nice.widget.NiceTextView
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:text="否"/>
-            <com.nice.widget.NiceEditText
-                android:id="@+id/muti_selected_layout_not_editText"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginRight="15dp"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                android:paddingLeft="10dp"
-                android:background="@drawable/u15_gray_btn"/>
         </LinearLayout>
 
     </LinearLayout>

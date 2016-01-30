@@ -1,9 +1,9 @@
 package com.nice.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -18,6 +18,7 @@ import com.nice.widget.NiceTextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class QuestionContextActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,9 +56,10 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_context);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         entity = (NicetSheet) getIntent().getSerializableExtra("entity");
-
+        Log.e(QuestionSignActivity.class.getSimpleName(), "订单ID：" + entity.shId);
 //        LinearLayoutManager manager = new LinearLayoutManager(this);
 //        manager.setOrientation(LinearLayoutManager.VERTICAL);
 //        frameLayout.setLayoutManager(manager);
@@ -101,10 +103,30 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 //        getSupportFragmentManager()
     }
 
-    public void showExamFragment(){
+    public void showExamFragment() {
         ExamFragment examFragment = ExamFragment.newInstance(entity.SheetQuestionGroup.get(groupIndex));
         FragmentTransaction gp = getSupportFragmentManager().beginTransaction();
         gp.replace(R.id.frame_layout, examFragment);
         gp.commit();
+    }
+
+    public void onEventMainThread(String event) {
+        if (event.equals("addGroupIndex")) {
+            groupIndex++;
+            if (groupIndex > entity.SheetQuestionGroup.size() - 1)
+                return;
+            showExamFragment();
+        }
+        if (event.equals("reduceGroupIndex")) {
+            groupIndex--;
+            if (groupIndex < 0) return;
+            showExamFragment();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

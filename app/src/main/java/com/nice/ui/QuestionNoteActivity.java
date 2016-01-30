@@ -76,6 +76,7 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.info_back_btn:
             case R.id.back_layout:
                 finish();
                 break;
