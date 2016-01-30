@@ -67,7 +67,6 @@ public class ExamFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         if (getArguments() != null) {
             group = (NicetSheetQuestionGroup) getArguments().getSerializable(ARG_PARAM1);
         }
@@ -106,34 +105,4 @@ public class ExamFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
-    @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
-
-    public void onEventMainThread(String event){
-        if("showTime".equals(event)){
-            System.out.println("时间_get");
-            showTimePicker();
-        }
-    }
-
-    private void showTimePicker(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 0);
-        if(null == datePickerDialog) {
-            datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                }
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        }
-        if(datePickerDialog.isShowing()) return;
-        datePickerDialog.show();
-    }
-
-
 }
