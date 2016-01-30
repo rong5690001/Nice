@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
 
     private void initLayout(){
         title.setText("问卷");
+        backLayout.setVisibility(View.GONE);
     }
 
     @Override

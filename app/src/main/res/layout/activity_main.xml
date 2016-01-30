@@ -13,28 +13,28 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textSize="23sp"
+        android:layout_height="30dp"
+        android:textSize="14dp"
         android:gravity="center"
         android:background="@color/blue"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:textColor="@color/white"
         android:text="我的问卷库"/>
     
     <LinearLayout
         android:id="@+id/new_contrainer"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="11dp"
+        android:paddingRight="11dp"
         android:onClick="onClick"
         android:gravity="center_vertical">
 
         <com.nice.widget.NiceImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="11dp"
             android:src="@mipmap/icon_new"/>
         
         <RelativeLayout
@@ -45,30 +45,32 @@
 
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:textSize="23sp"
+                android:textSize="16dp"
+                android:paddingTop="13dp"
                 android:text="新问卷"
                 android:textColor="@color/black"/>
 
             <com.nice.widget.NiceTextView
                 android:id="@+id/num_new"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="14dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="14dp"
                 android:layout_toLeftOf="@+id/arrows_new"
                 android:text="15份"/>
 
             <com.nice.widget.NiceImageView
-                android:id="@+id/arrows_new"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="4dp"
-                android:src="@mipmap/arrow"/>
+            android:id="@+id/arrows_new"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
 
@@ -78,17 +80,17 @@
     <LinearLayout
         android:id="@+id/incomplete_contrainer"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="11dp"
+        android:paddingRight="11dp"
         android:onClick="onClick"
         android:gravity="center_vertical">
 
         <com.nice.widget.NiceImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="11dp"
             android:src="@mipmap/icon_incomplete"/>
 
         <RelativeLayout
@@ -99,9 +101,10 @@
 
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:textSize="23sp"
+                android:textSize="16dp"
+                android:paddingTop="13dp"
                 android:text="未完成问卷"
                 android:textColor="@color/black"/>
 
@@ -110,18 +113,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="14dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="14dp"
                 android:layout_toLeftOf="@+id/arrows_incomplete"
                 android:text="15份"/>
 
             <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_incomplete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="8dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="4dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
                 android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
@@ -130,17 +134,17 @@
     <LinearLayout
         android:id="@+id/uploaded_contrainer"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="11dp"
+        android:paddingRight="11dp"
         android:onClick="onClick"
         android:gravity="center_vertical">
 
         <com.nice.widget.NiceImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="11dp"
             android:src="@mipmap/icon_uploaded"/>
 
         <RelativeLayout
@@ -152,9 +156,10 @@
 
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:textSize="23sp"
+                android:textSize="16dp"
+                android:layout_marginTop="13dp"
                 android:text="已上传问卷"
                 android:textColor="@color/black"/>
 
@@ -163,18 +168,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="14dp"
+                android:layout_marginTop="14dp"
                 android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@+id/arrows_uploaded"
                 android:text="15份"/>
 
             <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_uploaded"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="8dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="15dp"
                 android:src="@mipmap/arrow"/>
 
         </RelativeLayout>
