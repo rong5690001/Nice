@@ -83,7 +83,7 @@
                 android:text="密   码"
                 android:textColor="@color/gary"
                 android:textSize="13dp" />
-
+<!--098f6bcd4621d373cade4e832627b4f6-->
             <com.nice.widget.NiceEditText
                 android:id="@+id/uiPassword"
                 android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                 android:textColor="@color/gary"
                 android:textSize="13dp"
                 android:paddingLeft="10dp"
-                android:text="098f6bcd4621d373cade4e832627b4f6"/>
+                android:text="test"/>
 
         </LinearLayout>
 

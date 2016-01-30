@@ -105,6 +105,8 @@
             android:name=".ui.fragment.FinishQuestActivity"
             android:label="@string/title_activity_finish_quest"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+
+        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 
 </manifest>

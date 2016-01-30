@@ -1,4 +1,4 @@
-package com.nice.httpapi.util;
+package com.nice.util;
 
 import java.security.MessageDigest;
 
