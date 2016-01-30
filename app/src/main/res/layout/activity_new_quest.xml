@@ -12,7 +12,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginTop="5dp"
         android:background="@color/blue"
         android:gravity="center_vertical">
@@ -25,8 +25,8 @@
 
             <com.nice.widget.NiceImageView
                 android:id="@+id/all_choose_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/selected_icon_white" />
@@ -39,18 +39,18 @@
                 android:layout_toRightOf="@+id/all_choose_icon"
                 android:text="全选"
                 android:textColor="@color/white"
-                android:textSize="21sp" />
+                android:textSize="12dp" />
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="接收问卷"
             android:textColor="@color/white"
-            android:textSize="23sp" />
+            android:textSize="14dp" />
 
     </RelativeLayout>
 
@@ -64,9 +64,9 @@
     <com.nice.widget.NiceButton
         android:id="@+id/submit_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:layout_margin="35dp"
+        android:textSize="15dp"
         android:background="@drawable/blue_btn"
         android:onClick="onClick"
         android:text="下载问卷"/>
