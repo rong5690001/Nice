@@ -60,10 +60,12 @@
         android:layout_height="250dp"
         android:orientation="vertical">
 
-        <com.nice.widget.NiceImageView
+        <com.amap.api.maps2d.MapView
+            android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@mipmap/photo_01" />
+            />
+
 
         <LinearLayout
             android:layout_width="match_parent"
