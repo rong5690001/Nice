@@ -8,41 +8,41 @@
         layout="@layout/title"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="3dp"
         android:background="@color/blue">
 
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="18sp"
+            android:layout_height="match_parent"
+            android:textSize="12dp"
             android:textColor="@color/white"
-            android:layout_marginLeft="5sp"
+            android:layout_marginLeft="15dp"
             android:gravity="center|left"
             android:text="订单编号："/>
         <com.nice.widget.NiceTextView
             android:id="@+id/quest_id"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="18sp"
+            android:textSize="12dp"
             android:textColor="@color/white"
             android:gravity="center|left"
             android:text="dw2016011121"/>
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="18sp"
+            android:layout_height="match_parent"
+            android:textSize="12dp"
             android:textColor="@color/white"
             android:gravity="center"
             android:text="问卷完成度："/>
         <com.nice.widget.NiceTextView
             android:id="@+id/quest_completeness"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="18sp"
+            android:layout_height="match_parent"
+            android:textSize="12dp"
             android:textColor="@color/white"
-            android:layout_marginRight="5sp"
+            android:layout_marginRight="15dp"
             android:gravity="center"
             android:text="0%"/>
     </LinearLayout>

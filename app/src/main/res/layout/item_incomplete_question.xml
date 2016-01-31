@@ -3,7 +3,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="60dp"
     android:background="@color/white">
 
     <LinearLayout
@@ -23,7 +23,7 @@
                 android:id="@+id/item_in_question_precent"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="17dp"
                 custom:donut_unfinished_stroke_width="2dp"
                 custom:donut_finished_stroke_width="2dp"
                 custom:donut_text_size="7dp"/>
@@ -34,10 +34,10 @@
             android:id="@+id/item_incomplete_question_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:textSize="15sp"
             android:text="this is name"/>
 
