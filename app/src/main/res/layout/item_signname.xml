@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
         <com.nice.widget.NiceTextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:textColor="@color/black"
@@ -20,8 +21,18 @@
             android:id="@+id/signname_btn"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_below="@+id/title"
             android:layout_marginLeft="21dp"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/programmatic_blue"/>
-    </LinearLayout>
+
+        <com.nice.widget.NiceImageView
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/zhangsan"
+            android:scaleType="fitCenter"
+            android:layout_below="@+id/title"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </LinearLayout>

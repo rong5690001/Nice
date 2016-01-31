@@ -151,9 +151,11 @@ public class QuestionUtil {
                     ValueJsonModel valueJsonModel = new ValueJsonModel();
                     valueJsonModel.sqId = key;
                     valueJsonModel.qaValue = niceValue.selectedValues.get(id);
+                    valueJsonModel.qoMemo = "";
+                    valueJsonModel.files = new ArrayList<>();
                     if (valueJsonModel.qaValue.contains(".jpg") || valueJsonModel.qaValue.contains(".jpeg")) {
                         for (int i = 0; i < 3; i++) {
-                            valueJsonModel.addFile(valueJsonModel.qaValue);
+//                            valueJsonModel.addFile(valueJsonModel.qaValue);
                         }
                         valueJsonModel.qaValue = new File(valueJsonModel.qaValue).getName();
                     }
@@ -175,5 +177,11 @@ public class QuestionUtil {
 
         }
         return result;
+    }
+
+    public static boolean delQuestion(String sqId){
+        SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
+        editor.remove(sqId);
+        return editor.commit();
     }
 }

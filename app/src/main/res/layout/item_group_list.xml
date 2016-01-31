@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:orientation="vertical"
     android:background="@color/white">
 
-
-    
     <LinearLayout
         android:id="@+id/new_contrainer"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:onClick="onClick"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-
-        
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

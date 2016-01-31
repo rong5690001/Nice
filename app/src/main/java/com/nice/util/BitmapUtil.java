@@ -11,4 +11,9 @@ public class BitmapUtil {
     public static Bitmap file2Bitmap(String fileName){
         return BitmapFactory.decodeFile(fileName);
     }
+
+    public static Bitmap file2BitmapWithSize(String fileName){
+        Bitmap bitmap = BitmapFactory.decodeFile(fileName);
+        return Bitmap.createScaledBitmap(bitmap, 150, 150, true);
+    }
 }

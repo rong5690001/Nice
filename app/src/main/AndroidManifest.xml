@@ -90,6 +90,10 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".ui.QuestionNoteActivity" />
         <activity
+            android:name=".ui.QuestionUploadActivity"
+            android:label="@string/title_activity_incomplete_quest"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".ui.QuestionSignActivity"
             android:label="@string/title_activity_question_sign"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

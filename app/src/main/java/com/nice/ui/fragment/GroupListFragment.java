@@ -74,13 +74,6 @@ public class GroupListFragment extends Fragment {
         if(null != entity) {
             groupAdapter = new GroupAdapter(getActivity(), getGroupNmae(), R.layout.item_group_list);
             listview.setAdapter(groupAdapter);
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    SwitchGroupEvent event = new SwitchGroupEvent(position);
-                    EventBus.getDefault().post(event);
-                }
-            });
         }
         return view;
     }

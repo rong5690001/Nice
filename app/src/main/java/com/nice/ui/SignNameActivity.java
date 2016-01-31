@@ -11,29 +11,32 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,11 +72,14 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     private Path mPath;
     private Paint mPaint;
 
+    private long sqId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_name);
         ButterKnife.bind(this);
+        sqId = getIntent().getLongExtra("sqId", 0L);
         surfVDraw.setZOrderOnTop(true);//设置画布  背景透明
         surfVDraw.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         surHolder = surfVDraw.getHolder();
@@ -189,15 +195,29 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
         return buffer;
     }
 
-    public boolean saveBitmap(Bitmap bitmap) throws FileNotFoundException {
+    public boolean saveBitmap(Bitmap bitmap) {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
-            String sdcard = Environment.getExternalStorageDirectory().getPath()
-                    .toString()
-                    + "/external_sdcard";
-            String fileName = System.currentTimeMillis() + ".jpeg";
-            FileOutputStream fos = new FileOutputStream(sdcard + fileName);
-            return bitmap.compress(CompressFormat.JPEG, 100, fos);
+            new DateFormat();
+            String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
+            System.out.println("photo_name:" + name);
+            Intent intent = new Intent();
+            File file = new File("/sdcard/Image/");
+            if(!file.exists()) {
+                file.mkdirs();// 创建文件夹
+            }
+            String fileName = "/sdcard/Image/" + name;
+            intent.putExtra("fileName", fileName);
+            intent.putExtra("sqId", String.valueOf(sqId));
+            this.setResult(1000, intent);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(fileName);
+                return bitmap.compress(CompressFormat.JPEG, 100, fos);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
         return false;
     }
@@ -242,13 +262,10 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                 finish();
                 break;
             case R.id.sign_commit_btn:
-                try {
-
-                    saveBitmap(mBitmap);
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                if(saveBitmap(mBitmap))
+                    finish();
+                else
+                    Toast.makeText(NiceApplication.instance(), "提交失败", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.resigname_btn:
                 surfVDraw.requestLayout();

@@ -2,6 +2,7 @@ package com.nice.httpapi;
 
 import com.android.volley.Request;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nice.NiceApplication;
 import com.nice.httpapi.gson.QSGsonFactory;
 import com.nice.httpapi.request.RxRequest;
@@ -10,8 +11,14 @@ import com.nice.model.NiceUser;
 import com.nice.model.NicetSheet;
 import com.nice.model.ValueJsonModel;
 import com.nice.util.QuestionUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -183,15 +190,21 @@ public class NiceRxApi {
      * @return
      */
     public static Observable<JSONObject> commitQuestion(NicetSheet nicetSheet) {
-
-        List<ValueJsonModel> requestJson = QuestionUtil.getNiceValueJSONObject(nicetSheet);
+        Gson gson = QSGsonFactory.create();
+        String requestStr = gson.toJson(QuestionUtil.getNiceValueJSONObject(nicetSheet));
+        Type type = new TypeToken<List<ValueJsonModel>>(){}.getType();
+//        List<ValueJsonModel> requestJson = gson.to(requestStr, type);
 
         Map params = getParams();
         params.put("method", "uSheet");
         params.put("mode", "1002");
         params.put("uiId", String.valueOf(NiceApplication.user.uiId));
-        Gson gson = QSGsonFactory.create();
-        params.put("requestJson", requestJson);
+
+        try {
+            params.put("requestJson", new JSONArray(requestStr));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("上传问卷:" + new JSONObject(params));
         return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))

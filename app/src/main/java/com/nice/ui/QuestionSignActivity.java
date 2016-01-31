@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -72,6 +74,8 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     LinearLayout signBottomTab;
     @Bind(R.id.address)
     NiceTextView address;
+    @Bind(R.id.photo)
+    NiceImageView photo;
     private NicetSheet entity;
     private AMap aMap;
     private LocationManager locationManager;
@@ -117,7 +121,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                     markerOption.draggable(true);
                     Marker marker = aMap.addMarker(markerOption);
 
-                    address.setText(amapLocation.getCity()+amapLocation.getDistrict()+amapLocation.getStreet()+amapLocation.getStreetNum());
+                    address.setText(amapLocation.getCity() + amapLocation.getDistrict() + amapLocation.getStreet() + amapLocation.getStreetNum());
                     System.out.print(amapLocation + "11111111111111");
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -244,6 +248,9 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             String fileName = FileUtil.savePhoto(data, sqId);
+            if(!TextUtils.isEmpty(fileName)){
+                photo.setImageBitmap(BitmapFactory.decodeFile(fileName));
+            }
         }
     }
 
@@ -260,6 +267,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 bundle.putSerializable("entity", entity);
                 intent1.putExtras(bundle);
                 startActivity(intent1);
+                finish();
                 break;
             case R.id.quest_sign_takephoto:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

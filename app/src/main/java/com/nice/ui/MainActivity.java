@@ -153,7 +153,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
             case R.id.incomplete_contrainer:
                 startActivity(new Intent(MainActivity.this, IncompleteQuestionActivity.class));
                 break;
-
+            case R.id.uploaded_contrainer:
+                startActivity(new Intent(MainActivity.this, QuestionUploadActivity.class));
+                break;
         }
 
     }

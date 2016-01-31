@@ -22,10 +22,13 @@ import com.nice.model.NicetSheet;
 import com.nice.ui.fragment.ExamFragment;
 import com.nice.ui.fragment.GroupListFragment;
 import com.nice.util.FileUtil;
+import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
 import org.json.JSONObject;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -146,7 +149,9 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                     NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                         @Override
                         public void onCompleted() {
+                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
                             Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
                             finish();
                         }
 
@@ -172,7 +177,17 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         if (resultCode == Activity.RESULT_OK) {
             String fileName = FileUtil.savePhoto(data, sqId);
             if(!TextUtils.isEmpty(fileName)){
-                examFragment.addValue(sqId, fileName);
+                File file = new File(fileName);
+                examFragment.addValue(sqId, file.getName());
+                examFragment.notifyDateChange();
+            }
+        }
+
+        if(resultCode == 1000){
+            String fileName = data.getStringExtra("fileName");
+            String msqId = data.getStringExtra("sqId");
+            if(!TextUtils.isEmpty(fileName) && !TextUtils.isEmpty(msqId)){
+                examFragment.addValue(msqId, fileName);
                 examFragment.notifyDateChange();
             }
         }

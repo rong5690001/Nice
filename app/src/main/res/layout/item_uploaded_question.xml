@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/upload_quest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/item_upload_question_layout"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center">
+            <com.github.lzyzsd.circleprogress.DonutProgress
+                android:id="@+id/item_in_question_precent"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="17dp"
+                custom:donut_unfinished_stroke_width="2dp"
+                custom:donut_finished_stroke_width="2dp"
+                custom:donut_text_size="7dp"/>
+
+        </RelativeLayout>
+
+        <com.nice.widget.NiceTextView
+            android:id="@+id/item_upload_question_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"/>
+
+        <com.nice.widget.NiceTextView
+            android:id="@+id/item_upload_question_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="2015:15:15"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_gray"/>
+
+</LinearLayout>

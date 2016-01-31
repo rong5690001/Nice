@@ -384,12 +384,24 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      * @return
      */
     private void onBindViewHolder_sign(AbsViewHolder holder, final int position) {
+        final long id = datas.get(position).sqId;
+        NiceImageView imageView = holder.getView(R.id.photo);
+        NiceImageView btn = holder.getView(R.id.signname_btn);
+        if(selectedValues.containsKey(id)){
+            System.out.println("bitMapValue:" + selectedValues.get(id));
+            imageView.setImageBitmap(BitmapUtil.file2Bitmap(selectedValues.get(id)));
+            imageView.setVisibility(View.VISIBLE);
+            btn.setVisibility(View.GONE);
+        }else{
+            imageView.setVisibility(View.GONE);
+            btn.setVisibility(View.VISIBLE);
+        }
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, SignNameActivity.class);
                 intent.putExtra("sqId", datas.get(position).sqId);
-                context.startActivity(intent);
+                ((QuestionContextActivity) context).startActivityForResult(intent, 1000);
             }
         });
     }
@@ -411,7 +423,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         holder.getView(R.id.take_photo).setOnClickListener(null);
         for (int i = 2; i >= 0; i--) {//初始化图片
             imageViews[i].setVisibility(View.GONE);
-            String filename = preferences.getString(sqId + "," + i, null);
+            String filename = preferences.getString(sqId + "" + i, null);
             if (TextUtils.isEmpty(filename)) {
                 imageIndex = i;
             } else {
@@ -423,7 +435,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                     public void onClick(View v) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         System.out.println("imageIndexFinal:" + imageIndexFinal);
-                        EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "," + imageIndexFinal));
+                        EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
                         ((QuestionContextActivity) context).startActivityForResult(intent, 1);
                     }
                 });
@@ -436,7 +448,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "," + imageIndexFinal));
+                    EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
                     ((QuestionContextActivity) context).startActivityForResult(intent, 1);
                 }
             });

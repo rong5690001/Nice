@@ -18,6 +18,7 @@ public class ValueJsonModel implements Serializable {
 
     public String sqId;
     public String qaValue;
+    public String qoMemo;
     public List<Files> files;
 
     class Files {

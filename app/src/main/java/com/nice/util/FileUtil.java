@@ -99,7 +99,7 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
-        return name;
+        return fileName;
 
     }
 
