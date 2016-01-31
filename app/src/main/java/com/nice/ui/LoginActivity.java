@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         String uiCodeStr = NiceApplication.instance().getQuestPreferencesQuest().getString("uiCode", "");
+        System.out.println("uiCodeStr:" + uiCodeStr);
         if(!TextUtils.isEmpty(uiCodeStr)){
             uiCode.setText(uiCodeStr);
             remIcon.setSelected(true);
@@ -123,13 +124,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void remOnclick() {
-        if ("rem".equals(remIcon.getTag())) {
-            remIcon.setImageResource(R.mipmap.radio);
-            remIcon.setTag(null);
+        if (remIcon.isSelected()) {
             remIcon.setSelected(false);
         } else {
-            remIcon.setImageResource(R.mipmap.radio_check);
-            remIcon.setTag("rem");
             remIcon.setSelected(true);
         }
     }

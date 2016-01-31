@@ -110,7 +110,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/radio"
+                android:src="@drawable/rem_icon"
                 android:layout_gravity="center"/>
             <com.nice.widget.NiceTextView
                 android:layout_width="match_parent"

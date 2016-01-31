@@ -170,7 +170,7 @@
     <!-- 问卷备注 -->
     <LinearLayout
         android:id="@+id/remark"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="95dp"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="35dp"
@@ -178,11 +178,12 @@
         android:padding="15dp"
         android:background="@drawable/textview_bg">
     <com.nice.widget.NiceTextView
-        android:layout_width="wrap_content"
+        android:id="@+id/remark_textview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12dp"
         android:textColor="@color/black"
-        android:text="因调研需要，我门现在就就业群体进行调查，希望得到你的支持和帮助..."/>
+        android:text=""/>
     </LinearLayout>
 
     <!-- 退回订单，开始操作 -->
