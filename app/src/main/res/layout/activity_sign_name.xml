@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:text="*上海市浦东新区世纪大道1号东方明珠1号门号后号和哦吼分是偶后"
+                android:text="*本企业/本人确认，上述信息经由华夏邓白氏派遣的审核专员"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
