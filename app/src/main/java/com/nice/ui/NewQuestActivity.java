@@ -1,10 +1,13 @@
 package com.nice.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -57,10 +60,43 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
 
     private NewQuestionAdapter adapter;
 
+    int i=0;
+    ProgressBar progressBar=null;
+    Handler handler=new Handler(){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x123:
+                    submitBtn.setClickable(false);
+                    i+=(Math.random()*100+1);
+                    progressBar.setProgress(i);
+                    if(i!=100){
+                        handler.sendEmptyMessageDelayed(0x123,500);
+                        submitBtn.setText("正在下载"+i+"%");
+                    }else if(i==100){
+                        submitBtn.setText("下载完成");
+                        handler.sendEmptyMessageDelayed(0x321,500);
+                    }
+                    break;
+//                case 0x321:
+//                    submitBtn.setText(打开);
+//                    submitBtn.setClickable(true);
+//                    submitBtn.setBackgroundResource(R.drawable.aa_button_after);
+//                    handler.sendEmptyMessageDelayed(0x110,1000);
+//                    break;
+                case 0x110:
+                    progressBar.setProgress(0);
+                    submitBtn.setBackgroundResource(R.drawable.btn_selector);
+                default:
+                    break;
+            }
+        };
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_quest);
+        progressBar=(ProgressBar) findViewById(R.id.progressBar);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initLayout();
@@ -117,6 +153,8 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(NiceApplication.instance(), "请至少选择一个问卷", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                i= 0;
+                handler.sendEmptyMessage(0x123);
                 NiceRxApi.Download(adapter.getSelected()).subscribe(new Subscriber<JSONObject>() {
 
                     @Override

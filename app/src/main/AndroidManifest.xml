@@ -65,7 +65,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="5f37ae8c4bdc6ee6965e649fa10c3974" />
+            android:value="b84b6d316607fd3f9c52515d5e1b3c5a" />
 
         <activity
             android:name=".ui.LoginActivity"

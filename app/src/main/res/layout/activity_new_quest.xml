@@ -60,16 +60,29 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/white"/>
-
-    <com.nice.widget.NiceButton
-        android:id="@+id/submit_btn"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_margin="35dp"
-        android:textSize="15dp"
-        android:background="@drawable/blue_btn"
-        android:onClick="onClick"
-        android:text="下载问卷"/>
+        android:layout_margin="35dp">
 
+        <com.nice.widget.NiceButton
+            android:background="@color/transparent"
+            android:id="@+id/submit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="15dp"
+            android:onClick="onClick"
+            android:text="下载问卷"/>
+        <ProgressBar
+            android:background="@drawable/blue_btn"
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_selector"
+            style="?android:attr/progressBarStyleHorizontal">
 
+        </ProgressBar>
+    </RelativeLayout>
 </LinearLayout>

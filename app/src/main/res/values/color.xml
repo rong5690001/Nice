@@ -62,6 +62,7 @@
     <color name="blue">#4298b5</color>
     <color name="deep_blue">#004f70</color>
     <color name="simple_gray">#e5e5e5</color>
+    <color name="line_gray">#999999</color>
 
 
 </resources>

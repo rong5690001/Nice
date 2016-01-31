@@ -132,12 +132,16 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_question_sign);
         ButterKnife.bind(this);
         map.onCreate(savedInstanceState);
+        System.out.print("ffffffffffffffff");
+        initLayout();
+        aMap.setMapType(AMap.MAP_TYPE_SATELLITE);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
 
         mLocationClient.setLocationListener(mLocationListener);
+        System.out.print("dd"+lng+"---"+lat);
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
@@ -158,7 +162,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         mLocationClient.startLocation();
         entity = (NicetSheet) getIntent().getSerializableExtra("entity");
 //        if (null != entity)
-        initLayout();
+//            initLayout();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -201,6 +205,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
+
         LatLng pos = new LatLng(lat,lng);
         CameraUpdate cu = CameraUpdateFactory.changeLatLng(pos);
         aMap.moveCamera(cu);
@@ -210,7 +215,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         markerOption.draggable(true);
         Marker marker = aMap.addMarker(markerOption);
 
-        aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+//        aMap.setMapType(AMap.MAP_TYPE_NORMAL);
 //        aMap.setMyLocationEnabled(true);
     }
 
