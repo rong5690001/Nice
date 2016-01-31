@@ -26,7 +26,7 @@ import com.nice.model.NIcetSheetQuestion;
 import com.nice.model.NiceSheetQuestionOption;
 import com.nice.model.NiceValue;
 import com.nice.ui.QuestionContextActivity;
-import com.nice.ui.QuestionSignActivity;
+import com.nice.ui.SignNameActivity;
 import com.nice.util.BitmapUtil;
 import com.nice.util.Denisty;
 import com.nice.util.QuestionUtil;
@@ -313,7 +313,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         }
 
         if (datas.get(position).sqType == 400600000000005L) {//简答题
-            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            //改变默认的单行模式
+            editText.setSingleLine(false);
+            //水平滚动设置为False
+            editText.setHorizontallyScrolling(false);
             editText.setMinHeight(Denisty.dip2px(context, 150));
         }
 
@@ -340,7 +344,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean isSaved = saveValue();
+                    boolean isSaved = saveValues();
                     if (!isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                     } else {
@@ -352,7 +356,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean isSaved = saveValue();
+                    boolean isSaved = saveValues();
                     if (isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post("addGroupIndex");
@@ -383,7 +387,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, QuestionSignActivity.class);
+                Intent intent = new Intent(context, SignNameActivity.class);
                 intent.putExtra("sqId", datas.get(position).sqId);
                 context.startActivity(intent);
             }
@@ -463,8 +467,21 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         datePickerDialog.show();
     }
 
-    public boolean saveValue() {
+    /**
+     * 保存本组问卷的问题
+     * @return
+     */
+    public boolean saveValues() {
         String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
         return QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+    }
+
+    /**
+     * 添加答案（外部调用）
+     * @param sqId
+     * @param value
+     */
+    public void addValue(String sqId, String value){
+        selectedValues.put(Long.parseLong(sqId), value);
     }
 }

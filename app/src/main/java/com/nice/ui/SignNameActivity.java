@@ -73,9 +73,9 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_name);
+        ButterKnife.bind(this);
         surfVDraw.setZOrderOnTop(true);//设置画布  背景透明
         surfVDraw.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        ButterKnife.bind(this);
         surHolder = surfVDraw.getHolder();
 
         mPaint = new Paint();
@@ -98,7 +98,6 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
         surHolder.addCallback(new SurfaceHolder.Callback()
         {
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                System.out.println("ffffffffffffff");
                 if (mBitmap == null) {
                     mBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
                     mCanvas = new Canvas(mBitmap);
@@ -190,18 +189,17 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
         return buffer;
     }
 
-    public void saveBitmap(Bitmap bitmap) throws FileNotFoundException {
+    public boolean saveBitmap(Bitmap bitmap) throws FileNotFoundException {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
             String sdcard = Environment.getExternalStorageDirectory().getPath()
                     .toString()
                     + "/external_sdcard";
-            FileOutputStream fos = new FileOutputStream(sdcard + "lin.jpeg");
-            bitmap.compress(CompressFormat.JPEG, 100, fos);
-
+            String fileName = System.currentTimeMillis() + ".jpeg";
+            FileOutputStream fos = new FileOutputStream(sdcard + fileName);
+            return bitmap.compress(CompressFormat.JPEG, 100, fos);
         }
-
-
+        return false;
     }
 
     private float mX, mY;
@@ -253,7 +251,7 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                 }
                 break;
             case R.id.resigname_btn:
-
+                surfVDraw.requestLayout();
                 break;
 
         }

@@ -61,12 +61,12 @@ public class FileUtil {
         return false;
     }
 
-    public static boolean savePhoto(Intent data, String sqId) {
+    public static String savePhoto(Intent data, String sqId) {
         String sdStatus = Environment.getExternalStorageState();
         if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
             Log.i("TestFile",
                     "SD card is not avaiable/writeable right now.");
-            return false;
+            return null;
         }
         new DateFormat();
         String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
@@ -99,7 +99,7 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
-        return true;
+        return name;
 
     }
 

@@ -133,7 +133,11 @@ public class ExamFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    public boolean saveValue(){
-        return adapter.saveValue();
+    public boolean saveValues(){
+        return adapter.saveValues();
+    }
+
+    public void addValue(String sqId, String value){
+        adapter.addValue(sqId, value);
     }
 }

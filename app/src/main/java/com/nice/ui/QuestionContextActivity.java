@@ -2,12 +2,10 @@ package com.nice.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,13 +23,6 @@ import com.nice.ui.fragment.GroupListFragment;
 import com.nice.util.FileUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -144,7 +135,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         rightBtnLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isSaved = examFragment.saveValue();
+                boolean isSaved = examFragment.saveValues();
                 if (!isSaved) {
                     Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                 } else {
@@ -158,7 +149,9 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if(FileUtil.savePhoto(data, sqId)){
+            String fileName = FileUtil.savePhoto(data, sqId);
+            if(!TextUtils.isEmpty(fileName)){
+                examFragment.addValue(sqId, fileName);
                 examFragment.notifyDateChange();
             }
         }
