@@ -1,5 +1,6 @@
 package com.nice.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.adapter.IncompleteQuestionAdapter;
 import com.nice.adapter.NewQuestionAdapter;
 import com.nice.httpapi.NiceRxApi;
 import com.nice.httpapi.response.dataparser.NiceSheetPaser;
@@ -67,7 +69,10 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
             switch (msg.what) {
                 case 0x123:
                     submitBtn.setClickable(false);
-                    i+=(Math.random()*100+1);
+                    i+=((Math.random()+1)*10);
+                    if(i>=100){
+                        i=100;
+                    }
                     progressBar.setProgress(i);
                     if(i!=100){
                         handler.sendEmptyMessageDelayed(0x123,500);
@@ -172,10 +177,14 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                         boolean isSaved = QuestionUtil.saveQuestion(jsonObject);
                         if(isSaved){
                             getData();
-                            Toast.makeText(NiceApplication.instance(), "下载完成", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(NiceApplication.instance(), "下载完成", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
+                if(submitBtn.getText().equals("下载完成")){
+                    startActivity(new Intent(NewQuestActivity.this, IncompleteQuestionActivity.class));
+                }
                 break;
         }
     }
