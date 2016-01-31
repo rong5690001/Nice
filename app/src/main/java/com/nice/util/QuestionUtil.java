@@ -180,7 +180,20 @@ public class QuestionUtil {
     }
 
     public static boolean delQuestion(String sqId){
+        SharedPreferences preferences = NiceApplication.instance().getQuestPreferencesQuest();
+        String[] ids = preferences.getString(QUEST_IDS, "").split(",");
+        String result = "";
+        for(String id : ids){
+            if(!id.equals(sqId)){
+                if(TextUtils.isEmpty(result)){
+                    result = id;
+                }else{
+                    result = result + "," + id;
+                }
+            }
+        }
         SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
+        editor.putString(QUEST_IDS, result);
         editor.remove(sqId);
         return editor.commit();
     }

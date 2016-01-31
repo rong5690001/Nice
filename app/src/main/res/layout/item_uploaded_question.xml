@@ -46,8 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:text="2015:15:15"/>
+            android:textSize="15sp"/>
     </LinearLayout>
 
     <View

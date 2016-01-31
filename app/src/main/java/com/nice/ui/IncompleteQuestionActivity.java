@@ -1,17 +1,20 @@
 package com.nice.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.adapter.IncompleteQuestionAdapter;
 import com.nice.model.NiceQuestion;
@@ -69,7 +72,14 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class);
+                String value = NiceApplication.instance()
+                        .getQuestValuePreferencesQuest().getString(String.valueOf(mAdapter.getItem(position).shId), "");
+                Intent intent = null;
+                if(TextUtils.isEmpty(value)) {
+                    intent = new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class);
+                }else{
+                    intent = new Intent(IncompleteQuestionActivity.this, QuestionContextActivity.class);
+                }
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("entity", mAdapter.getItem(position));
                 intent.putExtras(bundle);

@@ -48,7 +48,7 @@ public class QuestionUploadActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_question_upload);
         ButterKnife.bind(this);
         initLayout();
-        adapter = new UploadQuestionAdapter(this, new ArrayList<NicetSheet>(), R.layout.item_incomplete_question);
+        adapter = new UploadQuestionAdapter(this, new ArrayList<NicetSheet>(), R.layout.item_uploaded_question);
         listView.setAdapter(adapter);
         getData();
     }
