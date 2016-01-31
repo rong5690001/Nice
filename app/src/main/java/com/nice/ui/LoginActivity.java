@@ -46,43 +46,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                final String uiCode = LoginActivity.this.uiCode.getText().toString().trim();
-//                final String uiPassword = LoginActivity.this.uiPassword.getText().toString();
-//                if(TextUtils.isEmpty(uiCode) || TextUtils.isEmpty(uiPassword)){
-//                    Toast.makeText(NiceApplication.instance(), "请填写用户名和密码", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                NiceRxApi.login(uiCode, MD5.MD5Encode(uiPassword)).map(new Func1<NiceUser, NiceUser>() {
-//                    @Override
-//                    public NiceUser call(NiceUser niceUser) {
-//                        NiceApplication.instance().user = niceUser;
-//                        return niceUser;
-//                    }
-//                }).subscribe(new Subscriber<NiceUser>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        if(remIcon.isSelected()){
-//                            SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
-//                            editor.putString("uiCode", uiCode);
-//                            editor.putString("uiPassword", uiPassword);
-//                            editor.commit();
-//                        }
-//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Toast.makeText(NiceApplication.instance(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onNext(NiceUser niceUser) {
-//
-//                    }
-//                });
-//
-//                Toast.makeText(LoginActivity.this, "sub", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                final String uiCode = LoginActivity.this.uiCode.getText().toString().trim();
+                final String uiPassword = LoginActivity.this.uiPassword.getText().toString();
+                if(TextUtils.isEmpty(uiCode) || TextUtils.isEmpty(uiPassword)){
+                    Toast.makeText(NiceApplication.instance(), "请填写用户名和密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                NiceRxApi.login(uiCode, MD5.MD5Encode(uiPassword)).map(new Func1<NiceUser, NiceUser>() {
+                    @Override
+                    public NiceUser call(NiceUser niceUser) {
+                        NiceApplication.instance().user = niceUser;
+                        return niceUser;
+                    }
+                }).subscribe(new Subscriber<NiceUser>() {
+                    @Override
+                    public void onCompleted() {
+                        if(remIcon.isSelected()){
+                            SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
+                            editor.putString("uiCode", uiCode);
+                            editor.putString("uiPassword", uiPassword);
+                            editor.commit();
+                        }
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(NiceApplication.instance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(NiceUser niceUser) {
+
+                    }
+                });
+
+                Toast.makeText(LoginActivity.this, "sub", Toast.LENGTH_SHORT).show();
             }
         });
 

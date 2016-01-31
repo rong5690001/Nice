@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.httpapi.NiceRxApi;
 import com.nice.model.Event.SqIdEvent;
 import com.nice.model.Event.SwitchGroupEvent;
 import com.nice.model.NicetSheet;
@@ -24,9 +25,12 @@ import com.nice.util.FileUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import rx.Subscriber;
 
 public class QuestionContextActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -139,7 +143,24 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                 if (!isSaved) {
                     Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                 } else {
-                    finish();
+                    NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+                        @Override
+                        public void onCompleted() {
+                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(JSONObject jsonObject) {
+
+                        }
+                    });
+
                 }
             }
         });

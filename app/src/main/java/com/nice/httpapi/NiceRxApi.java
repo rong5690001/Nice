@@ -2,7 +2,9 @@ package com.nice.httpapi;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.google.gson.Gson;
 import com.nice.NiceApplication;
+import com.nice.httpapi.gson.QSGsonFactory;
 import com.nice.httpapi.request.QSJsonObjectRequest;
 import com.nice.httpapi.request.RequestQueueManager;
 import com.nice.httpapi.request.RxRequest;
@@ -10,6 +12,8 @@ import com.nice.httpapi.response.dataparser.NiceUserPaser;
 import com.nice.httpapi.response.dataparser.NicetSheetPaser;
 import com.nice.model.NiceUser;
 import com.nice.model.NicetSheet;
+import com.nice.model.ValueJsonModel;
+import com.nice.util.QuestionUtil;
 
 import org.json.JSONObject;
 
@@ -41,6 +45,13 @@ public class NiceRxApi {
         return params;
     }
 
+    /**
+     * 登录
+     *
+     * @param uiCode
+     * @param uiPassword
+     * @return
+     */
     public static Observable<NiceUser> login(String uiCode, String uiPassword) {
 
         Map params = getParams();
@@ -71,6 +82,12 @@ public class NiceRxApi {
                 });
     }
 
+    /**
+     * 下载问卷
+     *
+     * @param shIds
+     * @return
+     */
     public static Observable<JSONObject> Download(List<String> shIds) {
 
         Map params = getParams();
@@ -86,7 +103,7 @@ public class NiceRxApi {
 
         List<Map> shIdList = new ArrayList<>();
         shIdList.add(shIdMap);
-        params.put("requestJson",shIdList );
+        params.put("requestJson", shIdList);
 
         System.out.println(new JSONObject(params));
         return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
@@ -101,6 +118,66 @@ public class NiceRxApi {
 
     }
 
+    /**
+     * 获取新问卷信息
+     * @return
+     */
+    public static Observable<JSONObject> getNewQuestionInfo() {
+
+        String uiId = String.valueOf(NiceApplication.user.uiId);
+        Map params = getParams();
+        params.put("method", "uUserInfo");
+        params.put("mode", "1002");
+        params.put("uiId", uiId);
+        Map requestJson = new HashMap();
+        requestJson.put("uiId", uiId);
+        params.put("requestJson", requestJson);
+
+        System.out.println("新问卷信息:" + new JSONObject(params));
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, JSONObject>() {
+                    @Override
+                    public JSONObject call(JSONObject jsonObject) {
+                        System.out.println("新问卷信息_返回值:" + jsonObject);
+//                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
+                        return jsonObject;
+                    }
+                });
+    }
+
+    /**
+     * 已上传问卷信息
+     * @return
+     */
+    public static Observable<JSONObject> getUploadedQuestion() {
+
+        String uiId = String.valueOf(NiceApplication.user.uiId);
+        Map params = getParams();
+        params.put("method", "uUserInfo");
+        params.put("mode", "1003");
+        params.put("uiId", uiId);
+        Map requestJson = new HashMap();
+        requestJson.put("uiId", uiId);
+        params.put("requestJson", requestJson);
+
+        System.out.println("已上传问卷信息:" + new JSONObject(params));
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, JSONObject>() {
+                    @Override
+                    public JSONObject call(JSONObject jsonObject) {
+                        System.out.println("已上传问卷信息_返回值:" + jsonObject);
+//                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
+                        return jsonObject;
+                    }
+                });
+
+    }
+
+    /**
+     * 获取新问卷
+     *
+     * @return
+     */
     public static Observable<JSONObject> getNewQuestion() {
 
         Map params = getParams();
@@ -111,7 +188,6 @@ public class NiceRxApi {
         Map<String, String> requestJson = new HashMap<>();
         requestJson.put("uiId", String.valueOf(NiceApplication.user.uiId));
         params.put("requestJson", requestJson);
-
         System.out.println("params:" + new JSONObject(params));
         return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
                 .map(new Func1<JSONObject, JSONObject>() {
@@ -122,9 +198,34 @@ public class NiceRxApi {
                         return jsonObject;
                     }
                 });
+    }
 
+    /**
+     * 提交问卷
+     *
+     * @return
+     */
+    public static Observable<JSONObject> commitQuestion(NicetSheet nicetSheet) {
 
+        List<ValueJsonModel> requestJson = QuestionUtil.getNiceValueJSONObject(nicetSheet);
 
+        Map params = getParams();
+        params.put("method", "uSheet");
+        params.put("mode", "1002");
+        params.put("uiId", String.valueOf(NiceApplication.user.uiId));
+        Gson gson = QSGsonFactory.create();
+        params.put("requestJson", requestJson);
+
+        System.out.println("上传问卷:" + new JSONObject(params));
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, JSONObject>() {
+                    @Override
+                    public JSONObject call(JSONObject jsonObject) {
+                        System.out.println("上传结果" + jsonObject);
+//                     feedingAggregations = FeedingAggregationParser.parseQuery(jsonObject);
+                        return jsonObject;
+                    }
+                });
     }
 
 //    public static Observable<List<FeedingAggregation>> queryFeedingaggregationLatest(){

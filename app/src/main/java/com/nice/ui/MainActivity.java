@@ -1,18 +1,30 @@
 package com.nice.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.httpapi.NiceRxApi;
+import com.nice.httpapi.response.dataparser.NiceNewQuestPaser;
+import com.nice.model.NiceQuestion;
 import com.nice.ui.fragment.MainFragment;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
+
+import org.json.JSONObject;
+
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener, View.OnClickListener {
 
@@ -47,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     @Bind(R.id.uploaded_contrainer)
     LinearLayout uploadedContrainer;
 
+    private List<NiceQuestion> niceQuestionList;
+    private List<NiceQuestion> uploadQuestionList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,11 +70,61 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         ButterKnife.bind(this);
 
         initLayout();
+        getInCompleteQuest();
+        getNewQuestInfo();
+        getUploadInfo();
     }
 
-    private void initLayout(){
+    private void initLayout() {
         title.setText("问卷");
         backLayout.setVisibility(View.GONE);
+    }
+
+    private void getInCompleteQuest(){
+        String[] shIdsStr = NiceApplication.instance()
+                .getQuestPreferencesQuest()
+                .getString("quest_ids", "").split(",");
+        numIncomplete.setText(null == shIdsStr?"0份" : shIdsStr.length + "份");
+    }
+
+    private void getUploadInfo(){
+        NiceRxApi.getUploadedQuestion().subscribe(new Subscriber<JSONObject>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(JSONObject jsonObject) {
+                uploadQuestionList = NiceNewQuestPaser.paser(jsonObject);
+                numUploaded.setText(null == uploadQuestionList ? "0份" : String.valueOf(uploadQuestionList.size()) + "份");
+            }
+        });
+    }
+
+    private void getNewQuestInfo() {
+        NiceRxApi.getNewQuestionInfo().subscribe(new Subscriber<JSONObject>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(JSONObject jsonObject) {
+                niceQuestionList = NiceNewQuestPaser.paser(jsonObject);
+                numNew.setText(null == niceQuestionList ? "0份" : String.valueOf(niceQuestionList.size()) + "份");
+            }
+        });
     }
 
     @Override
@@ -70,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back_layout:
                 finish();
                 break;

@@ -473,7 +473,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     public boolean saveValues() {
         String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
-        return QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+        return QuestionUtil.saveValues(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
     }
 
     /**
