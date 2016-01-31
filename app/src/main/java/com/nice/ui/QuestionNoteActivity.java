@@ -1,5 +1,6 @@
 package com.nice.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -73,10 +74,12 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
         questCompleteness.setText("50%");
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_back_btn:
+
             case R.id.back_layout:
                 finish();
                 break;

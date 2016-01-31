@@ -50,18 +50,19 @@
     <!-- 订单信息 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="169dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginLeft="35dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="32dp">
+            android:layout_height="25dp">
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="1.订单名称："/>
             <com.nice.widget.NiceTextView
@@ -69,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="张三走访某某小区"/>
 
@@ -77,13 +78,13 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="32dp">
+            android:layout_height="25dp"
+            android:layout_marginTop="11dp">
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="2.到访地址："/>
             <com.nice.widget.NiceTextView
@@ -91,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="上海某某路某某小区"/>
 
@@ -99,13 +100,13 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="32dp">
+            android:layout_height="25dp"
+            android:layout_marginTop="11dp">
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="3.联系人："/>
             <com.nice.widget.NiceTextView
@@ -113,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="张三"/>
 
@@ -121,13 +122,13 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="32dp">
+            android:layout_height="25dp"
+            android:layout_marginTop="11dp">
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="4.联系电话："/>
             <com.nice.widget.NiceTextView
@@ -135,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="15852523636"/>
 
@@ -143,13 +144,13 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="32dp">
+            android:layout_height="25dp"
+            android:layout_marginTop="11dp">
             <com.nice.widget.NiceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="5.起止日："/>
             <com.nice.widget.NiceTextView
@@ -157,7 +158,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textColor="@color/black"
                 android:text="2016-01-12至01-14"/>
 
@@ -170,28 +171,27 @@
     <LinearLayout
         android:id="@+id/remark"
         android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="95dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="30dp"
+        android:padding="15dp"
         android:background="@drawable/textview_bg">
     <com.nice.widget.NiceTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:textSize="18sp"
+        android:textSize="12dp"
         android:textColor="@color/black"
-        android:text="456156456564564564654654654654654654654"/>
+        android:text="因调研需要，我门现在就就业群体进行调查，希望得到你的支持和帮助..."/>
     </LinearLayout>
 
     <!-- 退回订单，开始操作 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal">
         <com.nice.widget.NiceButton
             android:id="@+id/info_back_btn"
@@ -202,6 +202,7 @@
             android:scaleType="fitXY"
             android:background="@drawable/button_left_bg"
             android:textColor="@color/white"
+            android:textSize="15dp"
             android:text="退回订单"/>
         <com.nice.widget.NiceButton
             android:id="@+id/info_go_btn"
@@ -212,6 +213,7 @@
             android:scaleType="fitXY"
             android:background="@drawable/button_right_bg"
             android:layout_weight="1"
+            android:textSize="15dp"
             android:text="开始操作"/>
     </LinearLayout>
 </LinearLayout>

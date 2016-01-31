@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:background="@color/white">
     <com.nice.widget.NiceTextView
         android:id="@+id/group_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textSize="20sp"
+        android:layout_height="match_parent"
+        android:textSize="15dp"
         android:textColor="@color/deep_blue"
         android:gravity="center"
         android:text="分组名称"/>
@@ -17,8 +17,8 @@
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gary"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:background="@color/line_gray"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/group_name"/>
 </LinearLayout>

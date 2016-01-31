@@ -220,6 +220,8 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initLayout() {
+        title.setText("签到");
+        rightBtnLayout.setVisibility(View.GONE);
         if(aMap == null){
             aMap = map.getMap();
         }
@@ -296,6 +298,9 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
             case R.id.quest_sign_retakephoto:
                 Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent2, 1);
+                break;
+            case R.id.back_layout:
+                finish();
                 break;
         }
     }

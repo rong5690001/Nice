@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="103dp"
     android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <com.nice.widget.NiceTextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="43dp"
             android:textColor="@color/black"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:text="照片相关信息："/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
             <com.nice.widget.NiceImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="21dp"
+                android:layout_marginTop="15dp"
                 android:onClick="onClicks"
                 android:src="@mipmap/video_blue"/>
 
             <com.nice.widget.NiceImageView
-                android:layout_width="80dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="8dp"
                 android:src="@mipmap/photo_01"/>
             <com.nice.widget.NiceImageView
-                android:layout_width="80dp"
-                android:layout_height="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
                 android:src="@mipmap/photo_01"/>
             <com.nice.widget.NiceImageView
-                android:layout_width="80dp"
-                android:layout_height="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/photo_01"/>
         </LinearLayout>

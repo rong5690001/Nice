@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="103dp"
     android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <com.nice.widget.NiceTextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="43dp"
             android:textColor="@color/black"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:text="签名："/>
         <com.nice.widget.NiceImageView
             android:id="@+id/signname_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="21dp"
             android:onClick="onClicks"
+            android:layout_gravity="center_vertical"
             android:src="@mipmap/programmatic_blue"/>
     </LinearLayout>
 </LinearLayout>
