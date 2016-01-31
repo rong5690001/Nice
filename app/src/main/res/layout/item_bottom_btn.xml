@@ -7,10 +7,11 @@
     <!-- 退回订单，开始操作 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal">
         <com.nice.widget.NiceButton
             android:id="@+id/info_back_btn"
@@ -19,6 +20,7 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:scaleType="fitXY"
+            android:textSize="15dp"
             android:background="@drawable/button_left_bg"
             android:textColor="@color/white"
             android:text="上一组"/>
@@ -29,6 +31,7 @@
             android:onClick="onClick"
             android:textColor="@color/white"
             android:scaleType="fitXY"
+            android:textSize="15dp"
             android:background="@drawable/button_right_bg"
             android:layout_weight="1"
             android:text="下一组"/>

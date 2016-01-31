@@ -7,7 +7,7 @@
     <com.nice.widget.NiceTextView
         android:id="@+id/group_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="39dp"
         android:textSize="15dp"
         android:textColor="@color/deep_blue"
         android:gravity="center"

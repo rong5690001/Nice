@@ -12,11 +12,11 @@
         <com.nice.widget.NiceTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="43dp"
             android:textColor="@color/black"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:text="选择说明题："/>
         <LinearLayout
             android:id="@+id/muti_selected_layout"

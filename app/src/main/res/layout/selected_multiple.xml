@@ -16,13 +16,13 @@
             android:id="@+id/item_new_question_choose_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="16dp"
             android:gravity="center">
 
             <com.nice.widget.NiceImageView
                 android:id="@+id/item_new_question_choose_btn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/multiple_selected"/>
 
         </RelativeLayout>
@@ -34,7 +34,7 @@
             android:gravity="center|left"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="13dp"
             android:layout_marginLeft="5dp"
             android:text="this is name"/>
     </LinearLayout>

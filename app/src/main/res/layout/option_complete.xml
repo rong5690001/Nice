@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="83dp"
     android:background="@color/white">
     <com.nice.widget.NiceTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="20dp"
         android:textColor="@color/black"
+        android:textSize="13dp"
+        android:paddingTop="15dp"
         android:text="题目："/>
 
     <com.nice.widget.NiceEditText
         android:id="@+id/value"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:layout_margin="10dp"
-
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/u15_gray_btn"
         android:textColor="@color/black"/>
 </LinearLayout>
