@@ -79,11 +79,11 @@
                 android:src="@mipmap/loaction_blue" />
 
             <com.nice.widget.NiceTextView
+                android:id="@+id/address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="6dp"
-                android:text="上海市浦东新区世纪大道1号东方明珠1号门"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
         </LinearLayout>

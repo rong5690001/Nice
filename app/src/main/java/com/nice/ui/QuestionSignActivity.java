@@ -13,11 +13,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -36,8 +36,10 @@ import com.nice.model.NicetSheet;
 import com.nice.util.FileUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
@@ -68,6 +70,8 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     LinearLayout signCommitBtn;
     @Bind(R.id.sign_bottom_tab)
     LinearLayout signBottomTab;
+    @Bind(R.id.address)
+    NiceTextView address;
     private NicetSheet entity;
     private AMap aMap;
     private LocationManager locationManager;
@@ -103,6 +107,17 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                     amapLocation.getStreetNum();//街道门牌号信息
                     amapLocation.getCityCode();//城市编码
                     amapLocation.getAdCode();//地区编码
+
+                    LatLng pos = new LatLng(lat, lng);
+                    CameraUpdate cu = CameraUpdateFactory.changeLatLng(pos);
+                    aMap.moveCamera(cu);
+                    MarkerOptions markerOption = new MarkerOptions();
+                    markerOption.position(pos);
+                    markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    markerOption.draggable(true);
+                    Marker marker = aMap.addMarker(markerOption);
+
+                    address.setText(amapLocation.getCity()+amapLocation.getDistrict()+amapLocation.getStreet()+amapLocation.getStreetNum());
                     System.out.print(amapLocation + "11111111111111");
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -115,6 +130,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     };
 
     private String sqId;//上传图片
+
     @SuppressLint("SdCardPath")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,16 +139,14 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         map.onCreate(savedInstanceState);
-        System.out.print("ffffffffffffffff");
         initLayout();
-        aMap.setMapType(AMap.MAP_TYPE_SATELLITE);
+        aMap.setMapType(AMap.MAP_TYPE_NORMAL);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
 
         mLocationClient.setLocationListener(mLocationListener);
-        System.out.print("dd"+lng+"---"+lat);
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
@@ -197,14 +211,6 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        LatLng pos = new LatLng(lat,lng);
-        CameraUpdate cu = CameraUpdateFactory.changeLatLng(pos);
-        aMap.moveCamera(cu);
-        MarkerOptions markerOption = new MarkerOptions();
-        markerOption.position(pos);
-        markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        markerOption.draggable(true);
-        Marker marker = aMap.addMarker(markerOption);
 
 //        aMap.setMapType(AMap.MAP_TYPE_NORMAL);
 //        aMap.setMyLocationEnabled(true);
@@ -213,13 +219,13 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     private void initLayout() {
         title.setText("签到");
         rightBtnLayout.setVisibility(View.GONE);
-        if(aMap == null){
+        if (aMap == null) {
             aMap = map.getMap();
         }
     }
 
-    private void updatePosition(Location location){
-        LatLng pos = new LatLng(location.getLatitude(),location.getLongitude());
+    private void updatePosition(Location location) {
+        LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cu = CameraUpdateFactory.changeLatLng(pos);
         aMap.moveCamera(cu);
         aMap.clear();
@@ -241,7 +247,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public void onEventMainThread(SqIdEvent event){
+    public void onEventMainThread(SqIdEvent event) {
         sqId = event.sqId;
     }
 
