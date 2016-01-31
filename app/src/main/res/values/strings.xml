@@ -15,4 +15,5 @@
     <string name="title_activity_question_upload">QuestionUploadActivity</string>
     <string name="title_activity_sign_name">SignNameActivity</string>
     <string name="title_activity_finish_quest">FinishQuestActivity</string>
+    <string name="title_activity_back_order">BackOrderActivity</string>
 </resources>

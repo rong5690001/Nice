@@ -3,7 +3,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="70dp"
     android:background="@color/white">
 
     <LinearLayout
@@ -15,17 +15,18 @@
 
         <RelativeLayout
             android:id="@+id/item_incomplete_question_layout"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
             android:layout_gravity="center">
             <com.github.lzyzsd.circleprogress.DonutProgress
                 android:id="@+id/item_in_question_precent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
                 custom:donut_unfinished_stroke_width="2dp"
                 custom:donut_finished_stroke_width="2dp"
-                custom:donut_text_size="10sp"/>
+                custom:donut_text_size="7dp"/>
 
         </RelativeLayout>
 

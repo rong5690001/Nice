@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.nice.ui.BackOrderActivity">
+
+    <include layout="@layout/title" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+        
+        <com.nice.widget.NiceTextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:text="请填写退回订单的原因："/>
+        <com.nice.widget.NiceEditText
+            android:id="@+id/backorder_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/u15_gray_btn"/>
+    </LinearLayout>
+
+    <!-- 取消退回，提交 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <com.nice.widget.NiceButton
+            android:id="@+id/order_back_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:scaleType="fitXY"
+            android:background="@drawable/button_left_bg"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:text="取消退回"/>
+        <com.nice.widget.NiceButton
+            android:id="@+id/order_go_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:textColor="@color/white"
+            android:scaleType="fitXY"
+            android:background="@drawable/button_right_bg"
+            android:layout_weight="1"
+            android:textSize="15dp"
+            android:text="提交"/>
+    </LinearLayout>
+
+</LinearLayout>
