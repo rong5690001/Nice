@@ -36,7 +36,7 @@ public class RxRequest {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Throwable errorCode = new Throwable("8888", error);
+                        Throwable errorCode = new Throwable(error.getMessage(), error);
                         subscriber.onError(errorCode);
                         subscriber.onCompleted();
                     }

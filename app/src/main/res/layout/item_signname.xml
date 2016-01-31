@@ -21,7 +21,6 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginLeft="21dp"
-            android:onClick="onClicks"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/programmatic_blue"/>
     </LinearLayout>

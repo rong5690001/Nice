@@ -6,14 +6,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.adapter.QuestionContextAdapter;
+import com.nice.httpapi.response.dataparser.NiceValuePaser;
+import com.nice.model.NiceValue;
 import com.nice.model.NicetSheetQuestionGroup;
 import com.nice.ui.QuestionContextActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -25,14 +33,18 @@ import butterknife.ButterKnife;
 public class ExamFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String SHID = "shId";
     private static final String ARG_PARAM1 = "group";
     private static final String ISLASTGROUP = "isLastGroup";
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    private QuestionContextAdapter adapter;
+
     private DatePickerDialog datePickerDialog;
 
     private NicetSheetQuestionGroup group;
+    private long shId;
     private boolean isLastGroup = false;
 
     public ExamFragment() {
@@ -47,10 +59,11 @@ public class ExamFragment extends Fragment {
      * @return A new instance of fragment ExamFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExamFragment newInstance(NicetSheetQuestionGroup param1, boolean isLastGroup) {
+    public static ExamFragment newInstance(long shId, NicetSheetQuestionGroup param1, boolean isLastGroup) {
         ExamFragment fragment = new ExamFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
+        args.putLong(SHID, shId);
         args.putBoolean(ISLASTGROUP, isLastGroup);
         fragment.setArguments(args);
         return fragment;
@@ -62,6 +75,7 @@ public class ExamFragment extends Fragment {
         if (getArguments() != null) {
             group = (NicetSheetQuestionGroup) getArguments().getSerializable(ARG_PARAM1);
             isLastGroup = getArguments().getBoolean(ISLASTGROUP);
+            shId = getArguments().getLong(SHID);
         }
     }
 
@@ -82,7 +96,7 @@ public class ExamFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        QuestionContextAdapter adapter = new QuestionContextAdapter(group.qgName, isLastGroup, group.SheetQuestion, getActivity()
+        adapter = new QuestionContextAdapter(shId, group.qgId, getNiceValue(), group.qgName, isLastGroup, group.SheetQuestion, getActivity()
                 , R.layout.item_signleselect //	单项选择题 0
                 , R.layout.item_selectinstruction//单选说明题 1
                 , R.layout.view_completion_normal//简答题 2
@@ -93,6 +107,23 @@ public class ExamFragment extends Fragment {
                 , R.layout.item_group_name//分组名称 7
         );
         recyclerView.setAdapter(adapter);
+    }
+
+    private NiceValue getNiceValue() {
+        String value = NiceApplication.instance()
+                .getQuestValuePreferencesQuest()
+                .getString(String.valueOf(shId) + String.valueOf(group.qgId), null);
+        if(TextUtils.isEmpty(value)) return null;
+        try {
+            return NiceValuePaser.paser2NiceValue(new JSONObject(value));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void notifyDateChange() {
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -1,5 +1,16 @@
 package com.nice.util;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.nice.NiceApplication;
 
 import org.json.JSONArray;
@@ -9,8 +20,14 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Created by chen on 2016/1/27.
@@ -18,8 +35,7 @@ import java.io.OutputStream;
 public class FileUtil {
 
 
-
-    public static boolean saveQuestions(JSONObject jsonObject){
+    public static boolean saveQuestions(JSONObject jsonObject) {
 
         File file = null;
 
@@ -43,6 +59,48 @@ public class FileUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static boolean savePhoto(Intent data, String sqId) {
+        String sdStatus = Environment.getExternalStorageState();
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+            Log.i("TestFile",
+                    "SD card is not avaiable/writeable right now.");
+            return false;
+        }
+        new DateFormat();
+        String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
+        System.out.println("photo_name:" + name);
+        Bundle bundle = data.getExtras();
+        Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+        FileOutputStream b = null;
+        File file = new File("/sdcard/Image/");
+        if(!file.exists()) {
+            file.mkdirs();// 创建文件夹
+        }
+        String fileName = "/sdcard/Image/" + name;
+
+        try {
+            b = new FileOutputStream(fileName);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+            if (!TextUtils.isEmpty(sqId)) {
+                SharedPreferences.Editor editor = NiceApplication.instance().getQuestValuePreferencesQuest().edit();
+                editor.putString(sqId, fileName);
+                editor.commit();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                b.flush();
+                b.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+
     }
 
 }

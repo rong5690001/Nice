@@ -36,7 +36,9 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.nice.R;
+import com.nice.model.Event.SqIdEvent;
 import com.nice.model.NicetSheet;
+import com.nice.util.FileUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
@@ -51,6 +53,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class QuestionSignActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -125,12 +128,14 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         }
     };
 
+    private String sqId;//上传图片
     @SuppressLint("SdCardPath")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_sign);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         map.onCreate(savedInstanceState);
         System.out.print("ffffffffffffffff");
         initLayout();
@@ -246,39 +251,12 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String sdStatus = Environment.getExternalStorageState();
-            if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                Log.i("TestFile",
-                        "SD card is not avaiable/writeable right now.");
-                return;
-            }
-            new DateFormat();
-            String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
-            Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-            Bundle bundle = data.getExtras();
-            Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-            FileOutputStream b = null;
-            File file = new File("/sdcard/Image/");
-            file.mkdirs();// 创建文件夹
-            String fileName = "/sdcard/Image/" + name;
-
-            try {
-                b = new FileOutputStream(fileName);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    b.flush();
-                    b.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
+            FileUtil.savePhoto(data, sqId);
         }
+    }
+
+    public void onEventMainThread(SqIdEvent event){
+        sqId = event.sqId;
     }
 
     @Override
@@ -303,5 +281,11 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

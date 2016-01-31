@@ -1,19 +1,32 @@
 package com.nice.adapter;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.model.Event.SqIdEvent;
 import com.nice.model.NIcetSheetQuestion;
 import com.nice.model.NiceSheetQuestionOption;
+import com.nice.model.NiceValue;
+import com.nice.ui.QuestionContextActivity;
+import com.nice.ui.QuestionSignActivity;
+import com.nice.util.BitmapUtil;
 import com.nice.util.Denisty;
+import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
 import java.util.ArrayList;
@@ -32,14 +45,24 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     public Map<Long, String> selectedStrutionValues = new HashMap<>();
     private Map<Long, List<NiceImageView>> singleSelectImageViewMap = new HashMap<>();
     private Map<Long, List<NiceEditText>> selectEditTextMap = new HashMap<>();
+    private Map<Long, NiceEditText> editTextMap;
     private DatePickerDialog datePickerDialog;
     private boolean isLastGroup = false;
     private String groupName;
+    private long shId;
+    private long qgId;
 
-    public QuestionContextAdapter(String groupName, boolean isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
+    public QuestionContextAdapter(long shId, long qgId, NiceValue niceValue, String groupName, boolean isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
         super(datas, context, layoutId);
         this.isLastGroup = isLastGroup;
         this.groupName = groupName;
+        this.shId = shId;
+        this.qgId = qgId;
+        editTextMap = new HashMap<>();
+        if (null != niceValue) {
+            selectedValues = niceValue.selectedValues;
+            selectedStrutionValues = niceValue.selectedStrutionValues;
+        }
     }
 
     @Override
@@ -47,7 +70,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         if (null != datas) {
             if (datas.size() + 1 == index)
                 return 6;
-            if(0 == index){
+            if (0 == index) {
                 return 7;
             }
         }
@@ -58,7 +81,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         if (datas.get(position).sqType == 400600000000009L) {//单选说明题
             return 1;
         }
-        if (datas.get(position).sqType == 4006000000000010L) {//签名
+        if (datas.get(position).sqType == 400600000000010L) {//签名
+            System.out.println("签名");
             return 3;
         }
         if (datas.get(position).sqType == 400600000000004L) {//上传图片
@@ -67,7 +91,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         if (datas.get(position).sqType == 400600000000008L) {//多选
             return 5;
         }
-        return 2;
+        return 2;//填空
     }
 
     @Override
@@ -77,7 +101,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 onBindViewHolder_bottom_btn(holder, index);
                 return;
             }
-            if(0 == index){
+            if (0 == index) {
                 onBindViewHolder_group_name(holder, index);
                 return;
             }
@@ -92,17 +116,19 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             onBindViewHolder_selectinStruction(holder, position);
             return;
         }
-        if (datas.get(position).sqType == 4006000000000010L) {//签名
+        if (datas.get(position).sqType == 400600000000010L) {//签名
+            onBindViewHolder_sign(holder, position);
             return;
         }
         if (datas.get(position).sqType == 400600000000004L) {//上传图片
+            onBindViewHolder_upload_image(holder, position);
             return;
         }
         if (datas.get(position).sqType == 400600000000008L) {//多选
             onBindViewHolder_multipeSelect(holder, position);
             return;
         }
-        onBindViewHolder_completion(holder, position);
+        onBindViewHolder_completion(holder, position);//填空题
 
     }
 
@@ -236,13 +262,14 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private void onBindViewHolder_completion(AbsViewHolder holder, final int position) {
         final long id = datas.get(position).sqId;
         holder.setText(R.id.title, datas.get(position).sqTitle + ":");
-        NiceEditText editText = holder.getView(R.id.value);
+        final NiceEditText editText = holder.getView(R.id.value);
         System.out.println("id:" + id +
                 "/n" + (selectedValues.containsKey(id)
                 ? selectedValues.get(id) : "") +
                 "/n" + datas.get(position).sqType);
-        editText.setText(selectedValues.containsKey(id)
-                ? selectedValues.get(id) : "");
+        if(selectedValues.containsKey(id) && !editTextMap.containsKey(id)) {
+            editText.setText(selectedValues.get(id));
+        }
         editText.setMinHeight(Denisty.dip2px(context, 30));
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setOnTouchListener(null);
@@ -256,6 +283,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 }
             });
         }
+
         if (datas.get(position).sqType == 400600000000003L) {//填空题(数字)
             editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
@@ -265,6 +293,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             editText.setMinHeight(Denisty.dip2px(context, 150));
         }
 
+        editTextMap.put(id, editText);
     }
 
     /**
@@ -287,14 +316,30 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
+                    boolean isSaved = QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+                    if (!isSaved) {
+                        Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
+                    } else {
+                        saveEditTextValue();
+                        Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
+                        ((Activity) context).finish();
+                    }
                 }
             });
         } else {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post("addGroupIndex");
+                    saveEditTextValue();
+                    String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
+                    boolean isSaved = QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+                    if (isSaved) {
+                        Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post("addGroupIndex");
+                    } else {
+                        Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -302,11 +347,77 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     /**
      * 分组名称
+     *
      * @param holder
      * @param position
      */
     private void onBindViewHolder_group_name(AbsViewHolder holder, final int position) {
         holder.setText(R.id.group_name, groupName);
+    }
+
+    /**
+     * 签名
+     *
+     * @return
+     */
+    private void onBindViewHolder_sign(AbsViewHolder holder, final int position) {
+        holder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, QuestionSignActivity.class);
+                intent.putExtra("sqId", datas.get(position).sqId);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param holder
+     * @param position
+     */
+    private void onBindViewHolder_upload_image(AbsViewHolder holder, final int position) {
+        final long sqId = datas.get(position).sqId;
+        int imageIndex = -1;
+        SharedPreferences preferences = NiceApplication.instance().getQuestValuePreferencesQuest();
+        NiceImageView[] imageViews = new NiceImageView[3];
+        imageViews[0] = holder.getView(R.id.photo1);
+        imageViews[1] = holder.getView(R.id.photo2);
+        imageViews[2] = holder.getView(R.id.photo3);
+        holder.getView(R.id.take_photo).setOnClickListener(null);
+        for (int i = 2; i >= 0; i--) {//初始化图片
+            imageViews[i].setVisibility(View.GONE);
+            String filename = preferences.getString(sqId + "," + i, null);
+            if (TextUtils.isEmpty(filename)) {
+                imageIndex = i;
+            } else {
+                final int imageIndexFinal = i;
+                imageViews[i].setImageBitmap(BitmapUtil.file2Bitmap(filename));
+                imageViews[i].setVisibility(View.VISIBLE);
+                imageViews[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        System.out.println("imageIndexFinal:" + imageIndexFinal);
+                        EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "," + imageIndexFinal));
+                        ((QuestionContextActivity) context).startActivityForResult(intent, 1);
+                    }
+                });
+            }
+        }
+
+        if (imageIndex != -1) {
+            final int imageIndexFinal = imageIndex;
+            holder.getView(R.id.take_photo).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "," + imageIndexFinal));
+                    ((QuestionContextActivity) context).startActivityForResult(intent, 1);
+                }
+            });
+        }
     }
 
     @Override
@@ -331,6 +442,13 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         }
         if (datePickerDialog.isShowing()) return;
         datePickerDialog.show();
+    }
+
+    private void saveEditTextValue(){
+        for(long id : editTextMap.keySet()){
+            System.out.println("text:" + editTextMap.get(id).getText().toString());
+            selectedValues.put(id, editTextMap.get(id).getText().toString());
+        }
     }
 
 }

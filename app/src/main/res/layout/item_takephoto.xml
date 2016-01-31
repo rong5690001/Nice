@@ -26,30 +26,29 @@
                 android:layout_height="36dp"
                 android:layout_marginLeft="21dp"
                 android:layout_marginTop="15dp"
-                android:onClick="onClicks"
                 android:src="@mipmap/video_blue"/>
-
             <com.nice.widget.NiceImageView
+                android:id="@+id/photo1"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="8dp"
                 android:src="@mipmap/photo_01"/>
             <com.nice.widget.NiceImageView
+                android:id="@+id/photo2"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:src="@mipmap/photo_01"/>
             <com.nice.widget.NiceImageView
+                android:id="@+id/photo3"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
                 android:src="@mipmap/photo_01"/>
         </LinearLayout>
-
-        
     </LinearLayout>
 
 </LinearLayout>

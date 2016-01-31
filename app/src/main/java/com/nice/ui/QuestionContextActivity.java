@@ -1,22 +1,37 @@
 package com.nice.ui;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.model.Event.SqIdEvent;
 import com.nice.model.Event.SwitchGroupEvent;
 import com.nice.model.NicetSheet;
 import com.nice.ui.fragment.ExamFragment;
 import com.nice.ui.fragment.GroupListFragment;
+import com.nice.util.FileUtil;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,9 +66,12 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     NiceTextView questCompleteness;
 
     private NicetSheet entity;
+    private ExamFragment examFragment;
     //第几个分组
     private int groupIndex;
     public boolean isLastGroup = false;
+
+    private String sqId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +124,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         }else{
             hideCommitBtn();
         }
-        ExamFragment examFragment = ExamFragment.newInstance(entity.SheetQuestionGroup.get(groupIndex), isLastGroup);
+        examFragment = ExamFragment.newInstance(entity.shId, entity.SheetQuestionGroup.get(groupIndex), isLastGroup);
         FragmentTransaction gp = getSupportFragmentManager().beginTransaction();
         gp.replace(R.id.frame_layout, examFragment);
         gp.commit();
@@ -131,6 +149,16 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if(FileUtil.savePhoto(data, sqId)){
+                examFragment.notifyDateChange();
+            }
+        }
+    }
+
     public void onEventMainThread(String event) {
         if (event.equals("addGroupIndex")) {
             groupIndex++;
@@ -148,6 +176,10 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     public void onEventMainThread(SwitchGroupEvent event) {
         groupIndex = event.groupIndex;
         showExamFragment();
+    }
+
+    public void onEventMainThread(SqIdEvent event){
+        sqId = event.sqId;
     }
 
     @Override

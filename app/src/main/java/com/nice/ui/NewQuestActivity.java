@@ -169,7 +169,11 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     public void onNext(JSONObject jsonObject) {
-                        System.out.println(QuestionUtil.saveQuestion(jsonObject));
+                        boolean isSaved = QuestionUtil.saveQuestion(jsonObject);
+                        if(isSaved){
+                            getData();
+                            Toast.makeText(NiceApplication.instance(), "下载完成", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 break;
