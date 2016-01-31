@@ -132,4 +132,8 @@ public class ExamFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+    public boolean saveValue(){
+        return adapter.saveValue();
+    }
 }

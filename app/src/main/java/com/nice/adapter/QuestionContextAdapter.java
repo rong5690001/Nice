@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.model.Event.SqIdEvent;
@@ -29,11 +32,14 @@ import com.nice.util.Denisty;
 import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
+import com.nice.widget.NiceTextView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -261,18 +267,36 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     private void onBindViewHolder_completion(AbsViewHolder holder, final int position) {
         final long id = datas.get(position).sqId;
-        holder.setText(R.id.title, datas.get(position).sqTitle + ":");
-        final NiceEditText editText = holder.getView(R.id.value);
+        LinearLayout linearLayout = holder.getView(R.id.completion_layout);
+        linearLayout.removeAllViews();
+        View view = View.inflate(context, R.layout.option_complete, null);
+        ((NiceTextView) view.findViewById(R.id.title)).setText(datas.get(position).sqTitle + ":");
+        NiceEditText editText = (NiceEditText) view.findViewById(R.id.value);
         System.out.println("id:" + id +
                 "/n" + (selectedValues.containsKey(id)
                 ? selectedValues.get(id) : "") +
                 "/n" + datas.get(position).sqType);
-        if(selectedValues.containsKey(id) && !editTextMap.containsKey(id)) {
-            editText.setText(selectedValues.get(id));
-        }
+        editText.setText(selectedValues.containsKey(id) ?
+                selectedValues.get(id) : "");
         editText.setMinHeight(Denisty.dip2px(context, 30));
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setOnTouchListener(null);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                selectedValues.put(id, s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         if (datas.get(position).sqType == 400600000000002L) {//填空题(时间)
             editText.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -293,7 +317,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             editText.setMinHeight(Denisty.dip2px(context, 150));
         }
 
-        editTextMap.put(id, editText);
+        linearLayout.addView(view);
     }
 
     /**
@@ -316,13 +340,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
-                    boolean isSaved = QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+                    boolean isSaved = saveValue();
                     if (!isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                     } else {
-                        saveEditTextValue();
-                        Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
                         ((Activity) context).finish();
                     }
                 }
@@ -331,9 +352,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    saveEditTextValue();
-                    String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
-                    boolean isSaved = QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+                    boolean isSaved = saveValue();
                     if (isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post("addGroupIndex");
@@ -444,11 +463,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         datePickerDialog.show();
     }
 
-    private void saveEditTextValue(){
-        for(long id : editTextMap.keySet()){
-            System.out.println("text:" + editTextMap.get(id).getText().toString());
-            selectedValues.put(id, editTextMap.get(id).getText().toString());
-        }
+    public boolean saveValue() {
+        String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
+        return QuestionUtil.saveValue(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
     }
-
 }

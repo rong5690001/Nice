@@ -144,7 +144,12 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         rightBtnLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                boolean isSaved = examFragment.saveValue();
+                if (!isSaved) {
+                    Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
+                } else {
+                    finish();
+                }
             }
         });
     }
