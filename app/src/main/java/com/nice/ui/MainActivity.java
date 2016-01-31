@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         ButterKnife.bind(this);
 
         initLayout();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getInCompleteQuest();
         getNewQuestInfo();
         getUploadInfo();

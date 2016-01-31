@@ -42,7 +42,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        String uiCodeStr = NiceApplication.instance().getQuestPreferencesQuest().getString("uiCode", "");
+        if(!TextUtils.isEmpty(uiCodeStr)){
+            uiCode.setText(uiCodeStr);
+            remIcon.setSelected(true);
+        }
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,10 +69,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(remIcon.isSelected()){
                             SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
                             editor.putString("uiCode", uiCode);
-                            editor.putString("uiPassword", uiPassword);
                             editor.commit();
                         }
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }
 
                     @Override
@@ -81,8 +85,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     }
                 });
-
-                Toast.makeText(LoginActivity.this, "sub", Toast.LENGTH_SHORT).show();
             }
         });
 
