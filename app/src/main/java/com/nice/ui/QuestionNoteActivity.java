@@ -116,7 +116,12 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_back_btn:
-
+                Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("entity", orderInfo);
+                intent1.putExtras(bundle1);
+                startActivity(intent1);
+                break;
             case R.id.back_layout:
                 finish();
                 break;

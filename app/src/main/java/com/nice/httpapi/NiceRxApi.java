@@ -231,4 +231,31 @@ public class NiceRxApi {
 
     }
 
+    /**
+     * 订单ID
+     * @return
+     */
+    public static Observable<JSONObject> backOrder(long id, String oiMemo) {
+
+        String uiId = String.valueOf(NiceApplication.user.uiId);
+        Map params = getParams();
+        params.put("method", "uUserInfo");
+        params.put("mode", "1004");
+        params.put("uiId", uiId);
+        Map requestJson = new HashMap();
+        requestJson.put("oiId", String.valueOf(id));
+        requestJson.put("oiMemo", oiMemo);
+        params.put("requestJson", requestJson);
+
+        System.out.println("退回:" + new JSONObject(params));
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, JSONObject>() {
+                    @Override
+                    public JSONObject call(JSONObject jsonObject) {
+                        System.out.println("退回_返回值:" + jsonObject);
+                        return jsonObject;
+                    }
+                });
+    }
+
 }
