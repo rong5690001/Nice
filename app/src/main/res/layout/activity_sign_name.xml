@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:text="*本企业/本人确认，上述信息经由华夏邓白氏派遣的审核专员"
+                android:text="*本企业/本人确认，上述信息经由华夏邓白氏派遣的审核专员在核查时观察和询问本企业/本人时获得，信息均真实有效。本人同意将上述信息用于相关业务的核实。"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
