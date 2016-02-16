@@ -151,6 +151,8 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     public void showExamFragment() {
         if (groupIndex == 0) {
             isLastGroup = 0;
+        } else {
+            isLastGroup = 1;
         }
         if ((entity.SheetQuestionGroup.size() - 1) == groupIndex) {
             isLastGroup = 2;

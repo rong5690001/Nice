@@ -50,6 +50,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     public Map<Long, String> selectedValues = new HashMap<>();
     public Map<Long, String> selectedStrutionValues = new HashMap<>();
+    public Map<Long, Map<String, String>> mutiSelectedValues = new HashMap<>();
     private Map<Long, List<NiceImageView>> singleSelectImageViewMap = new HashMap<>();
     private Map<Long, List<NiceEditText>> selectEditTextMap = new HashMap<>();
     private Map<Long, NiceEditText> editTextMap;
@@ -67,8 +68,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         this.qgId = qgId;
         editTextMap = new HashMap<>();
         if (null != niceValue) {
-            selectedValues = niceValue.selectedValues;
-            selectedStrutionValues = niceValue.selectedStrutionValues;
+            selectedValues = niceValue.selectedValues == null ? new HashMap<Long, String>() : niceValue.selectedValues;
+            selectedStrutionValues = niceValue.selectedStrutionValues == null ? new HashMap<Long, String>() : niceValue.selectedStrutionValues;
+            mutiSelectedValues = niceValue.mutiSelectedValues== null ? new HashMap<Long, Map<String, String>>() : niceValue.mutiSelectedValues;
         }
     }
 
@@ -157,14 +159,37 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final View view = View.inflate(context, R.layout.option_selectinstruction, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.muti_selected_image);
             final NiceEditText editText = (NiceEditText) view.findViewById(R.id.muti_selected_layout_editText);
-
-            imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(id) ? selectedValues.get(id) : null));
+            if(selectedValues.containsKey(id)){
+                String[] values = selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
+                if(option.qoValue.equals(values[0])){
+                    imageView.setSelected(true);
+                    editText.setText(values[1]);
+                    editText.setVisibility(View.VISIBLE);
+                }else{
+                    editText.setVisibility(View.GONE);
+                }
+            }
             ((TextView) view.findViewById(R.id.name)).setText(option.qoText);
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    selectedValues.put(id, option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕"+editText.getText());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(id + ":" + option.qoValue);
-                    selectedValues.put(id, option.qoValue);
+                    System.out.println(id + ":" + option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕"+editText.getText());
+                    selectedValues.put(id, option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕"+editText.getText());
                     int viewIndex = 0;
                     for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
                         imageView1.setSelected(false);
@@ -231,16 +256,20 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         final LinearLayout linearLayout = holder.getView(R.id.multiple_select_radio);
         linearLayout.removeAllViews();
         List<NiceImageView> imageViewsTemp = new ArrayList<>();
+        Map<String, String> selectVal;
+        if(mutiSelectedValues.containsKey(id)){
+            selectVal = mutiSelectedValues.get(id);
+        }else{
+            selectVal = new HashMap<>();
+        }
         for (int i = 0; i < datas.get(position).SheetQuestionOption.size(); i++) {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_multiple, null);
             NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
-            if (singleSelectImageViewMap.containsKey(id)) {
-                for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
-                    if (imageView1.isSelected()) {
-                        imageView.setSelected(true);
-                    }
-                }
+            if(selectVal.containsKey(option.qoId)){
+                imageView.setSelected(true);
+            }else{
+                imageView.setSelected(false);
             }
 //            imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(position)
 //                    ? selectedValues.get(position) : null));
@@ -250,7 +279,15 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 @Override
                 public void onClick(View v) {
                     System.out.println(id + ":" + tag);
-                    selectedValues.put(id, option.qoValue);
+                    selectedValues.put(id + Long.parseLong(option.qoId), option.qoValue);
+                    Map<String, String> values;
+                    if(mutiSelectedValues.containsKey(id)){
+                        values = mutiSelectedValues.get(id);
+                    }else{
+                        values = new HashMap();
+                    }
+                    values.put(option.qoId, option.qoValue);
+                    mutiSelectedValues.put(id, values);
                     v.setSelected(!v.isSelected());
                 }
             });
@@ -491,7 +528,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     public boolean saveValues() {
         String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
-        return QuestionUtil.saveValues(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues));
+        return QuestionUtil.saveValues(new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues, mutiSelectedValues));
     }
 
     /**

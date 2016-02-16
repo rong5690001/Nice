@@ -81,6 +81,7 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                         submitBtn.setText("下载完成");
                         handler.sendEmptyMessageDelayed(0x321,500);
                         startActivity(new Intent(NewQuestActivity.this, IncompleteQuestionActivity.class));
+                        finish();
                     }
                     break;
 //                case 0x321:
