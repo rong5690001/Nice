@@ -28,6 +28,10 @@
             android:id="@+id/backorder_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="top"
+            android:textSize="13dp"
+            android:padding="5dp"
+            android:textColor="@color/black"
             android:background="@drawable/u15_gray_btn"/>
     </LinearLayout>
 

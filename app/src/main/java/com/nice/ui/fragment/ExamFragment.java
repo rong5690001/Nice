@@ -45,7 +45,7 @@ public class ExamFragment extends Fragment {
 
     private NicetSheetQuestionGroup group;
     private long shId;
-    private boolean isLastGroup = false;
+    private int isLastGroup = 0;
 
     public ExamFragment() {
         // Required empty public constructor
@@ -59,12 +59,12 @@ public class ExamFragment extends Fragment {
      * @return A new instance of fragment ExamFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExamFragment newInstance(long shId, NicetSheetQuestionGroup param1, boolean isLastGroup) {
+    public static ExamFragment newInstance(long shId, NicetSheetQuestionGroup param1, int isLastGroup) {
         ExamFragment fragment = new ExamFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         args.putLong(SHID, shId);
-        args.putBoolean(ISLASTGROUP, isLastGroup);
+        args.putInt(ISLASTGROUP, isLastGroup);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,7 +74,7 @@ public class ExamFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             group = (NicetSheetQuestionGroup) getArguments().getSerializable(ARG_PARAM1);
-            isLastGroup = getArguments().getBoolean(ISLASTGROUP);
+            isLastGroup = getArguments().getInt(ISLASTGROUP);
             shId = getArguments().getLong(SHID);
         }
     }
@@ -128,7 +128,7 @@ public class ExamFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        ((QuestionContextActivity) getActivity()).isLastGroup = false;
+        ((QuestionContextActivity) getActivity()).isLastGroup = 0;
         super.onDestroyView();
         ButterKnife.unbind(this);
     }

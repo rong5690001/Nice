@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -85,14 +86,19 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         backLayout.setVisibility(View.GONE);
     }
 
-    private void getInCompleteQuest(){
-        String[] shIdsStr = NiceApplication.instance()
+    private void getInCompleteQuest() {
+        String[] shIdsStr = null;
+        String ids = NiceApplication.instance()
                 .getQuestPreferencesQuest()
-                .getString("quest_ids", "").split(",");
-        numIncomplete.setText(null == shIdsStr?"0份" : shIdsStr.length + "份");
+                .getString("quest_ids", "");
+        if(!TextUtils.isEmpty(ids)){
+            shIdsStr = ids.split(",");
+        }
+
+        numIncomplete.setText(null == shIdsStr ? "0份" : shIdsStr.length + "份");
     }
 
-    private void getUploadInfo(){
+    private void getUploadInfo() {
         NiceRxApi.getUploadedQuestion().subscribe(new Subscriber<JSONObject>() {
             @Override
             public void onCompleted() {

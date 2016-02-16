@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nice">
 
+    <!-- 二维码 -->
+    <uses-permission android:name="android.permission.CAMERA" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
     <!-- 高德地图权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -113,6 +121,14 @@
             android:name=".ui.BackOrderActivity"
             android:label="@string/title_activity_back_order"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity
+            android:name=".ui.CaptureActivity"
+            android:label="@string/title_activity_capture"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.ShowDecode"
+            android:label="@string/title_activity_show"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service android:name="com.amap.api.location.APSService"></service>
     </application>

@@ -80,6 +80,7 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                     }else if(i==100){
                         submitBtn.setText("下载完成");
                         handler.sendEmptyMessageDelayed(0x321,500);
+                        startActivity(new Intent(NewQuestActivity.this, IncompleteQuestionActivity.class));
                     }
                     break;
 //                case 0x321:
@@ -182,9 +183,9 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
 
-                if(submitBtn.getText().equals("下载完成")){
-                    startActivity(new Intent(NewQuestActivity.this, IncompleteQuestionActivity.class));
-                }
+//                if(submitBtn.getText().equals("下载完成")){
+//                    startActivity(new Intent(NewQuestActivity.this, IncompleteQuestionActivity.class));
+//                }
                 break;
         }
     }

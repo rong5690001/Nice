@@ -268,6 +268,7 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                     Toast.makeText(NiceApplication.instance(), "提交失败", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.resigname_btn:
+                System.out.print("jiaojiabin");
                 surfVDraw.requestLayout();
                 break;
 

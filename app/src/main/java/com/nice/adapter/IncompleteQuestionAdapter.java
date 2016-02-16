@@ -26,7 +26,7 @@ public class IncompleteQuestionAdapter extends SuperAdapter<NicetSheet> {
 
     @Override
     protected void onBind(int viewType, BaseViewHolder holder, int position, NicetSheet item) {
-        holder.setText(R.id.item_incomplete_question_name, item.shName);
+        holder.setText(R.id.item_incomplete_question_name, (item.shName).length()<12?item.shName:((item.shName).substring(0,12)+"..."));
         holder.setText(R.id.item_incomplete_question_time, item.rbTime);
     }
 

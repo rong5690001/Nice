@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="13dp"
+                android:textSize="12dp"
                 android:textColor="@color/white"
                 android:text="重写" />
         </LinearLayout>
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="13dp"
+                android:textSize="12dp"
                 android:textColor="@color/white"
                 android:text="提交" />
         </LinearLayout>

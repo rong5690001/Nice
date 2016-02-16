@@ -52,7 +52,13 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_back_order);
         ButterKnife.bind(this);
+        initLayout();
         orderInfo = (NicetOrderInfo) getIntent().getSerializableExtra("entity");
+    }
+
+    private void initLayout(){
+        title.setText("问卷调查");
+        rightBtnLayout.setVisibility(View.GONE);
     }
 
     private void commit(){

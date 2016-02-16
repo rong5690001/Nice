@@ -30,6 +30,7 @@ import com.nice.ui.SignNameActivity;
 import com.nice.util.BitmapUtil;
 import com.nice.util.Denisty;
 import com.nice.util.QuestionUtil;
+import com.nice.widget.NiceButton;
 import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
@@ -53,12 +54,12 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private Map<Long, List<NiceEditText>> selectEditTextMap = new HashMap<>();
     private Map<Long, NiceEditText> editTextMap;
     private DatePickerDialog datePickerDialog;
-    private boolean isLastGroup = false;
+    private int isLastGroup = 0;
     private String groupName;
     private long shId;
     private long qgId;
 
-    public QuestionContextAdapter(long shId, long qgId, NiceValue niceValue, String groupName, boolean isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
+    public QuestionContextAdapter(long shId, long qgId, NiceValue niceValue, String groupName, int isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
         super(datas, context, layoutId);
         this.isLastGroup = isLastGroup;
         this.groupName = groupName;
@@ -331,15 +332,19 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      * @param position
      */
     private void onBindViewHolder_bottom_btn(AbsViewHolder holder, final int position) {
-
-        holder.getView(R.id.info_back_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post("reduceGroupIndex");
-            }
-        });
+        if (isLastGroup == 0) {
+            NiceButton button = holder.getView(R.id.info_back_btn);
+            button.setBackgroundColor(context.getResources().getColor(R.color.line_gray));
+        } else {
+            holder.getView(R.id.info_back_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post("reduceGroupIndex");
+                }
+            });
+        }
         Log.e("11", "isLastGroup:" + isLastGroup);
-        if (isLastGroup) {
+        if (isLastGroup == 2) {
             holder.setText(R.id.info_go_btn, "提交");
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -348,7 +353,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                     if (!isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                     } else {
-                        ((Activity) context).finish();
+                        EventBus.getDefault().post("commit");
                     }
                 }
             });
@@ -387,12 +392,12 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         final long id = datas.get(position).sqId;
         NiceImageView imageView = holder.getView(R.id.photo);
         NiceImageView btn = holder.getView(R.id.signname_btn);
-        if(selectedValues.containsKey(id)){
+        if (selectedValues.containsKey(id)) {
             System.out.println("bitMapValue:" + selectedValues.get(id));
             imageView.setImageBitmap(BitmapUtil.file2Bitmap(selectedValues.get(id)));
             imageView.setVisibility(View.VISIBLE);
             btn.setVisibility(View.GONE);
-        }else{
+        } else {
             imageView.setVisibility(View.GONE);
             btn.setVisibility(View.VISIBLE);
         }
@@ -481,6 +486,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     /**
      * 保存本组问卷的问题
+     *
      * @return
      */
     public boolean saveValues() {
@@ -490,10 +496,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
     /**
      * 添加答案（外部调用）
+     *
      * @param sqId
      * @param value
      */
-    public void addValue(String sqId, String value){
+    public void addValue(String sqId, String value) {
         selectedValues.put(Long.parseLong(sqId), value);
     }
 }

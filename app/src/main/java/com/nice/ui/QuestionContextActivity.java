@@ -23,6 +23,7 @@ import com.nice.ui.fragment.ExamFragment;
 import com.nice.ui.fragment.GroupListFragment;
 import com.nice.util.FileUtil;
 import com.nice.util.QuestionUtil;
+import com.nice.widget.NiceButton;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
@@ -67,7 +68,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     private ExamFragment examFragment;
     //第几个分组
     private int groupIndex;
-    public boolean isLastGroup = false;
+    public int isLastGroup = 0;//0:第一个分组 1:中间的分组 2:最后一个分组
 
     private String sqId;
 
@@ -104,6 +105,38 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
             case R.id.back_layout:
                 finish();
                 break;
+            case R.id.siweep_btn:
+                startActivity(new Intent(QuestionContextActivity.this, CaptureActivity.class));
+                break;
+            case R.id.info_go_btn:
+                if ((entity.SheetQuestionGroup.size() - 1) == groupIndex) {
+                    isLastGroup = 2;
+                    boolean isSaved = examFragment.saveValues();
+                    if (!isSaved) {
+                        Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
+                    } else {
+                        NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+                            @Override
+                            public void onCompleted() {
+                                QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                                Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(JSONObject jsonObject) {
+
+                            }
+                        });
+
+                    }
+                }
         }
     }
 
@@ -116,10 +149,13 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     }
 
     public void showExamFragment() {
-        if((entity.SheetQuestionGroup.size() - 1) == groupIndex){
-            isLastGroup = true;
+        if (groupIndex == 0) {
+            isLastGroup = 0;
+        }
+        if ((entity.SheetQuestionGroup.size() - 1) == groupIndex) {
+            isLastGroup = 2;
             showCommitBtn();
-        }else{
+        } else {
             hideCommitBtn();
         }
         examFragment = ExamFragment.newInstance(entity.shId, entity.SheetQuestionGroup.get(groupIndex), isLastGroup);
@@ -128,14 +164,14 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         gp.commit();
     }
 
-    public void hideCommitBtn(){
-        if(rightBtnLayout.getVisibility() == View.VISIBLE){
+    public void hideCommitBtn() {
+        if (rightBtnLayout.getVisibility() == View.VISIBLE) {
             rightBtnLayout.setVisibility(View.GONE);
             return;
         }
     }
 
-    public void showCommitBtn(){
+    public void showCommitBtn() {
         rightBtnLayout.setVisibility(View.VISIBLE);
         rightIcon.setImageResource(R.mipmap.checkmark_white);
         rightText.setText("提交");
@@ -146,27 +182,30 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                 if (!isSaved) {
                     Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                 } else {
-                    NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
-                        @Override
-                        public void onCompleted() {
-                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
-                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
-                            finish();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(JSONObject jsonObject) {
-
-                        }
-                    });
-
+                    commit();
                 }
+            }
+        });
+    }
+
+    private void commit(){
+        NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+            @Override
+            public void onCompleted() {
+                QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(JSONObject jsonObject) {
+
             }
         });
     }
@@ -176,17 +215,17 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             String fileName = FileUtil.savePhoto(data, sqId);
-            if(!TextUtils.isEmpty(fileName)){
+            if (!TextUtils.isEmpty(fileName)) {
                 File file = new File(fileName);
                 examFragment.addValue(sqId, file.getName());
                 examFragment.notifyDateChange();
             }
         }
 
-        if(resultCode == 1000){
+        if (resultCode == 1000) {
             String fileName = data.getStringExtra("fileName");
             String msqId = data.getStringExtra("sqId");
-            if(!TextUtils.isEmpty(fileName) && !TextUtils.isEmpty(msqId)){
+            if (!TextUtils.isEmpty(fileName) && !TextUtils.isEmpty(msqId)) {
                 examFragment.addValue(msqId, fileName);
                 examFragment.notifyDateChange();
             }
@@ -205,6 +244,9 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
             if (groupIndex < 0) return;
             showExamFragment();
         }
+        if(event.equals("commit")){
+            commit();
+        }
     }
 
     public void onEventMainThread(SwitchGroupEvent event) {
@@ -212,7 +254,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         showExamFragment();
     }
 
-    public void onEventMainThread(SqIdEvent event){
+    public void onEventMainThread(SqIdEvent event) {
         sqId = event.sqId;
     }
 

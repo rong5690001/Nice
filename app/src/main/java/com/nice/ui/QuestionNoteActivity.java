@@ -131,6 +131,7 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
                 bundle.putSerializable("entity", entity);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                finish();
                 break;
 
         }
