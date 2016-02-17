@@ -370,7 +370,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private void onBindViewHolder_bottom_btn(AbsViewHolder holder, final int position) {
         if (isLastGroup == 0) {
             NiceButton button = holder.getView(R.id.info_back_btn);
-            button.setBackgroundColor(context.getResources().getColor(R.color.line_gray));
+            button.setBackgroundResource(R.drawable.button_left_gray_bg);
         } else {
             holder.getView(R.id.info_back_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
