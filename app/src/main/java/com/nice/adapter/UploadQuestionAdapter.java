@@ -11,6 +11,8 @@ import com.nice.widget.NiceImageView;
 import org.byteam.superadapter.list.BaseViewHolder;
 import org.byteam.superadapter.list.SuperAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,13 @@ public class UploadQuestionAdapter extends SuperAdapter<NicetSheet> {
     @Override
     protected void onBind(int viewType, BaseViewHolder holder, final int position, final NicetSheet item) {
         holder.setText(R.id.item_upload_question_name, item.shName);
-        holder.setText(R.id.item_upload_question_time, item.rbTime);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            holder.setText(R.id.item_upload_question_time, format.format(format.parse(item.rbTime)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }
