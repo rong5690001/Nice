@@ -36,6 +36,8 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_weight="1"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/black"
             android:paddingLeft="15dp"
             android:textSize="15sp"

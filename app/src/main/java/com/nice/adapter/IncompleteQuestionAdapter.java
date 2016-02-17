@@ -11,6 +11,8 @@ import com.nice.model.NicetSheet;
 import org.byteam.superadapter.list.BaseViewHolder;
 import org.byteam.superadapter.list.SuperAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -26,8 +28,14 @@ public class IncompleteQuestionAdapter extends SuperAdapter<NicetSheet> {
 
     @Override
     protected void onBind(int viewType, BaseViewHolder holder, int position, NicetSheet item) {
-        holder.setText(R.id.item_incomplete_question_name, (item.shName).length()<12?item.shName:((item.shName).substring(0,12)+"..."));
-        holder.setText(R.id.item_incomplete_question_time, item.rbTime);
+        holder.setText(R.id.item_incomplete_question_name, item.shName);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            holder.setText(R.id.item_incomplete_question_time, format.format(format.parse(item.rbTime)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }
