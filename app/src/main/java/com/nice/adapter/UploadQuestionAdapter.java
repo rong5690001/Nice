@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.nice.R;
 import com.nice.model.NicetSheet;
+import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceImageView;
 
 import org.byteam.superadapter.list.BaseViewHolder;
@@ -30,6 +32,8 @@ public class UploadQuestionAdapter extends SuperAdapter<NicetSheet> {
 
     @Override
     protected void onBind(int viewType, BaseViewHolder holder, final int position, final NicetSheet item) {
+        DonutProgress donutProgress = holder.getView(R.id.item_in_question_precent);
+        donutProgress.setProgress(QuestionUtil.getCompleteness(item));
         holder.setText(R.id.item_upload_question_name, item.shName);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 

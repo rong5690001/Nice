@@ -100,4 +100,13 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
                 break;
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(null != mAdapter.getAllData()) {
+            mAdapter.replaceAll(getData());
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 }

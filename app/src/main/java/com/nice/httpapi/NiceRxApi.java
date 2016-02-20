@@ -178,7 +178,6 @@ public class NiceRxApi {
                 .map(new Func1<JSONObject, JSONObject>() {
                     @Override
                     public JSONObject call(JSONObject jsonObject) {
-                        System.out.println("新问卷_jsonObject" + jsonObject);
                         return jsonObject;
                     }
                 });
@@ -211,7 +210,6 @@ public class NiceRxApi {
                 .map(new Func1<JSONObject, JSONObject>() {
                     @Override
                     public JSONObject call(JSONObject jsonObject) {
-                        System.out.println("上传结果" + jsonObject);
                         return jsonObject;
                     }
                 });

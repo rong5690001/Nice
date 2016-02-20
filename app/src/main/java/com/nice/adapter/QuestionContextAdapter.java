@@ -96,7 +96,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             return 1;
         }
         if (datas.get(position).sqType == 400600000000010L) {//签名
-            System.out.println("签名");
             return 3;
         }
         if (datas.get(position).sqType == 400600000000004L) {//上传图片
@@ -237,7 +236,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(id + ":" + option.qoValue);
                     selectedValues.put(id, option.qoValue);
                     for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
                         imageView1.setSelected(false);
@@ -453,30 +451,17 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             imageView.setVisibility(View.GONE);
             btn.setVisibility(View.VISIBLE);
         }
-        final boolean finalHasImage = hasImage;
-        holder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (finalHasImage) {
-                    final AlertDialog alertDialog = new AlertDialog.Builder(context)
-                            .setTitle("确定要重写签名？")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(context, SignNameActivity.class);
-                                    intent.putExtra("sqId", datas.get(position).sqId);
-                                    ((QuestionContextActivity) context).startActivityForResult(intent, 1000);
-                                    dialog.dismiss();
-                                }
-                            }).create();
-                    alertDialog.show();
-                } else {
+        if (hasImage) {
+            holder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     Intent intent = new Intent(context, SignNameActivity.class);
                     intent.putExtra("sqId", datas.get(position).sqId);
                     ((QuestionContextActivity) context).startActivityForResult(intent, 1000);
                 }
-            }
-        });
+            });
+        }
+
     }
 
     /**
@@ -507,7 +492,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        System.out.println("imageIndexFinal:" + imageIndexFinal);
                         EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
                         ((QuestionContextActivity) context).startActivityForResult(intent, 1);
                     }

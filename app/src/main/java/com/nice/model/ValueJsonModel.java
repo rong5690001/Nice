@@ -4,8 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.nice.util.FileUtil;
+
 import java.io.File;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +34,17 @@ public class ValueJsonModel implements Serializable {
         if(null == files){
             files = new ArrayList<>();
         }
-        Bitmap bitmap = BitmapFactory.decodeFile(fileName);
+        Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
 
         Files file1 = new Files();
-        File file2 = new File(fileName);
+        File file2 = new File("/sdcard/Image/" + fileName);
         file1.filename = file2.getName();
-        file1.file = Base64.encode(bitmap.getNinePatchChunk(), 0).toString();
+        try {
+            file1.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        files.add(file1);
         System.out.println("fileBase64:" + file1.file);
     }
 

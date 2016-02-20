@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -148,16 +149,25 @@ public class QuestionUtil {
                         new JSONObject(preferences.getString(shIdAndqgId, "")));
                 Set<Long> key1 = niceValue.selectedValues.keySet();
                 Set<Long> key2 = niceValue.selectedStrutionValues.keySet();
+                Set<Long> key3 = niceValue.mutiSelectedValues.keySet();
                 for (long id : key1) {
                     String key = String.valueOf(id);
                     ValueJsonModel valueJsonModel = new ValueJsonModel();
                     valueJsonModel.sqId = key;
-                    valueJsonModel.qaValue = niceValue.selectedValues.get(id);
-                    valueJsonModel.qoMemo = "";
+                    //判断是否选择说明题
+                    if (niceValue.selectedValues.get(id).contains("陈华榕陈华榕陈华榕陈华榕陈华榕")) {
+                        String[] v = niceValue.selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
+                        valueJsonModel.qaValue = v[0];
+                        if (v.length > 1) {
+                            valueJsonModel.qoMemo = v[1];
+                        }
+                    } else {
+                        valueJsonModel.qaValue = niceValue.selectedValues.get(id);
+                    }
                     valueJsonModel.files = new ArrayList<>();
                     if (valueJsonModel.qaValue.contains(".jpg") || valueJsonModel.qaValue.contains(".jpeg")) {
                         for (int i = 0; i < 3; i++) {
-//                            valueJsonModel.addFile(valueJsonModel.qaValue);
+                            valueJsonModel.addFile(valueJsonModel.qaValue);
                         }
                         valueJsonModel.qaValue = new File(valueJsonModel.qaValue).getName();
                     }
@@ -170,6 +180,18 @@ public class QuestionUtil {
                     valueJsonModel.sqId = key;
                     valueJsonModel.qaValue = niceValue.selectedValues.get(id);
                     result.add(valueJsonModel);
+                }
+
+                for (long id : key3){
+                    Map<String, String> mutiMap = niceValue.mutiSelectedValues.get(id);
+                    Set<String> key3_child = mutiMap.keySet();
+                    for(String id_c : key3_child) {
+                        String key = String.valueOf(id_c);
+                        ValueJsonModel valueJsonModel = new ValueJsonModel();
+                        valueJsonModel.sqId = key;
+                        valueJsonModel.qaValue = mutiMap.get(id_c);
+                        result.add(valueJsonModel);
+                    }
                 }
 
             } catch (JSONException e) {
@@ -208,23 +230,26 @@ public class QuestionUtil {
 
     /**
      * 获取完成度
+     *
      * @param nicetSheet
      * @return
      */
     public static int getCompleteness(NicetSheet nicetSheet) {
-        if(null == nicetSheet){
+        if (null == nicetSheet) {
             return 0;
         }
+        if (null == nicetSheet.SheetQuestionGroup) return 0;
         float result = 0f;
         SharedPreferences preferences = NiceApplication.instance().getPreferencesCompleteness();
-        for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup){
+        for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup) {
             result += preferences.getFloat(String.valueOf(group.qgId), 0f);
         }
-        return (int)(result * 100);
+        return (int) (result * 100);
     }
 
     /**
      * 获取问卷总的问题数量
+     *
      * @param nicetSheet
      * @return
      */
@@ -238,19 +263,20 @@ public class QuestionUtil {
 
     /**
      * 保存完成度
+     *
      * @param qgId
      * @param niceValue
      * @param nicetSheet
      * @return
      */
-    public static boolean saveCompleteness(long qgId, NiceValue niceValue, NicetSheet nicetSheet){
-        if(null == niceValue) return false;
+    public static boolean saveCompleteness(long qgId, NiceValue niceValue, NicetSheet nicetSheet) {
+        if (null == niceValue) return false;
         SharedPreferences.Editor editor = NiceApplication.instance().getCompletenessEditor();
         float doNum = 0;
-        if(null != niceValue.selectedValues){
+        if (null != niceValue.selectedValues) {
             doNum += niceValue.selectedValues.keySet().size();
         }
-        if(null != niceValue.mutiSelectedValues){
+        if (null != niceValue.mutiSelectedValues) {
             doNum += niceValue.mutiSelectedValues.keySet().size();
         }
         editor.putFloat(String.valueOf(qgId), doNum / getQuestionCount(nicetSheet));
@@ -259,11 +285,12 @@ public class QuestionUtil {
 
     /**
      * 删除完成度
+     *
      * @param nicetSheet
      * @return
      */
-    public static boolean delCompleteness(NicetSheet nicetSheet){
-        if(null == nicetSheet) return false;
+    public static boolean delCompleteness(NicetSheet nicetSheet) {
+        if (null == nicetSheet) return false;
         SharedPreferences.Editor editor = NiceApplication.instance().getCompletenessEditor();
         for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup) {
             editor.remove(String.valueOf(group.qgId));

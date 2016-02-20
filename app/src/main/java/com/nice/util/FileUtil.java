@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -76,7 +77,7 @@ public class FileUtil {
 
         FileOutputStream b = null;
         File file = new File("/sdcard/Image/");
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.mkdirs();// 创建文件夹
         }
         String fileName = "/sdcard/Image/" + name;
@@ -101,6 +102,12 @@ public class FileUtil {
         }
         return fileName;
 
+    }
+
+    public static byte[] Bitmap2Bytes(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
     }
 
 }
