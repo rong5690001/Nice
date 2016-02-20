@@ -28,6 +28,7 @@
                 android:textSize="12dp" />
 
             <com.nice.widget.NiceTextView
+                android:id="@+id/sign_date"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -45,6 +46,7 @@
                 android:textSize="12dp" />
 
             <com.nice.widget.NiceTextView
+                android:id="@+id/sign_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="55dp"

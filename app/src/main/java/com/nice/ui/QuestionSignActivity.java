@@ -40,6 +40,7 @@ import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -76,11 +77,19 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     NiceTextView address;
     @Bind(R.id.photo)
     NiceImageView photo;
+    @Bind(R.id.sign_date)
+    NiceTextView signDate;
+    @Bind(R.id.sign_time)
+    NiceTextView signTime;
     private NicetSheet entity;
     private AMap aMap;
     private LocationManager locationManager;
     private double lng;
     private double lat;
+
+    private int mHour;
+    private int mMinute;
+    private int mSecond;
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -221,7 +230,17 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initLayout() {
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);//获取当前的小时数
+        mMinute = c.get(Calendar.MINUTE);//获取当前的分钟数
+        mSecond = c.get(Calendar.SECOND);//获取当前的秒数
+        String str2 = (mHour<10?"0"+mHour:mHour)+":"+(mMinute<10?"0"+mMinute:mMinute)+":"+(mSecond<10?"0"+mSecond:mSecond);
         title.setText("签到");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        String str = format.format(curDate);
+        signDate.setText(str);
+        signTime.setText(str2);
         rightBtnLayout.setVisibility(View.GONE);
         if (aMap == null) {
             aMap = map.getMap();

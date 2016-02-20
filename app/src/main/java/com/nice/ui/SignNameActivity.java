@@ -37,7 +37,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -65,6 +67,10 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     LinearLayout signCommitBtn;
     @Bind(R.id.sign_bottom_tab)
     LinearLayout signBottomTab;
+    @Bind(R.id.sign_date)
+    NiceTextView signDate;
+    @Bind(R.id.sign_time)
+    NiceTextView signTime;
 
     private SurfaceHolder surHolder = null;
     private Paint myPaint = null;
@@ -73,7 +79,9 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     private PointF mLeftSelectPoint;
     private Path mPath;
     private Paint mPaint;
-
+    private int mHour;
+    private int mMinute;
+    private int mSecond;
     private long sqId;
 
     @Override
@@ -180,7 +188,17 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
     }
 
     private void initLayout() {
-        title.setText("签到");
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);//获取当前的小时数
+        mMinute = c.get(Calendar.MINUTE);//获取当前的分钟数
+        mSecond = c.get(Calendar.SECOND);//获取当前的秒数
+        String str2 = (mHour<10?"0"+mHour:mHour)+":"+(mMinute<10?"0"+mMinute:mMinute)+":"+(mSecond<10?"0"+mSecond:mSecond);
+        title.setText("签名");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        String str = format.format(curDate);
+        signDate.setText(str);
+        signTime.setText(str2);
         rightBtnLayout.setVisibility(View.GONE);
     }
 
