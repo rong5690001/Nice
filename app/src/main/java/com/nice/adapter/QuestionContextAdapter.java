@@ -1,11 +1,14 @@
 package com.nice.adapter;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -24,6 +27,7 @@ import com.nice.model.Event.SqIdEvent;
 import com.nice.model.NIcetSheetQuestion;
 import com.nice.model.NiceSheetQuestionOption;
 import com.nice.model.NiceValue;
+import com.nice.model.NicetSheet;
 import com.nice.ui.QuestionContextActivity;
 import com.nice.ui.SignNameActivity;
 import com.nice.util.BitmapUtil;
@@ -58,9 +62,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private String groupName;
     private long shId;
     private long qgId;
+    private NicetSheet nicetSheet;
 
-    public QuestionContextAdapter(long shId, long qgId, NiceValue niceValue, String groupName, int isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
+    public QuestionContextAdapter(NicetSheet nicetSheet, long shId, long qgId, NiceValue niceValue, String groupName, int isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
         super(datas, context, layoutId);
+        this.nicetSheet = nicetSheet;
         this.isLastGroup = isLastGroup;
         this.groupName = groupName;
         this.shId = shId;
@@ -69,7 +75,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         if (null != niceValue) {
             selectedValues = niceValue.selectedValues == null ? new HashMap<Long, String>() : niceValue.selectedValues;
             selectedStrutionValues = niceValue.selectedStrutionValues == null ? new HashMap<Long, String>() : niceValue.selectedStrutionValues;
-            mutiSelectedValues = niceValue.mutiSelectedValues== null ? new HashMap<Long, Map<String, String>>() : niceValue.mutiSelectedValues;
+            mutiSelectedValues = niceValue.mutiSelectedValues == null ? new HashMap<Long, Map<String, String>>() : niceValue.mutiSelectedValues;
         }
     }
 
@@ -158,13 +164,15 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final View view = View.inflate(context, R.layout.option_selectinstruction, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.muti_selected_image);
             final NiceEditText editText = (NiceEditText) view.findViewById(R.id.muti_selected_layout_editText);
-            if(selectedValues.containsKey(id)){
+            if (selectedValues.containsKey(id)) {
                 String[] values = selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
-                if(option.qoValue.equals(values[0])){
+                if (option.qoValue.equals(values[0])) {
                     imageView.setSelected(true);
-                    editText.setText(values[1]);
+                    if (values.length > 1) {
+                        editText.setText(values[1]);
+                    }
                     editText.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     editText.setVisibility(View.GONE);
                 }
             }
@@ -177,7 +185,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    selectedValues.put(id, option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕"+editText.getText());
+                    selectedValues.put(id, option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕" + editText.getText());
                 }
 
                 @Override
@@ -187,8 +195,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(id + ":" + option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕"+editText.getText());
-                    selectedValues.put(id, option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕"+editText.getText());
+                    System.out.println(id + ":" + option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕" + editText.getText());
+                    selectedValues.put(id, option.qoValue + "陈华榕陈华榕陈华榕陈华榕陈华榕" + editText.getText());
                     int viewIndex = 0;
                     for (NiceImageView imageView1 : singleSelectImageViewMap.get(id)) {
                         imageView1.setSelected(false);
@@ -256,18 +264,18 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         linearLayout.removeAllViews();
         List<NiceImageView> imageViewsTemp = new ArrayList<>();
         Map<String, String> selectVal;
-        if(mutiSelectedValues.containsKey(id)){
+        if (mutiSelectedValues.containsKey(id)) {
             selectVal = mutiSelectedValues.get(id);
-        }else{
+        } else {
             selectVal = new HashMap<>();
         }
         for (int i = 0; i < datas.get(position).SheetQuestionOption.size(); i++) {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_multiple, null);
             NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
-            if(selectVal.containsKey(option.qoId)){
+            if (selectVal.containsKey(option.qoId)) {
                 imageView.setSelected(true);
-            }else{
+            } else {
                 imageView.setSelected(false);
             }
 //            imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(position)
@@ -280,9 +288,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                     System.out.println(id + ":" + tag);
                     selectedValues.put(id + Long.parseLong(option.qoId), option.qoValue);
                     Map<String, String> values;
-                    if(mutiSelectedValues.containsKey(id)){
+                    if (mutiSelectedValues.containsKey(id)) {
                         values = mutiSelectedValues.get(id);
-                    }else{
+                    } else {
                         values = new HashMap();
                     }
                     values.put(option.qoId, option.qoValue);
@@ -375,7 +383,14 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_back_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post("reduceGroupIndex");
+                    boolean isSaved = saveValues() && saveCompleteness();
+                    if (isSaved) {
+                        Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post("reduceGroupIndex");
+                    } else {
+                        Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
         }
@@ -385,7 +400,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean isSaved = saveValues();
+                    boolean isSaved = saveValues() && saveCompleteness();
                     if (!isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存本地失败", Toast.LENGTH_SHORT).show();
                     } else {
@@ -397,7 +412,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean isSaved = saveValues();
+                    boolean isSaved = saveValues() && saveCompleteness();
                     if (isSaved) {
                         Toast.makeText(NiceApplication.instance(), "保存成功", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post("addGroupIndex");
@@ -428,8 +443,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         final long id = datas.get(position).sqId;
         NiceImageView imageView = holder.getView(R.id.photo);
         NiceImageView btn = holder.getView(R.id.signname_btn);
+        boolean hasImage = false;
         if (selectedValues.containsKey(id)) {
-            System.out.println("bitMapValue:" + selectedValues.get(id));
+            hasImage = true;
             imageView.setImageBitmap(BitmapUtil.file2Bitmap(selectedValues.get(id)));
             imageView.setVisibility(View.VISIBLE);
             btn.setVisibility(View.GONE);
@@ -437,12 +453,28 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             imageView.setVisibility(View.GONE);
             btn.setVisibility(View.VISIBLE);
         }
+        final boolean finalHasImage = hasImage;
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, SignNameActivity.class);
-                intent.putExtra("sqId", datas.get(position).sqId);
-                ((QuestionContextActivity) context).startActivityForResult(intent, 1000);
+                if (finalHasImage) {
+                    final AlertDialog alertDialog = new AlertDialog.Builder(context)
+                            .setTitle("确定要重写签名？")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(context, SignNameActivity.class);
+                                    intent.putExtra("sqId", datas.get(position).sqId);
+                                    ((QuestionContextActivity) context).startActivityForResult(intent, 1000);
+                                    dialog.dismiss();
+                                }
+                            }).create();
+                    alertDialog.show();
+                } else {
+                    Intent intent = new Intent(context, SignNameActivity.class);
+                    intent.putExtra("sqId", datas.get(position).sqId);
+                    ((QuestionContextActivity) context).startActivityForResult(intent, 1000);
+                }
             }
         });
     }
@@ -538,5 +570,16 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     public void addValue(String sqId, String value) {
         selectedValues.put(Long.parseLong(sqId), value);
+    }
+
+    /**
+     * 保存完成度
+     *
+     * @return
+     */
+    private boolean saveCompleteness() {
+        String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
+        NiceValue niceValue = new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues, mutiSelectedValues);
+        return QuestionUtil.saveCompleteness(qgId, niceValue, nicetSheet);
     }
 }

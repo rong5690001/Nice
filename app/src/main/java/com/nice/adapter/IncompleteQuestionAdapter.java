@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.nice.R;
 import com.nice.model.NiceQuestion;
 import com.nice.model.NicetSheet;
+import com.nice.util.QuestionUtil;
 
 import org.byteam.superadapter.list.BaseViewHolder;
 import org.byteam.superadapter.list.SuperAdapter;
@@ -28,6 +30,9 @@ public class IncompleteQuestionAdapter extends SuperAdapter<NicetSheet> {
 
     @Override
     protected void onBind(int viewType, BaseViewHolder holder, int position, NicetSheet item) {
+        DonutProgress donutProgress = holder.getView(R.id.item_in_question_precent);
+        donutProgress.setProgress(QuestionUtil.getCompleteness(item));
+
         holder.setText(R.id.item_incomplete_question_name, item.shName);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 

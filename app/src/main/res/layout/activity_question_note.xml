@@ -27,8 +27,7 @@
             android:layout_weight="1"
             android:textSize="12dp"
             android:textColor="@color/white"
-            android:gravity="center|left"
-            android:text="dw2016011121"/>
+            android:gravity="center|left"/>
         <com.nice.widget.NiceTextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

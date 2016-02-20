@@ -28,7 +28,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center|left"
-            android:text="dw2016011121"
             android:textColor="@color/white"
             android:textSize="12dp" />
 
@@ -46,7 +45,6 @@
             android:layout_height="match_parent"
             android:layout_marginRight="15dp"
             android:gravity="center"
-            android:text="0%"
             android:textColor="@color/white"
             android:textSize="12dp" />
     </LinearLayout>

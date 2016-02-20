@@ -109,6 +109,7 @@ public class QuestionUtil {
         editor.putString(niceValue.shIdAndGroupId, jsonObject.toString());
         return editor.commit();
     }
+
     /**
      * 获取string类型的答案
      *
@@ -131,6 +132,7 @@ public class QuestionUtil {
 
     /**
      * 获取保存在本地的问卷答案
+     *
      * @param nicetSheet
      * @return
      */
@@ -179,15 +181,21 @@ public class QuestionUtil {
         return result;
     }
 
-    public static boolean delQuestion(String sqId){
+    /**
+     * 删除问卷
+     *
+     * @param sqId
+     * @return
+     */
+    public static boolean delQuestion(String sqId) {
         SharedPreferences preferences = NiceApplication.instance().getQuestPreferencesQuest();
         String[] ids = preferences.getString(QUEST_IDS, "").split(",");
         String result = "";
-        for(String id : ids){
-            if(!id.equals(sqId)){
-                if(TextUtils.isEmpty(result)){
+        for (String id : ids) {
+            if (!id.equals(sqId)) {
+                if (TextUtils.isEmpty(result)) {
                     result = id;
-                }else{
+                } else {
                     result = result + "," + id;
                 }
             }
@@ -197,4 +205,70 @@ public class QuestionUtil {
         editor.remove(sqId);
         return editor.commit();
     }
+
+    /**
+     * 获取完成度
+     * @param nicetSheet
+     * @return
+     */
+    public static int getCompleteness(NicetSheet nicetSheet) {
+        if(null == nicetSheet){
+            return 0;
+        }
+        float result = 0f;
+        SharedPreferences preferences = NiceApplication.instance().getPreferencesCompleteness();
+        for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup){
+            result += preferences.getFloat(String.valueOf(group.qgId), 0f);
+        }
+        return (int)(result * 100);
+    }
+
+    /**
+     * 获取问卷总的问题数量
+     * @param nicetSheet
+     * @return
+     */
+    private static float getQuestionCount(NicetSheet nicetSheet) {
+        int count = 0;
+        for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup) {
+            count += group.SheetQuestion.size();
+        }
+        return (float) count;
+    }
+
+    /**
+     * 保存完成度
+     * @param qgId
+     * @param niceValue
+     * @param nicetSheet
+     * @return
+     */
+    public static boolean saveCompleteness(long qgId, NiceValue niceValue, NicetSheet nicetSheet){
+        if(null == niceValue) return false;
+        SharedPreferences.Editor editor = NiceApplication.instance().getCompletenessEditor();
+        float doNum = 0;
+        if(null != niceValue.selectedValues){
+            doNum += niceValue.selectedValues.keySet().size();
+        }
+        if(null != niceValue.mutiSelectedValues){
+            doNum += niceValue.mutiSelectedValues.keySet().size();
+        }
+        editor.putFloat(String.valueOf(qgId), doNum / getQuestionCount(nicetSheet));
+        return editor.commit();
+    }
+
+    /**
+     * 删除完成度
+     * @param nicetSheet
+     * @return
+     */
+    public static boolean delCompleteness(NicetSheet nicetSheet){
+        if(null == nicetSheet) return false;
+        SharedPreferences.Editor editor = NiceApplication.instance().getCompletenessEditor();
+        for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup) {
+            editor.remove(String.valueOf(group.qgId));
+        }
+        return editor.commit();
+    }
+
 }

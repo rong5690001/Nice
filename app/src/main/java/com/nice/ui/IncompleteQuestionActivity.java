@@ -74,7 +74,7 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String value = NiceApplication.instance()
                         .getQuestValuePreferencesQuest().getString(String.valueOf(mAdapter.getItem(position).shId), "");
-                Intent intent = null;
+                Intent intent;
                 if(TextUtils.isEmpty(value)) {
                     intent = new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class);
                 }else{
@@ -89,7 +89,6 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
     }
 
     private List<NicetSheet> getData(){
-
         return QuestionUtil.getQusetions();
     }
 

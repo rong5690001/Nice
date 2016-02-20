@@ -13,11 +13,13 @@ public class NiceApplication extends Application {
     
     private static final String QUEST_TABLE = "quest_table";
     private static final String VALUE_TABLE = "value_table";
+    private static final String COMPLETENESS = "completeness";
 
     private static NiceApplication instance;
     public static NiceUser user;
     private SharedPreferences preferencesQuest;
     private SharedPreferences preferencesValue;
+    private SharedPreferences preferencesCompleteness;
     
     public long shId;
 
@@ -31,6 +33,7 @@ public class NiceApplication extends Application {
         instance = this;
         preferencesQuest = getSharedPreferences(QUEST_TABLE, 0);
         preferencesValue = getSharedPreferences(VALUE_TABLE, 0);
+        preferencesCompleteness = getSharedPreferences(COMPLETENESS, 0);
         Stetho.initializeWithDefaults(this);
     }
 
@@ -51,5 +54,12 @@ public class NiceApplication extends Application {
         return preferencesQuest == null ? getSharedPreferences(VALUE_TABLE, 0) : preferencesValue;
     }
     
-    
+    public SharedPreferences.Editor getCompletenessEditor(){
+        return preferencesCompleteness == null ? getSharedPreferences(COMPLETENESS, 0).edit()
+                : preferencesCompleteness.edit();
+    }
+
+    public SharedPreferences getPreferencesCompleteness(){
+        return preferencesCompleteness == null ? getSharedPreferences(COMPLETENESS, 0) : preferencesCompleteness;
+    }
 }

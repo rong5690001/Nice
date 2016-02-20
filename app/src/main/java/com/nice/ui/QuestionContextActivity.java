@@ -64,7 +64,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     @Bind(R.id.quest_completeness)
     NiceTextView questCompleteness;
 
-    private NicetSheet entity;
+    public NicetSheet entity;
     private ExamFragment examFragment;
     //第几个分组
     private int groupIndex;
@@ -90,8 +90,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         rightBtnLayout.setVisibility(View.GONE);
 
         questId.setText(String.valueOf(entity.shId));
-        questCompleteness.setText("50%");
-
+        questCompleteness.setText(String.valueOf(QuestionUtil.getCompleteness(entity)) + "%");
         showExamFragment();
     }
 
@@ -236,16 +235,19 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
     public void onEventMainThread(String event) {
         if (event.equals("addGroupIndex")) {
+            questCompleteness.setText(String.valueOf(QuestionUtil.getCompleteness(entity)) + "%");
             groupIndex++;
             if (groupIndex > entity.SheetQuestionGroup.size() - 1)
                 return;
             showExamFragment();
         }
         if (event.equals("reduceGroupIndex")) {
+            questCompleteness.setText(String.valueOf(QuestionUtil.getCompleteness(entity)) + "%");
             groupIndex--;
             if (groupIndex < 0) return;
             showExamFragment();
         }
+
         if(event.equals("commit")){
             commit();
         }

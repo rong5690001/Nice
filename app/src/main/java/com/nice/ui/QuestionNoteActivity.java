@@ -14,6 +14,7 @@ import com.nice.httpapi.NiceRxApi;
 import com.nice.httpapi.response.dataparser.NiceOrderInfoPaser;
 import com.nice.model.NicetOrderInfo;
 import com.nice.model.NicetSheet;
+import com.nice.util.QuestionUtil;
 import com.nice.util.StringUtils;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceImageView;
@@ -84,7 +85,7 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
         questId.setText(String.valueOf(entity.shId));
         questName.setText(entity.shName);
 
-        questCompleteness.setText("50%");
+        questCompleteness.setText(String.valueOf(QuestionUtil.getCompleteness(entity)) + "%");
     }
 
     private void getSheetInfo() {

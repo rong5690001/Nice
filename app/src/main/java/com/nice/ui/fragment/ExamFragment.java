@@ -96,7 +96,7 @@ public class ExamFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        adapter = new QuestionContextAdapter(shId, group.qgId, getNiceValue(), group.qgName, isLastGroup, group.SheetQuestion, getActivity()
+        adapter = new QuestionContextAdapter(((QuestionContextActivity) getActivity()).entity, shId, group.qgId, getNiceValue(), group.qgName, isLastGroup, group.SheetQuestion, getActivity()
                 , R.layout.item_signleselect //	单项选择题 0
                 , R.layout.item_selectinstruction//单选说明题 1
                 , R.layout.view_completion_normal//简答题 2

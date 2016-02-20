@@ -10,6 +10,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
@@ -268,8 +270,7 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                     Toast.makeText(NiceApplication.instance(), "提交失败", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.resigname_btn:
-                System.out.print("jiaojiabin");
-                surfVDraw.requestLayout();
+                mCanvas.drawColor(Color.rgb(255,255,255));
                 break;
 
         }
