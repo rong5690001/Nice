@@ -104,6 +104,9 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
             case R.id.order_go_btn:
                 commit();
                 break;
+            case R.id.back_layout:
+                finish();
+                break;
         }
     }
 }
