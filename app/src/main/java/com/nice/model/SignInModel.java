@@ -1,6 +1,7 @@
 package com.nice.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,6 @@ public class SignInModel implements Serializable{
     public String siadd;
     public String sipicurl;
     public String siTime;
-    public List<FileModel> files;
+    public List<FileModel> files = new ArrayList<>();
 
 }

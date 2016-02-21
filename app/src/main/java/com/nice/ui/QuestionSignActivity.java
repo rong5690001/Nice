@@ -292,6 +292,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 try {
                     fileModel.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
                     signInModel.files.add(fileModel);
+                    takePhotoed = true;
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -303,10 +304,16 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         sqId = event.sqId;
     }
 
+    private boolean takePhotoed = false;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_commit_btn:
+                if(!takePhotoed){
+                    Toast.makeText(NiceApplication.instance(), "请先拍照", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 signInModel.shId = String.valueOf(entity.shId);
                 signInModel.silongitude = String.valueOf(lng);
                 signInModel.silatitude = String.valueOf(lat);

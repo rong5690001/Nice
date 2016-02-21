@@ -190,6 +190,10 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     }
 
     private void commit(){
+        if(QuestionUtil.getCompleteness(entity) < 100) {
+            Toast.makeText(NiceApplication.instance(), "请完成全部问题", Toast.LENGTH_SHORT).show();
+            return;
+        }
         NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
             @Override
             public void onCompleted() {

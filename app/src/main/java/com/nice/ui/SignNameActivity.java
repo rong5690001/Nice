@@ -220,7 +220,6 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                 Environment.MEDIA_MOUNTED)) {
             new DateFormat();
             String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
-            System.out.println("photo_name:" + name);
             Intent intent = new Intent();
             File file = new File("/sdcard/Image/");
             if(!file.exists()) {
@@ -288,7 +287,6 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                     Toast.makeText(NiceApplication.instance(), "提交失败", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.resigname_btn:
-                System.out.print("ggggggggggggggggg");
                 // 首先定义一个paint
                 Paint paint = new Paint();
 

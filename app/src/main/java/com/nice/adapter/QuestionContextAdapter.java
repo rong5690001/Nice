@@ -283,16 +283,22 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(id + ":" + tag);
-                    selectedValues.put(id + Long.parseLong(option.qoId), option.qoValue);
+
                     Map<String, String> values;
                     if (mutiSelectedValues.containsKey(id)) {
                         values = mutiSelectedValues.get(id);
                     } else {
                         values = new HashMap();
                     }
-                    values.put(option.qoId, option.qoValue);
-                    mutiSelectedValues.put(id, values);
+                    if(v.isSelected()){//取消选中
+                        values.remove(option.qoId);
+                        if(values.keySet().size() == 0){
+                            mutiSelectedValues.remove(id);
+                        }
+                    }else {
+                        values.put(option.qoId, option.qoValue);
+                        mutiSelectedValues.put(id, values);
+                    }
                     v.setSelected(!v.isSelected());
                 }
             });
@@ -332,7 +338,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                selectedValues.put(id, s.toString());
+                if(TextUtils.isEmpty(s) && selectedValues.containsKey(id)){
+                    selectedValues.remove(id);
+                }else {
+                    selectedValues.put(id, s.toString());
+                }
             }
 
             @Override
