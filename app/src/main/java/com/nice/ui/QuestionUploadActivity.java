@@ -55,6 +55,7 @@ public class QuestionUploadActivity extends AppCompatActivity implements View.On
 
     private void initLayout() {
         title.setText("已上传问卷");
+        rightBtnLayout.setVisibility(View.GONE);
     }
 
 
