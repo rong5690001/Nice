@@ -288,7 +288,18 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                     Toast.makeText(NiceApplication.instance(), "提交失败", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.resigname_btn:
-                mCanvas.drawColor(Color.rgb(255,255,255));
+                System.out.print("ggggggggggggggggg");
+                // 首先定义一个paint
+                Paint paint = new Paint();
+
+                // 绘制矩形区域-实心矩形
+                // 设置颜色
+                paint.setColor(Color.WHITE);
+                // 设置样式-填充
+                paint.setStyle(Paint.Style.FILL);
+                // 绘制一个矩形
+                mCanvas.drawRect(new Rect(0, 0, surfVDraw.getWidth(), surfVDraw.getHeight()), paint);
+                mCanvas.restore();
                 break;
 
         }
