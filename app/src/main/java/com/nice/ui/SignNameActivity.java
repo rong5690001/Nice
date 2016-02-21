@@ -287,6 +287,7 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                     Toast.makeText(NiceApplication.instance(), "提交失败", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.resigname_btn:
+
                 // 首先定义一个paint
                 Paint paint = new Paint();
 
@@ -297,7 +298,10 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                 paint.setStyle(Paint.Style.FILL);
                 // 绘制一个矩形
                 mCanvas.drawRect(new Rect(0, 0, surfVDraw.getWidth(), surfVDraw.getHeight()), paint);
+
+                mCanvas.save();
                 mCanvas.restore();
+                myDraw();
                 break;
 
         }
