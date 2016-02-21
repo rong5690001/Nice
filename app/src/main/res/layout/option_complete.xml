@@ -7,11 +7,13 @@
     <com.nice.widget.NiceTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/black"
         android:textSize="13dp"
-        android:paddingTop="15dp"
         android:text="题目："/>
 
     <com.nice.widget.NiceEditText

@@ -15,6 +15,7 @@
             android:layout_height="43dp"
             android:textColor="@color/black"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical"
             android:textSize="13dp"
             android:text="选择说明题："/>
