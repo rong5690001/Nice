@@ -9,6 +9,8 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -29,6 +31,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.client.result.ResultParser;
+import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.ui.capture.camera.CameraManager;
 import com.nice.ui.capture.common.BitmapUtils;
@@ -48,7 +51,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private static final int PARSE_BARCODE_FAIL = 300;
     private static final int PARSE_BARCODE_SUC = 200;
 
-
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     private boolean hasSurface;
 
 
@@ -332,18 +336,21 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         //2015-1-13  ½«µÃµ½µÄÖµ´«µ½ÁíÒ»¸öactivityÖÐ  jiaojiabn
         String decodeText = ResultParser.parseResult(rawResult).toString();
-        Intent intent = new Intent();
-        intent.setClass(CaptureActivity.this, ShowDecode.class);
-        intent.putExtra("decode", decodeText);
+        myClipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
-        startActivity(intent);
+        myClip = ClipData.newPlainText("text", decodeText);
+        myClipboard.setPrimaryClip(myClip);
+        Toast.makeText(NiceApplication.instance(), "已复制到粘贴板", Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent();
+//        intent.setClass(CaptureActivity.this, ShowDecode.class);
+//        intent.putExtra("decode", decodeText);
+//
+//        startActivity(intent);
 
 
 //		Toast.makeText(this,
 //				"Ê¶±ð½á¹û:" + ResultParser.parseResult(rawResult).toString(),
 //				Toast.LENGTH_SHORT).show();
-
-
 
     }
 
