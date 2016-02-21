@@ -9,6 +9,7 @@ import com.nice.httpapi.request.RxRequest;
 import com.nice.httpapi.response.dataparser.NiceUserPaser;
 import com.nice.model.NiceUser;
 import com.nice.model.NicetSheet;
+import com.nice.model.SignInModel;
 import com.nice.model.ValueJsonModel;
 import com.nice.util.QuestionUtil;
 
@@ -264,6 +265,37 @@ public class NiceRxApi {
                     @Override
                     public JSONObject call(JSONObject jsonObject) {
                         System.out.println("退回_返回值:" + jsonObject);
+                        return jsonObject;
+                    }
+                });
+    }
+
+    /**
+     * 签到
+     * @param signInModel
+     * @return
+     */
+    public static Observable<JSONObject> signIn(SignInModel signInModel){
+        Gson gson = QSGsonFactory.create();
+        String requestStr = gson.toJson(signInModel);
+        String uiId = String.valueOf(NiceApplication.user.uiId);
+        Map params = getParams();
+        params.put("method", "uSheet");
+        params.put("mode", "2002");
+        params.put("uiId", uiId);
+
+        try {
+            params.put("requestJson", new JSONObject(requestStr));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("签到:" + new JSONObject(params));
+        return RxRequest.createJsonRequest(Request.Method.POST, LOGIN_URL, new JSONObject(params))
+                .map(new Func1<JSONObject, JSONObject>() {
+                    @Override
+                    public JSONObject call(JSONObject jsonObject) {
+                        System.out.println("签到_返回值:" + jsonObject);
                         return jsonObject;
                     }
                 });

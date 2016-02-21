@@ -120,6 +120,7 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
                 Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putSerializable("entity", orderInfo);
+                bundle1.putSerializable("nicetSheet", entity);
                 intent1.putExtras(bundle1);
                 startActivity(intent1);
                 break;

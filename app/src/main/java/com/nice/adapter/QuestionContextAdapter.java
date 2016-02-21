@@ -451,7 +451,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             imageView.setVisibility(View.GONE);
             btn.setVisibility(View.VISIBLE);
         }
-        if (hasImage) {
+        if (!hasImage) {
             holder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -135,7 +135,7 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onNext(JSONObject jsonObject) {
                 List<NicetSheet> sheets = NiceSheetPaser.paser(jsonObject);
-                adapter.addAll(sheets);
+                adapter.replaceAll(sheets);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -161,7 +161,6 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                     return;
                 }
                 i= 0;
-                handler.sendEmptyMessage(0x123);
                 NiceRxApi.Download(adapter.getSelected()).subscribe(new Subscriber<JSONObject>() {
 
                     @Override
@@ -178,7 +177,7 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
                     public void onNext(JSONObject jsonObject) {
                         boolean isSaved = QuestionUtil.saveQuestion(jsonObject);
                         if(isSaved){
-                            getData();
+                            handler.sendEmptyMessage(0x123);
 //                            Toast.makeText(NiceApplication.instance(), "下载完成", Toast.LENGTH_SHORT).show();
                         }
                     }

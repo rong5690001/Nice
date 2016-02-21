@@ -14,13 +14,17 @@ public class NiceApplication extends Application {
     private static final String QUEST_TABLE = "quest_table";
     private static final String VALUE_TABLE = "value_table";
     private static final String COMPLETENESS = "completeness";
+    private static final String SIGN = "sign";
+    private static final String GROUPINDEX = "groupIndex";
 
     private static NiceApplication instance;
     public static NiceUser user;
     private SharedPreferences preferencesQuest;
     private SharedPreferences preferencesValue;
     private SharedPreferences preferencesCompleteness;
-    
+    private SharedPreferences preferencesSign;
+    private SharedPreferences preferencesGroupIndex;
+
     public long shId;
 
     public static NiceApplication instance(){
@@ -61,5 +65,23 @@ public class NiceApplication extends Application {
 
     public SharedPreferences getPreferencesCompleteness(){
         return preferencesCompleteness == null ? getSharedPreferences(COMPLETENESS, 0) : preferencesCompleteness;
+    }
+
+    public SharedPreferences.Editor getSignEditor(){
+        return preferencesSign == null ? getSharedPreferences(SIGN, 0).edit()
+                : preferencesSign.edit();
+    }
+
+    public SharedPreferences getPreferencesSign(){
+        return preferencesSign == null ? getSharedPreferences(SIGN, 0) : preferencesSign;
+    }
+
+    public SharedPreferences.Editor getGroupIndexEditor(){
+        return preferencesGroupIndex == null ? getSharedPreferences(GROUPINDEX, 0).edit()
+                : preferencesGroupIndex.edit();
+    }
+
+    public SharedPreferences getPreferencesGroupIndex(){
+        return preferencesGroupIndex == null ? getSharedPreferences(GROUPINDEX, 0) : preferencesGroupIndex;
     }
 }

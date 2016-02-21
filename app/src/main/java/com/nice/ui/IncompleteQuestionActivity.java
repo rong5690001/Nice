@@ -72,10 +72,9 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String value = NiceApplication.instance()
-                        .getQuestValuePreferencesQuest().getString(String.valueOf(mAdapter.getItem(position).shId), "");
                 Intent intent;
-                if(TextUtils.isEmpty(value)) {
+                if(NiceApplication.instance()
+                        .getPreferencesSign().getBoolean(String.valueOf(mAdapter.getItem(position).shId), false)) {
                     intent = new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class);
                 }else{
                     intent = new Intent(IncompleteQuestionActivity.this, QuestionContextActivity.class);
@@ -89,7 +88,17 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
     }
 
     private List<NicetSheet> getData(){
-        return QuestionUtil.getQusetions();
+        List<NicetSheet> datas = new ArrayList<>();
+        List<NicetSheet> getDates = QuestionUtil.getQusetions();
+        if(null == getDates){
+            return datas;
+        }
+        for(NicetSheet nicetSheet : getDates){
+            if(nicetSheet.shStatus != -1){
+                datas.add(nicetSheet);
+            }
+        }
+        return datas;
     }
 
     @Override

@@ -11,6 +11,8 @@ import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
 import com.nice.model.NicetOrderInfo;
+import com.nice.model.NicetSheet;
+import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
@@ -46,6 +48,7 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
     NiceButton orderGoBtn;
 
     private NicetOrderInfo orderInfo;
+    private NicetSheet nicetSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
         ButterKnife.bind(this);
         initLayout();
         orderInfo = (NicetOrderInfo) getIntent().getSerializableExtra("entity");
+        nicetSheet = (NicetSheet) getIntent().getSerializableExtra("nicetSheet");
     }
 
     private void initLayout(){
@@ -69,8 +73,13 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
         NiceRxApi.backOrder(orderInfo.oiId, text.getText().toString()).subscribe(new Subscriber<JSONObject>() {
             @Override
             public void onCompleted() {
-                Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
-                finish();
+                if(QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))){
+                    Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override

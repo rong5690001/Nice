@@ -22,7 +22,7 @@ public class ValueJsonModel implements Serializable {
     public String sqId;
     public String qaValue;
     public String qoMemo;
-    public List<Files> files;
+    public List<Files> files = new ArrayList<>();
 
     class Files {
         public String filename;

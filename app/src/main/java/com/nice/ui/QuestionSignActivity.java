@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,10 +17,12 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -32,13 +36,23 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.httpapi.NiceRxApi;
 import com.nice.model.Event.SqIdEvent;
+import com.nice.model.FileModel;
 import com.nice.model.NicetSheet;
+import com.nice.model.SignInModel;
 import com.nice.util.FileUtil;
+import com.nice.util.QuestionUtil;
+import com.nice.util.StringUtils;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +60,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import rx.Subscriber;
 
 public class QuestionSignActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,6 +105,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     private int mHour;
     private int mMinute;
     private int mSecond;
+    private SignInModel signInModel;
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -131,7 +147,6 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                     Marker marker = aMap.addMarker(markerOption);
 
                     address.setText(amapLocation.getCity() + amapLocation.getDistrict() + amapLocation.getStreet() + amapLocation.getStreetNum());
-                    System.out.print(amapLocation + "11111111111111");
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
@@ -152,6 +167,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         map.onCreate(savedInstanceState);
+        signInModel = new SignInModel();
         initLayout();
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -268,7 +284,17 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         if (resultCode == Activity.RESULT_OK) {
             String fileName = FileUtil.savePhoto(data, sqId);
             if(!TextUtils.isEmpty(fileName)){
-                photo.setImageBitmap(BitmapFactory.decodeFile(fileName));
+                Bitmap bitmap = BitmapFactory.decodeFile(fileName);
+                photo.setImageBitmap(bitmap);
+                signInModel.sipicurl = fileName;
+                FileModel fileModel = new FileModel();
+                fileModel.filename = new File(fileName).getName();
+                try {
+                    fileModel.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
+                    signInModel.files.add(fileModel);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -281,12 +307,40 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_commit_btn:
-                Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("entity", entity);
-                intent1.putExtras(bundle);
-                startActivity(intent1);
-                finish();
+                signInModel.shId = String.valueOf(entity.shId);
+                signInModel.silongitude = String.valueOf(lng);
+                signInModel.silatitude = String.valueOf(lat);
+                signInModel.siadd = address.getText().toString();
+                signInModel.silongitude = String.valueOf(lng);
+                signInModel.siTime = StringUtils.getCurrentTime();
+                NiceRxApi.signIn(signInModel).subscribe(new Subscriber<JSONObject>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(JSONObject jsonObject) {
+                        SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
+                        editor.putBoolean(String.valueOf(entity.shId), true);
+                        if(editor.commit()) {
+                            Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("entity", entity);
+                            intent1.putExtras(bundle);
+                            startActivity(intent1);
+                            finish();
+                        }else{
+                            Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 break;
             case R.id.quest_sign_takephoto:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
