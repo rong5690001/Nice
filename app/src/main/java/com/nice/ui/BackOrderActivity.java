@@ -66,11 +66,11 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void commit(){
-        if(TextUtils.isEmpty(text.getText().toString())){
+        if(TextUtils.isEmpty(backorderInfo.getText().toString())){
             Toast.makeText(NiceApplication.instance(), "请输出原因", Toast.LENGTH_SHORT).show();
             return;
         }
-        NiceRxApi.backOrder(orderInfo.oiId, text.getText().toString()).subscribe(new Subscriber<JSONObject>() {
+        NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
             @Override
             public void onCompleted() {
                 if(QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))){
