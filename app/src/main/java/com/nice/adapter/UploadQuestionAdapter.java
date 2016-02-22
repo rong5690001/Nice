@@ -32,8 +32,6 @@ public class UploadQuestionAdapter extends SuperAdapter<NicetSheet> {
 
     @Override
     protected void onBind(int viewType, BaseViewHolder holder, final int position, final NicetSheet item) {
-        DonutProgress donutProgress = holder.getView(R.id.item_in_question_precent);
-        donutProgress.setProgress(QuestionUtil.getCompleteness(item));
         holder.setText(R.id.item_upload_question_name, item.shName);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 

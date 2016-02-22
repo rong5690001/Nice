@@ -84,14 +84,16 @@ public class NiceRxApi {
         params.put("method", "uSheet");
         params.put("mode", "1001");
 
-        Map shIdMap = new HashMap();
+        List<Map> shIdList = new ArrayList<>();
 
         for (String shid : shIds) {
+            Map shIdMap = new HashMap();
             shIdMap.put("shId", shid);
+            shIdList.add(shIdMap);
         }
 
-        List<Map> shIdList = new ArrayList<>();
-        shIdList.add(shIdMap);
+
+
         params.put("requestJson", shIdList);
 
         System.out.println(new JSONObject(params));

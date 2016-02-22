@@ -191,7 +191,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
     private void commit(){
         if(QuestionUtil.getCompleteness(entity) < 100) {
-            Toast.makeText(NiceApplication.instance(), "请完成全部问题", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NiceApplication.instance(), "您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作", Toast.LENGTH_SHORT).show();
             return;
         }
         NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {

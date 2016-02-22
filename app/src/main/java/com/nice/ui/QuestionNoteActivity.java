@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import rx.Subscriber;
 
 public class QuestionNoteActivity extends AppCompatActivity implements OnClickListener {
@@ -72,6 +73,7 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_note);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         entity = (NicetSheet) getIntent().getSerializableExtra("entity");
         if (null != entity)
             initLayout();
@@ -137,5 +139,17 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
                 break;
 
         }
+    }
+
+    public void onEventMainThread(String event){
+        if("QuestionNoteActivity.finish".equals(event)){
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

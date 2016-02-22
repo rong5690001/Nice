@@ -182,10 +182,10 @@ public class QuestionUtil {
                     result.add(valueJsonModel);
                 }
 
-                for (long id : key3){
+                for (long id : key3) {
                     Map<String, String> mutiMap = niceValue.mutiSelectedValues.get(id);
                     Set<String> key3_child = mutiMap.keySet();
-                    for(String id_c : key3_child) {
+                    for (String id_c : key3_child) {
                         String key = String.valueOf(id_c);
                         ValueJsonModel valueJsonModel = new ValueJsonModel();
                         valueJsonModel.sqId = key;
@@ -242,7 +242,7 @@ public class QuestionUtil {
         float result = 0f;
         SharedPreferences preferences = NiceApplication.instance().getPreferencesCompleteness();
         for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup) {
-            result += preferences.getFloat(String.valueOf(group.qgId), 0f);
+            result += preferences.getFloat(nicetSheet.shId + "" + group.qgId, 0f);
         }
         return (int) (result * 100);
     }
@@ -264,12 +264,11 @@ public class QuestionUtil {
     /**
      * 保存完成度
      *
-     * @param qgId
      * @param niceValue
      * @param nicetSheet
      * @return
      */
-    public static boolean saveCompleteness(long qgId, NiceValue niceValue, NicetSheet nicetSheet) {
+    public static boolean saveCompleteness(NiceValue niceValue, NicetSheet nicetSheet) {
         if (null == niceValue) return false;
         SharedPreferences.Editor editor = NiceApplication.instance().getCompletenessEditor();
         float doNum = 0;
@@ -279,7 +278,7 @@ public class QuestionUtil {
         if (null != niceValue.mutiSelectedValues) {
             doNum += niceValue.mutiSelectedValues.keySet().size();
         }
-        editor.putFloat(String.valueOf(qgId), doNum / getQuestionCount(nicetSheet));
+        editor.putFloat(niceValue.shIdAndGroupId, doNum / getQuestionCount(nicetSheet));
         return editor.commit();
     }
 
