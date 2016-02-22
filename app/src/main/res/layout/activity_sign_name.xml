@@ -80,6 +80,7 @@
 
         <SurfaceView
             android:id="@+id/surfVDraw"
+            android:background="@drawable/surfaceview_red_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
