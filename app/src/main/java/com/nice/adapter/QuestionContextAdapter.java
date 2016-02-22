@@ -1,14 +1,12 @@
 package com.nice.adapter;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -19,6 +17,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.nice.NiceApplication;
@@ -58,6 +57,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private Map<Long, List<NiceEditText>> selectEditTextMap = new HashMap<>();
     private Map<Long, NiceEditText> editTextMap;
     private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
     private int isLastGroup = 0;
     private String groupName;
     private long shId;
@@ -338,8 +338,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(TextUtils.isEmpty(s) && selectedValues.containsKey(id)){
-                    selectedValues.remove(id);
+                if(TextUtils.isEmpty(s)){
+                    if(selectedValues.containsKey(id)) {
+                        selectedValues.remove(id);
+                    }
                 }else {
                     selectedValues.put(id, s.toString());
                 }
@@ -350,12 +352,23 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
             }
         });
-        if (datas.get(position).sqType == 400600000000002L) {//填空题(时间)
+        if (datas.get(position).sqType == 400600000000011L) {//填空题(时间)
             editText.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     v.requestFocus();
                     showTimePicker(id);
+                    return true;
+                }
+            });
+        }
+
+        if(datas.get(position).sqType == 400600000000002L){//填空题(日期)
+            editText.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.requestFocus();
+                    showDatePicker(id);
                     return true;
                 }
             });
@@ -528,9 +541,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     }
 
     /**
-     * 显示时间控件
+     * 显示日期控件
      */
-    private void showTimePicker(final long id) {
+    private void showDatePicker(final long id) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 0);
         if (null == datePickerDialog) {
@@ -544,6 +557,25 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         }
         if (datePickerDialog.isShowing()) return;
         datePickerDialog.show();
+    }
+    /**
+     * 显示时间控件
+     */
+    private void showTimePicker(final long id){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, 0);
+        calendar.add(Calendar.MINUTE, 0);
+        if (null == timePickerDialog) {
+            timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    selectedValues.put(id, String.valueOf(hourOfDay) + ":" + minute);
+                    notifyDataSetChanged();
+                }
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        }
+        if (timePickerDialog.isShowing()) return;
+        timePickerDialog.show();
     }
 
     /**
@@ -574,6 +606,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private boolean saveCompleteness() {
         String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
         NiceValue niceValue = new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues, mutiSelectedValues);
-        return QuestionUtil.saveCompleteness(qgId, niceValue, nicetSheet);
+        return QuestionUtil.saveCompleteness(niceValue, nicetSheet);
     }
 }

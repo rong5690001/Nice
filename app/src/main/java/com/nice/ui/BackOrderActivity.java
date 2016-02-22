@@ -1,6 +1,8 @@
 package com.nice.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +24,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import rx.Subscriber;
 
 public class BackOrderActivity extends AppCompatActivity implements View.OnClickListener{
@@ -70,28 +73,38 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(NiceApplication.instance(), "请输出原因", Toast.LENGTH_SHORT).show();
             return;
         }
-        NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
-            @Override
-            public void onCompleted() {
-                if(QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))){
-                    Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
-                }
+        AlertDialog dialog = new AlertDialog.Builder(BackOrderActivity.this)
+                .setTitle("您确定要退回订单吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
+                            @Override
+                            public void onCompleted() {
+                                if(QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))){
+                                    Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
+                                    EventBus.getDefault().post("QuestionNoteActivity.finish");
+                                    finish();
+                                } else {
+                                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
+                                }
 
-            }
+                            }
 
-            @Override
-            public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
 
-            }
+                            }
 
-            @Override
-            public void onNext(JSONObject jsonObject) {
+                            @Override
+                            public void onNext(JSONObject jsonObject) {
 
-            }
-        });
+                            }
+                        });
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
 
