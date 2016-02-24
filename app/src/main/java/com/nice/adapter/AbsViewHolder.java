@@ -78,4 +78,8 @@ public class AbsViewHolder extends RecyclerView.ViewHolder{
             itemView.setOnClickListener(onClickListener);
         }
     }
+
+    public void setEnable(boolean enable){
+        itemView.setClickable(enable);
+    }
 }

@@ -468,9 +468,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         final long id = datas.get(position).sqId;
         NiceImageView imageView = holder.getView(R.id.photo);
         NiceImageView btn = holder.getView(R.id.signname_btn);
+        holder.setEnable(true);
         boolean hasImage = false;
         if (selectedValues.containsKey(id)) {
             hasImage = true;
+            holder.setEnable(false);
             imageView.setImageBitmap(BitmapUtil.file2Bitmap(selectedValues.get(id)));
             imageView.setVisibility(View.VISIBLE);
             btn.setVisibility(View.GONE);
