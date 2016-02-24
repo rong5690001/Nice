@@ -51,11 +51,15 @@ public class NewQuestionAdapter extends SuperAdapter<NicetSheet> {
                 if("choose".equals(v.getTag())){
                     chooseButton.setImageResource(R.mipmap.checkmark_side_black);
                     v.setTag(null);
-                    selected.remove(position);
+                    if(selected.contains(position)) {
+                        selected.remove(position);
+                        EventBus.getDefault().post("removeAllSelected");
+                    }
                 }else{
                     chooseButton.setImageResource(R.mipmap.checkmark_black);
                     v.setTag("choose");
-                    selected.add(position);
+                    if(!selected.contains(position))
+                        selected.add(position);
                     if (selected.size() == mList.size()){
                         EventBus.getDefault().post("allSelected");
                     }

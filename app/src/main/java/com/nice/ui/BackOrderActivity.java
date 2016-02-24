@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import rx.Subscriber;
 
-public class BackOrderActivity extends AppCompatActivity implements View.OnClickListener{
+public class BackOrderActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.back_icon)
     NiceImageView backIcon;
@@ -63,54 +63,47 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
         nicetSheet = (NicetSheet) getIntent().getSerializableExtra("nicetSheet");
     }
 
-    private void initLayout(){
+    private void initLayout() {
         title.setText("问卷调查");
         rightBtnLayout.setVisibility(View.GONE);
     }
 
-    private void commit(){
-        if(TextUtils.isEmpty(backorderInfo.getText().toString())){
-            Toast.makeText(NiceApplication.instance(), "请输出原因", Toast.LENGTH_SHORT).show();
+    private void commit() {
+        if (TextUtils.isEmpty(backorderInfo.getText().toString())) {
+            Toast.makeText(NiceApplication.instance(), "请填写退回原因", Toast.LENGTH_SHORT).show();
             return;
         }
-        AlertDialog dialog = new AlertDialog.Builder(BackOrderActivity.this)
-                .setTitle("您确定要退回订单吗？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
-                            @Override
-                            public void onCompleted() {
-                                if(QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))){
-                                    Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
-                                    EventBus.getDefault().post("QuestionNoteActivity.finish");
-                                    finish();
-                                } else {
-                                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
-                                }
 
-                            }
+        NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
+            @Override
+            public void onCompleted() {
+                if (QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))) {
+                    Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post("QuestionNoteActivity.finish");
+                    finish();
+                } else {
+                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
+                }
 
-                            @Override
-                            public void onError(Throwable e) {
+            }
 
-                            }
+            @Override
+            public void onError(Throwable e) {
 
-                            @Override
-                            public void onNext(JSONObject jsonObject) {
+            }
 
-                            }
-                        });
-                    }
-                })
-                .create();
-        dialog.show();
+            @Override
+            public void onNext(JSONObject jsonObject) {
+
+            }
+        });
+
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.order_back_btn:
                 finish();
                 break;

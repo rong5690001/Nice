@@ -1,7 +1,9 @@
 package com.nice.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -119,12 +121,21 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_back_btn:
-                Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
-                Bundle bundle1 = new Bundle();
-                bundle1.putSerializable("entity", orderInfo);
-                bundle1.putSerializable("nicetSheet", entity);
-                intent1.putExtras(bundle1);
-                startActivity(intent1);
+                AlertDialog dialog = new AlertDialog.Builder(QuestionNoteActivity.this)
+                        .setTitle("您确定要退回订单吗？")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putSerializable("entity", orderInfo);
+                                bundle1.putSerializable("nicetSheet", entity);
+                                intent1.putExtras(bundle1);
+                                startActivity(intent1);
+                            }
+                        })
+                        .create();
+                dialog.show();
                 break;
             case R.id.back_layout:
                 finish();
@@ -141,8 +152,8 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
         }
     }
 
-    public void onEventMainThread(String event){
-        if("QuestionNoteActivity.finish".equals(event)){
+    public void onEventMainThread(String event) {
+        if ("QuestionNoteActivity.finish".equals(event)) {
             finish();
         }
     }

@@ -352,7 +352,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
             }
         });
-        if (datas.get(position).sqType == 400600000000011L) {//填空题(时间)
+        if (datas.get(position).sqType == 400600000000002L) {//填空题(时间)
             editText.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -363,7 +363,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             });
         }
 
-        if(datas.get(position).sqType == 400600000000002L){//填空题(日期)
+        if(datas.get(position).sqType == 400600000000011L){//填空题(日期)
             editText.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

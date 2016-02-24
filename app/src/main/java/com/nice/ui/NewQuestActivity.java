@@ -192,7 +192,10 @@ public class NewQuestActivity extends AppCompatActivity implements View.OnClickL
 
     public void onEventMainThread(String event){
         if ("allSelected".equals(event)) {
-            allChooseIcon.setSelected(!allChooseIcon.isSelected());
+            allChooseIcon.setSelected(true);
+        }
+        if ("removeAllSelected".equals(event)) {
+            allChooseIcon.setSelected(false);
         }
     }
 

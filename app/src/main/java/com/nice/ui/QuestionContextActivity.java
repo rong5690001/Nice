@@ -194,7 +194,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     private void commit(){
         if(QuestionUtil.getCompleteness(entity) < 100) {
             AlertDialog dialog = new AlertDialog.Builder(QuestionContextActivity.this)
-                    .setTitle("您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作")
+                    .setCustomTitle(View.inflate(QuestionContextActivity.this, R.layout.dialog_title, null))
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
