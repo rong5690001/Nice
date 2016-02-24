@@ -72,15 +72,17 @@
                 android:textSize="16sp" />
 
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/red"/>
     <!-- 签名 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-
         <SurfaceView
             android:id="@+id/surfVDraw"
-            android:background="@drawable/surfaceview_red_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -88,6 +90,10 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"/>
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/red"/>
     <!-- 底部bottom -->
     <LinearLayout
         android:id="@+id/sign_bottom_tab"
