@@ -5,5 +5,6 @@
     <com.nice.widget.NiceTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:text="您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作"/>
 </LinearLayout>

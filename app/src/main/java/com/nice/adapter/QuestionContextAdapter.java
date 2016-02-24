@@ -153,7 +153,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     private void onBindViewHolder_selectinStruction(final AbsViewHolder holder, final int position) {
         final long id = datas.get(position).sqId;
-        holder.setText(R.id.title, datas.get(position).sqTitle + ":");
+        holder.setText(R.id.title, datas.get(position).sqTitle
+                + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         final LinearLayout linearLayout = holder.getView(R.id.muti_selected_layout);
         linearLayout.removeAllViews();
         List<NiceImageView> imageViewsTemp = new ArrayList<>();
@@ -223,7 +224,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     private void onBindViewHolder_singleSelected(AbsViewHolder holder, final int position) {
         final long id = datas.get(position).sqId;
-        holder.setText(R.id.title, datas.get(position).sqTitle + ":");
+        holder.setText(R.id.title, datas.get(position).sqTitle
+                + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         final LinearLayout linearLayout = holder.getView(R.id.signleselect_radio);
         linearLayout.removeAllViews();
         List<NiceImageView> imageViewsTemp = new ArrayList<>();
@@ -257,7 +259,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     private void onBindViewHolder_multipeSelect(AbsViewHolder holder, final int position) {
         final long id = datas.get(position).sqId;
-        holder.setText(R.id.title, datas.get(position).sqTitle + ":");
+        holder.setText(R.id.title, datas.get(position).sqTitle
+                + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         final LinearLayout linearLayout = holder.getView(R.id.multiple_select_radio);
         linearLayout.removeAllViews();
         List<NiceImageView> imageViewsTemp = new ArrayList<>();
@@ -319,7 +322,8 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         LinearLayout linearLayout = holder.getView(R.id.completion_layout);
         linearLayout.removeAllViews();
         View view = View.inflate(context, R.layout.option_complete, null);
-        ((NiceTextView) view.findViewById(R.id.title)).setText(datas.get(position).sqTitle + ":");
+        ((NiceTextView) view.findViewById(R.id.title)).setText(datas.get(position).sqTitle
+                + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         NiceEditText editText = (NiceEditText) view.findViewById(R.id.value);
         System.out.println("id:" + id +
                 "/n" + (selectedValues.containsKey(id)

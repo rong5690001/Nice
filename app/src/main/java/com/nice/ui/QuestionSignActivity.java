@@ -291,6 +291,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 fileModel.filename = new File(fileName).getName();
                 try {
                     fileModel.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
+                    signInModel.files.clear();
                     signInModel.files.add(fileModel);
                     takePhotoed = true;
                 } catch (UnsupportedEncodingException e) {
