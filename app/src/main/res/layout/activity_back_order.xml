@@ -23,7 +23,7 @@
             android:layout_height="30dp"
             android:textColor="@color/black"
             android:textSize="14dp"
-            android:text="请填写退回订单的原因："/>
+            android:text="请填写退回原因："/>
         <com.nice.widget.NiceEditText
             android:id="@+id/backorder_info"
             android:layout_width="match_parent"
