@@ -1,9 +1,11 @@
 package com.nice.ui;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -191,28 +193,54 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
     private void commit(){
         if(QuestionUtil.getCompleteness(entity) < 100) {
-            Toast.makeText(NiceApplication.instance(), "您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作", Toast.LENGTH_SHORT).show();
-            return;
+            AlertDialog dialog = new AlertDialog.Builder(QuestionContextActivity.this)
+                    .setTitle("您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+                                @Override
+                                public void onCompleted() {
+                                    QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                                    Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                                    finish();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(JSONObject jsonObject) {
+
+                                }
+                            });
+                        }
+                    }).create();
+            dialog.show();
+        } else {
+            NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+                @Override
+                public void onCompleted() {
+                    QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                    Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(JSONObject jsonObject) {
+
+                }
+            });
         }
-        NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
-            @Override
-            public void onCompleted() {
-                QuestionUtil.delQuestion(String.valueOf(entity.shId));
-                Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(JSONObject jsonObject) {
-
-            }
-        });
     }
 
     @Override

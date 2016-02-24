@@ -60,8 +60,7 @@
                 android:textSize="14dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="14dp"
-                android:layout_toLeftOf="@+id/arrows_new"
-                android:text="15份"/>
+                android:layout_toLeftOf="@+id/arrows_new"/>
 
             <com.nice.widget.NiceImageView
             android:id="@+id/arrows_new"
@@ -116,8 +115,7 @@
                 android:textSize="14dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="14dp"
-                android:layout_toLeftOf="@+id/arrows_incomplete"
-                android:text="15份"/>
+                android:layout_toLeftOf="@+id/arrows_incomplete"/>
 
             <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_incomplete"
@@ -171,8 +169,7 @@
                 android:textSize="14dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginRight="15dp"
-                android:layout_toLeftOf="@+id/arrows_uploaded"
-                android:text="15份"/>
+                android:layout_toLeftOf="@+id/arrows_uploaded"/>
 
             <com.nice.widget.NiceImageView
                 android:id="@+id/arrows_uploaded"

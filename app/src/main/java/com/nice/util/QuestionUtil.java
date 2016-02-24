@@ -70,7 +70,6 @@ public class QuestionUtil {
      */
     public static List<NicetSheet> getQusetions() {
 
-
         SharedPreferences preferences = NiceApplication.instance().getQuestPreferencesQuest();
         String shIdsStr = preferences.getString(QUEST_IDS, "");
 

@@ -11,6 +11,7 @@ import com.nice.model.NiceUser;
  */
 public class NiceApplication extends Application {
     
+    private static final String USER_TABLE = "user_table";
     private static final String QUEST_TABLE = "quest_table";
     private static final String VALUE_TABLE = "value_table";
     private static final String COMPLETENESS = "completeness";
@@ -19,6 +20,7 @@ public class NiceApplication extends Application {
 
     private static NiceApplication instance;
     public static NiceUser user;
+    private SharedPreferences preferencesUser;
     private SharedPreferences preferencesQuest;
     private SharedPreferences preferencesValue;
     private SharedPreferences preferencesCompleteness;
@@ -35,53 +37,57 @@ public class NiceApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        preferencesQuest = getSharedPreferences(QUEST_TABLE, 0);
-        preferencesValue = getSharedPreferences(VALUE_TABLE, 0);
-        preferencesCompleteness = getSharedPreferences(COMPLETENESS, 0);
         Stetho.initializeWithDefaults(this);
     }
 
+    public SharedPreferences.Editor getUserEditor(){
+        return preferencesUser == null ? getSharedPreferences(USER_TABLE, 0).edit() : preferencesUser.edit();
+    }
+
+    public SharedPreferences getUserPreferences(){
+        return preferencesUser == null ? getSharedPreferences(USER_TABLE, 0) : preferencesUser;
+    }
 
     public SharedPreferences.Editor getQuestEditor(){
-        return preferencesQuest == null ? getSharedPreferences(QUEST_TABLE, 0).edit() : preferencesQuest.edit();
+        return preferencesQuest == null ? getSharedPreferences(user.uiId + QUEST_TABLE, 0).edit() : preferencesQuest.edit();
     }
 
     public SharedPreferences getQuestPreferencesQuest(){
-        return preferencesQuest == null ? getSharedPreferences(QUEST_TABLE, 0) : preferencesQuest;
+        return preferencesQuest == null ? getSharedPreferences(user.uiId + QUEST_TABLE, 0) : preferencesQuest;
     }
 
     public SharedPreferences.Editor getValueEditor(){
-        return preferencesQuest == null ? getSharedPreferences(VALUE_TABLE, 0).edit() : preferencesValue.edit();
+        return preferencesQuest == null ? getSharedPreferences(user.uiId + VALUE_TABLE, 0).edit() : preferencesValue.edit();
     }
 
     public SharedPreferences getQuestValuePreferencesQuest(){
-        return preferencesQuest == null ? getSharedPreferences(VALUE_TABLE, 0) : preferencesValue;
+        return preferencesQuest == null ? getSharedPreferences(user.uiId + VALUE_TABLE, 0) : preferencesValue;
     }
     
     public SharedPreferences.Editor getCompletenessEditor(){
-        return preferencesCompleteness == null ? getSharedPreferences(COMPLETENESS, 0).edit()
+        return preferencesCompleteness == null ? getSharedPreferences(user.uiId + COMPLETENESS, 0).edit()
                 : preferencesCompleteness.edit();
     }
 
     public SharedPreferences getPreferencesCompleteness(){
-        return preferencesCompleteness == null ? getSharedPreferences(COMPLETENESS, 0) : preferencesCompleteness;
+        return preferencesCompleteness == null ? getSharedPreferences(user.uiId + COMPLETENESS, 0) : preferencesCompleteness;
     }
 
     public SharedPreferences.Editor getSignEditor(){
-        return preferencesSign == null ? getSharedPreferences(SIGN, 0).edit()
+        return preferencesSign == null ? getSharedPreferences(user.uiId + SIGN, 0).edit()
                 : preferencesSign.edit();
     }
 
     public SharedPreferences getPreferencesSign(){
-        return preferencesSign == null ? getSharedPreferences(SIGN, 0) : preferencesSign;
+        return preferencesSign == null ? getSharedPreferences(user.uiId + SIGN, 0) : preferencesSign;
     }
 
     public SharedPreferences.Editor getGroupIndexEditor(){
-        return preferencesGroupIndex == null ? getSharedPreferences(GROUPINDEX, 0).edit()
+        return preferencesGroupIndex == null ? getSharedPreferences(user.uiId + GROUPINDEX, 0).edit()
                 : preferencesGroupIndex.edit();
     }
 
     public SharedPreferences getPreferencesGroupIndex(){
-        return preferencesGroupIndex == null ? getSharedPreferences(GROUPINDEX, 0) : preferencesGroupIndex;
+        return preferencesGroupIndex == null ? getSharedPreferences(user.uiId + GROUPINDEX, 0) : preferencesGroupIndex;
     }
 }

@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        String uiCodeStr = NiceApplication.instance().getQuestPreferencesQuest().getString("uiCode", "");
+        String uiCodeStr = NiceApplication.instance().getUserPreferences().getString("uiCode", "");
         System.out.println("uiCodeStr:" + uiCodeStr);
         if(!TextUtils.isEmpty(uiCodeStr)){
             uiCode.setText(uiCodeStr);
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onCompleted() {
                         if(remIcon.isSelected()){
-                            SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
+                            SharedPreferences.Editor editor = NiceApplication.instance().getUserEditor();
                             editor.putString("uiCode", uiCode);
                             editor.commit();
                         }
