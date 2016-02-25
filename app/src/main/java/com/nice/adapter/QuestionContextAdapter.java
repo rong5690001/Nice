@@ -489,7 +489,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         holder.setEnable(true);
         boolean hasImage = false;
         if (selectedValues.containsKey(id)) {
-            hasImage = false;
+            hasImage = true;
             holder.setEnable(false);
             imageView.setImageBitmap(BitmapUtil.file2Bitmap(selectedValues.get(id)));
             imageView.setVisibility(View.VISIBLE);
