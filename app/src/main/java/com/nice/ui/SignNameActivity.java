@@ -226,7 +226,7 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
                 file.mkdirs();// 创建文件夹
             }
             String fileName = "/sdcard/Image/" + name;
-            intent.putExtra("fileName", fileName);
+            intent.putExtra("fileName", name);
             intent.putExtra("sqId", String.valueOf(sqId));
             this.setResult(1000, intent);
             FileOutputStream fos = null;

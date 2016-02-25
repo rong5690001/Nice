@@ -201,9 +201,11 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            dialogs.show();
                             NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                                 @Override
                                 public void onCompleted() {
+                                    dialogs.dismiss();
                                     QuestionUtil.delQuestion(String.valueOf(entity.shId));
                                     Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
@@ -223,14 +225,14 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                         }
                     }).create();
             dialog.show();
-            dialogs.show();
         } else {
+            dialogs.show();
             NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                 @Override
                 public void onCompleted() {
+                    dialogs.dismiss();
                     QuestionUtil.delQuestion(String.valueOf(entity.shId));
                     Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                    dialogs.show();
                     startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
                     finish();
                 }

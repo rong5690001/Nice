@@ -36,6 +36,10 @@ public class ValueJsonModel implements Serializable {
         }
         Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
 
+        if(null == bitmap){
+            return;
+        }
+
         Files file1 = new Files();
         File file2 = new File("/sdcard/Image/" + fileName);
         file1.filename = file2.getName();
