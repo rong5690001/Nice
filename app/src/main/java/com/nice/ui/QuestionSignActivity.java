@@ -284,9 +284,9 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         if (resultCode == Activity.RESULT_OK) {
             String fileName = FileUtil.savePhoto(data, sqId);
             if(!TextUtils.isEmpty(fileName)){
-                Bitmap bitmap = BitmapFactory.decodeFile(fileName);
+                Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
                 photo.setImageBitmap(bitmap);
-                signInModel.sipicurl = fileName;
+                signInModel.sipicurl = "/sdcard/Image/" + fileName;
                 FileModel fileModel = new FileModel();
                 fileModel.filename = new File(fileName).getName();
                 try {

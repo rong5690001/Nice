@@ -100,7 +100,7 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
-        return fileName;
+        return name;
 
     }
 

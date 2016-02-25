@@ -26,7 +26,6 @@ public class LoadingDialog extends Dialog {
         tv = (TextView)this.findViewById(R.id.tv);
         tv.setText("正在上传...");
         LinearLayout linearLayout = (LinearLayout)this.findViewById(R.id.LinearLayout);
-        linearLayout.getBackground().setAlpha(210);
     }
 }
 
