@@ -69,7 +69,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     public NicetSheet entity;
     private ExamFragment examFragment;
     //第几个分组
-    private int groupIndex;
+    public int groupIndex;
     public int isLastGroup = 0;//0:第一个分组 1:中间的分组 2:最后一个分组
 
     private String sqId;
@@ -260,6 +260,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
             String msqId = data.getStringExtra("sqId");
             if (!TextUtils.isEmpty(fileName) && !TextUtils.isEmpty(msqId)) {
                 examFragment.addValue(msqId, fileName);
+                examFragment.saveIsEnable();
                 examFragment.notifyDateChange();
             }
         }

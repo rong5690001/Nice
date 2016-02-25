@@ -17,6 +17,7 @@ public class NiceApplication extends Application {
     private static final String COMPLETENESS = "completeness";
     private static final String SIGN = "sign";
     private static final String GROUPINDEX = "groupIndex";
+    private static final String ISENABLE = "isenable";
 
     private static NiceApplication instance;
     public static NiceUser user;
@@ -26,6 +27,7 @@ public class NiceApplication extends Application {
     private SharedPreferences preferencesCompleteness;
     private SharedPreferences preferencesSign;
     private SharedPreferences preferencesGroupIndex;
+    private SharedPreferences preferencesIsEnable;
 
     public long shId;
 
@@ -89,5 +91,14 @@ public class NiceApplication extends Application {
 
     public SharedPreferences getPreferencesGroupIndex(){
         return preferencesGroupIndex == null ? getSharedPreferences(user.uiId + GROUPINDEX, 0) : preferencesGroupIndex;
+    }
+
+    public SharedPreferences.Editor getGroupIsEnableEditor(){
+        return preferencesIsEnable == null ? getSharedPreferences(user.uiId + ISENABLE, 0).edit()
+                : preferencesIsEnable.edit();
+    }
+
+    public SharedPreferences getPreferencesIsEnable(){
+        return preferencesIsEnable == null ? getSharedPreferences(user.uiId + ISENABLE, 0) : preferencesIsEnable;
     }
 }

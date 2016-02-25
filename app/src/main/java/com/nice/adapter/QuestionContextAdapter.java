@@ -20,13 +20,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.nice.NiceApplication;
 import com.nice.R;
+import com.nice.httpapi.gson.QSGsonFactory;
 import com.nice.model.Event.SqIdEvent;
 import com.nice.model.NIcetSheetQuestion;
+import com.nice.model.NiceQuestion;
 import com.nice.model.NiceSheetQuestionOption;
 import com.nice.model.NiceValue;
 import com.nice.model.NicetSheet;
+import com.nice.model.NicetSheetQuestionGroup;
 import com.nice.ui.QuestionContextActivity;
 import com.nice.ui.SignNameActivity;
 import com.nice.util.BitmapUtil;
@@ -36,6 +40,9 @@ import com.nice.widget.NiceButton;
 import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +70,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private long shId;
     private long qgId;
     private NicetSheet nicetSheet;
+    private int signPosition;
 
     public QuestionContextAdapter(NicetSheet nicetSheet, long shId, long qgId, NiceValue niceValue, String groupName, int isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
         super(datas, context, layoutId);
@@ -164,6 +172,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final View view = View.inflate(context, R.layout.option_selectinstruction, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.muti_selected_image);
             final NiceEditText editText = (NiceEditText) view.findViewById(R.id.muti_selected_layout_editText);
+            if (!datas.get(position).isEnable) {
+                view.setEnabled(false);
+                editText.setEnabled(false);
+            }
             if (selectedValues.containsKey(id)) {
                 String[] values = selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
                 if (option.qoValue.equals(values[0])) {
@@ -233,6 +245,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_single, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
+            if (!datas.get(position).isEnable) {
+                view.setEnabled(false);
+            }
             imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(id) ? selectedValues.get(id) : null));
             ((TextView) view.findViewById(R.id.item_new_question_name)).setText(option.qoText);
             view.setOnClickListener(new View.OnClickListener() {
@@ -274,6 +289,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_multiple, null);
             NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
+            if (!datas.get(position).isEnable) {
+                view.setEnabled(false);
+            }
             if (selectVal.containsKey(option.qoId)) {
                 imageView.setSelected(true);
             } else {
@@ -293,12 +311,12 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                     } else {
                         values = new HashMap();
                     }
-                    if(v.isSelected()){//取消选中
+                    if (v.isSelected()) {//取消选中
                         values.remove(option.qoId);
-                        if(values.keySet().size() == 0){
+                        if (values.keySet().size() == 0) {
                             mutiSelectedValues.remove(id);
                         }
-                    }else {
+                    } else {
                         values.put(option.qoId, option.qoValue);
                         mutiSelectedValues.put(id, values);
                     }
@@ -325,10 +343,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         ((NiceTextView) view.findViewById(R.id.title)).setText(datas.get(position).sqTitle
                 + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         NiceEditText editText = (NiceEditText) view.findViewById(R.id.value);
-        System.out.println("id:" + id +
-                "/n" + (selectedValues.containsKey(id)
-                ? selectedValues.get(id) : "") +
-                "/n" + datas.get(position).sqType);
+        if (!datas.get(position).isEnable) {
+            view.setEnabled(false);
+            editText.setEnabled(false);
+        }
         editText.setText(selectedValues.containsKey(id) ?
                 selectedValues.get(id) : "");
         editText.setMinHeight(Denisty.dip2px(context, 30));
@@ -342,11 +360,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(TextUtils.isEmpty(s)){
-                    if(selectedValues.containsKey(id)) {
+                if (TextUtils.isEmpty(s)) {
+                    if (selectedValues.containsKey(id)) {
                         selectedValues.remove(id);
                     }
-                }else {
+                } else {
                     selectedValues.put(id, s.toString());
                 }
             }
@@ -367,7 +385,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             });
         }
 
-        if(datas.get(position).sqType == 400600000000011L){//填空题(日期)
+        if (datas.get(position).sqType == 400600000000011L) {//填空题(日期)
             editText.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -419,7 +437,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 }
             });
         }
-        Log.e("11", "isLastGroup:" + isLastGroup);
         if (isLastGroup == 2) {
             holder.setText(R.id.info_go_btn, "提交");
             holder.getView(R.id.info_go_btn).setOnClickListener(new View.OnClickListener() {
@@ -465,13 +482,14 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      * @return
      */
     private void onBindViewHolder_sign(AbsViewHolder holder, final int position) {
+        signPosition = position;
         final long id = datas.get(position).sqId;
         NiceImageView imageView = holder.getView(R.id.photo);
         NiceImageView btn = holder.getView(R.id.signname_btn);
         holder.setEnable(true);
         boolean hasImage = false;
         if (selectedValues.containsKey(id)) {
-            hasImage = true;
+            hasImage = false;
             holder.setEnable(false);
             imageView.setImageBitmap(BitmapUtil.file2Bitmap(selectedValues.get(id)));
             imageView.setVisibility(View.VISIBLE);
@@ -517,6 +535,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 final int imageIndexFinal = i;
                 imageViews[i].setImageBitmap(BitmapUtil.file2Bitmap(filename));
                 imageViews[i].setVisibility(View.VISIBLE);
+                if (!datas.get(position).isEnable) {
+                    imageViews[i].setEnabled(false);
+                }
                 imageViews[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -530,6 +551,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
 
         if (imageIndex != -1) {
             final int imageIndexFinal = imageIndex;
+            if (!datas.get(position).isEnable) {
+                holder.getView(R.id.take_photo).setEnabled(false);
+            }
             holder.getView(R.id.take_photo).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -564,10 +588,11 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         if (datePickerDialog.isShowing()) return;
         datePickerDialog.show();
     }
+
     /**
      * 显示时间控件
      */
-    private void showTimePicker(final long id){
+    private void showTimePicker(final long id) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY, 0);
         calendar.add(Calendar.MINUTE, 0);
@@ -613,5 +638,31 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         String shIdAndqgId = String.valueOf(shId) + String.valueOf(qgId);
         NiceValue niceValue = new NiceValue(shIdAndqgId, selectedValues, selectedStrutionValues, mutiSelectedValues);
         return QuestionUtil.saveCompleteness(niceValue, nicetSheet);
+    }
+
+    public boolean saveIsEnable() {
+
+        int groupIndex = ((QuestionContextActivity) context).groupIndex;
+        for (int j = 0; j < groupIndex; j++) {
+            List<NIcetSheetQuestion> questions = nicetSheet.SheetQuestionGroup
+                    .get(j).SheetQuestion;
+            for (int k = 0; k < questions.size(); k++) {
+                questions.get(k).isEnable = false;
+            }
+        }
+        List<NIcetSheetQuestion> questions = nicetSheet.SheetQuestionGroup
+                .get(groupIndex).SheetQuestion;
+        for (int i = 0; i < signPosition; i++) {
+            questions.get(i).isEnable = false;
+        }
+//        nicetSheet.SheetQuestionGroup
+//                .get(((QuestionContextActivity)context).groupIndex).SheetQuestion = questions;
+        Gson gson = QSGsonFactory.create();
+        try {
+            return QuestionUtil.saveQuestion2(new JSONObject(gson.toJson(nicetSheet)));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

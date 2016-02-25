@@ -16,6 +16,7 @@ public class NIcetSheetQuestion implements Serializable {
     public String sqTitle;        //问题标题
     public String sqDescription;  //问题说明
     public int sqStatus;          //状态  1:有效0:无效-1:删除
+    public boolean isEnable = true;      //能否编辑
     public String rbTime;         //记录生成时间  Default CURRENT DATATIME
     public String ruTime;         //记录变更时间  Default CURRENT DATATIME
 

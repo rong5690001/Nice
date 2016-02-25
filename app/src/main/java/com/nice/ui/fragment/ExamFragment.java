@@ -140,4 +140,8 @@ public class ExamFragment extends Fragment {
     public void addValue(String sqId, String value){
         adapter.addValue(sqId, value);
     }
+
+    public boolean saveIsEnable(){
+        return adapter.saveIsEnable();
+    }
 }

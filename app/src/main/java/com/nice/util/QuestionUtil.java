@@ -64,6 +64,24 @@ public class QuestionUtil {
     }
 
     /**
+     * 保存问卷
+     *
+     * @param jsonObject
+     * @return
+     */
+    public static boolean saveQuestion2(JSONObject jsonObject) {
+        SharedPreferences.Editor editor = NiceApplication.instance().getQuestEditor();
+        try {
+            editor.putString(jsonObject.getString("shId"), jsonObject.toString());
+            return editor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
      * 获取下载完的问卷
      *
      * @return
