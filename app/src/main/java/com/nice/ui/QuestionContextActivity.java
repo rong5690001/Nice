@@ -73,6 +73,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     public int isLastGroup = 0;//0:第一个分组 1:中间的分组 2:最后一个分组
 
     private String sqId;
+    private LoadingDialog dialogs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +193,8 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     }
 
     private void commit(){
+        dialogs = new LoadingDialog(this);
+        dialogs.setCanceledOnTouchOutside(false);
         if(QuestionUtil.getCompleteness(entity) < 100) {
             AlertDialog dialog = new AlertDialog.Builder(QuestionContextActivity.this)
                     .setCustomTitle(View.inflate(QuestionContextActivity.this, R.layout.dialog_title, null))
@@ -220,12 +223,14 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                         }
                     }).create();
             dialog.show();
+            dialogs.show();
         } else {
             NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                 @Override
                 public void onCompleted() {
                     QuestionUtil.delQuestion(String.valueOf(entity.shId));
                     Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                    dialogs.show();
                     startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
                     finish();
                 }
