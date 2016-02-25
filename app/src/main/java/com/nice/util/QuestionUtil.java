@@ -54,9 +54,10 @@ public class QuestionUtil {
                     shIds = TextUtils.isEmpty(shIds) ? questEntity.getString("shId")
                             : shIds + "," + questEntity.getString("shId");
                     editor.putString(QUEST_IDS, shIds);
+                    editor.commit();
                 }
             }
-            return editor.commit();
+            return true;
         } catch (JSONException e) {
             e.printStackTrace();
             return false;

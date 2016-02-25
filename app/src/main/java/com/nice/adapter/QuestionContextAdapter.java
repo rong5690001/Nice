@@ -172,10 +172,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final View view = View.inflate(context, R.layout.option_selectinstruction, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.muti_selected_image);
             final NiceEditText editText = (NiceEditText) view.findViewById(R.id.muti_selected_layout_editText);
-            if (!datas.get(position).isEnable) {
-                view.setEnabled(false);
-                editText.setEnabled(false);
-            }
             if (selectedValues.containsKey(id)) {
                 String[] values = selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
                 if (option.qoValue.equals(values[0])) {
@@ -223,6 +219,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             imageViewsTemp.add(imageView);
             editTextViewsTemp.add(editText);
             linearLayout.addView(view);
+            if (!datas.get(position).isEnable) {
+                view.setEnabled(false);
+                editText.setEnabled(false);
+            }
         }
         singleSelectImageViewMap.put(id, imageViewsTemp);
         selectEditTextMap.put(id, editTextViewsTemp);
@@ -245,9 +245,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_single, null);
             final NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
-            if (!datas.get(position).isEnable) {
-                view.setEnabled(false);
-            }
             imageView.setSelected(option.qoValue.equals(selectedValues.containsKey(id) ? selectedValues.get(id) : null));
             ((TextView) view.findViewById(R.id.item_new_question_name)).setText(option.qoText);
             view.setOnClickListener(new View.OnClickListener() {
@@ -262,6 +259,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             });
             imageViewsTemp.add(imageView);
             linearLayout.addView(view);
+            if (!datas.get(position).isEnable) {
+                view.setEnabled(false);
+            }
         }
         singleSelectImageViewMap.put(id, imageViewsTemp);
     }
@@ -289,9 +289,6 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             final NiceSheetQuestionOption option = datas.get(position).SheetQuestionOption.get(i);
             final View view = View.inflate(context, R.layout.selected_multiple, null);
             NiceImageView imageView = (NiceImageView) view.findViewById(R.id.item_new_question_choose_btn);
-            if (!datas.get(position).isEnable) {
-                view.setEnabled(false);
-            }
             if (selectVal.containsKey(option.qoId)) {
                 imageView.setSelected(true);
             } else {
@@ -325,6 +322,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
             });
             imageViewsTemp.add(imageView);
             linearLayout.addView(view);
+            if (!datas.get(position).isEnable) {
+                view.setEnabled(false);
+            }
         }
         singleSelectImageViewMap.put(id, imageViewsTemp);
     }
@@ -343,15 +343,15 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
         ((NiceTextView) view.findViewById(R.id.title)).setText(datas.get(position).sqTitle
                 + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         NiceEditText editText = (NiceEditText) view.findViewById(R.id.value);
-        if (!datas.get(position).isEnable) {
-            view.setEnabled(false);
-            editText.setEnabled(false);
-        }
         editText.setText(selectedValues.containsKey(id) ?
                 selectedValues.get(id) : "");
         editText.setMinHeight(Denisty.dip2px(context, 30));
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setOnTouchListener(null);
+        if (!datas.get(position).isEnable) {
+            view.setEnabled(false);
+            editText.setEnabled(false);
+        }
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
