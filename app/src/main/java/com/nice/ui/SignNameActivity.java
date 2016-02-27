@@ -98,7 +98,7 @@ public class SignNameActivity extends AppCompatActivity implements OnClickListen
         //set parameters of paint.
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setColor(0xFFFF0000);
+        mPaint.setColor(getResources().getColor(R.color.black));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
