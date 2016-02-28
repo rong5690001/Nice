@@ -9,7 +9,6 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.facebook.stetho.common.StringUtil;
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
 import com.nice.httpapi.response.dataparser.NiceOrderInfoPaser;
@@ -120,26 +119,27 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_back_btn:
-                final AlertDialog dialog = new AlertDialog(QuestionNoteActivity.this);
-                dialog .setMessage("您确定要退回订单吗？");
-//                dialog.setPositiveButton("确定", new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
-//                        Bundle bundle1 = new Bundle();
-//                        bundle1.putSerializable("entity", orderInfo);
-//                        bundle1.putSerializable("nicetSheet", entity);
-//                        intent1.putExtras(bundle1);
-//                        startActivity(intent1);
-//                    }
-//                });
-//                dialog.setNegativeButton("取消", new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        // TODO Auto-generated method stub
-//                        dialog.dismiss();
-//                    }
-//                });
+                AlertDialog.Builder dialog = new AlertDialog.Builder(QuestionNoteActivity.this);
+                dialog .setMessage("您确定要退回订单吗？",R.color.black);
+                dialog.setNegativeButton("否",new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        //设置你的操作事项
+                    }
+                });
+                dialog.setPositiveButton("是",new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putSerializable("entity", orderInfo);
+                        bundle1.putSerializable("nicetSheet", entity);
+                        intent1.putExtras(bundle1);
+                        startActivity(intent1);
+                    }
+                });
+                dialog.create().show();
                 break;
             case R.id.back_layout:
                 finish();

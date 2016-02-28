@@ -196,13 +196,19 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         dialogs = new LoadingDialog(this);
         dialogs.setCanceledOnTouchOutside(false);
         if(QuestionUtil.getCompleteness(entity) < 100) {
-            AlertDialog dialog = new AlertDialog.Builder(QuestionContextActivity.this)
-                    .setCustomTitle(View.inflate(QuestionContextActivity.this, R.layout.dialog_title, null))
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialogs.show();
-                            NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+            com.nice.ui.AlertDialog.Builder dialog = new com.nice.ui.AlertDialog.Builder(QuestionContextActivity.this);
+            dialog .setMessage("您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作",R.color.red);
+            dialog.setNegativeButton("返回操作",new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    //设置你的操作事项
+                }
+            });
+            dialog.setPositiveButton("确认提交",new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                                 @Override
                                 public void onCompleted() {
                                     dialogs.dismiss();
@@ -222,9 +228,9 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
                                 }
                             });
-                        }
-                    }).create();
-            dialog.show();
+                }
+            });
+            dialog.create().show();
         } else {
             dialogs.show();
             NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {

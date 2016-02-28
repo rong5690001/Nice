@@ -70,10 +70,20 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
 
     private void commit() {
         if (TextUtils.isEmpty(backorderInfo.getText().toString())) {
-            Toast.makeText(NiceApplication.instance(), "请填写退回原因", Toast.LENGTH_SHORT).show();
+            com.nice.ui.AlertDialog.Builder dialog = new com.nice.ui.AlertDialog.Builder(BackOrderActivity.this);
+            dialog.setMessage("问卷退回的原因不能为空",R.color.black);
+            dialog.setNegativeButton("关闭",new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    //设置你的操作事项
+                }
+            });
+            dialog.create().show();
+//            Toast.makeText(NiceApplication.instance(), "请填写退回原因", Toast.LENGTH_SHORT).show();
             return;
         }
-
+//        System.out.println();
         NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
             @Override
             public void onCompleted() {

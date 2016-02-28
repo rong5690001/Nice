@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    card_view:cardBackgroundColor="@color/white"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    card_view:cardCornerRadius="15dp">
+    android:background="@drawable/dialog">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +41,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.nice.widget.NiceButton
-                android:id="@+id/info_back_btn"
+                android:id="@+id/negativeButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,11 +52,12 @@
                 android:textSize="15dp"
                 android:text="退回订单"/>
             <View
+                android:id="@+id/dialog_view"
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:background="@color/gary"/>
             <com.nice.widget.NiceButton
-                android:id="@+id/info_go_btn"
+                android:id="@+id/positiveButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
@@ -69,4 +69,4 @@
                 android:text="开始操作"/>
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</LinearLayout>

@@ -1,81 +1,161 @@
 package com.nice.ui;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.view.ViewGroup.LayoutParams;
 import com.nice.R;
+import com.nice.widget.NiceButton;
+import com.nice.widget.NiceTextView;
 
 /**
  * Created by chen on 2016/2/28.
  */
-public class AlertDialog {
-    Context context;
-    android.app.AlertDialog ad;
-    TextView messageView;
-    LinearLayout buttonLayout;
-    public AlertDialog(Context context) {
-        // TODO Auto-generated constructor stub
-        this.context=context;
-        ad=new android.app.AlertDialog.Builder(context).create();
-        ad.show();
-        //关键在下面的两行,使用window.setContentView,替换整个对话框窗口的布局
-        Window window = ad.getWindow();
-        window.setContentView(R.layout.dialog_alert);
-        messageView=(TextView)window.findViewById(R.id.context);
-        buttonLayout=(LinearLayout)window.findViewById(R.id.buttonLayout);
+public class AlertDialog extends Dialog{
+
+    protected AlertDialog(Context context) {
+        super(context);
     }
-    public void setMessage(int resId) {
-        messageView.setText(resId);
-    }  public void setMessage(String message)
-    {
-        messageView.setText(message);
+
+    protected AlertDialog(Context context, int theme) {
+        super(context, theme);
     }
-    /**
-     * 设置按钮
-     * @param text
-     * @param listener
-     */
-    public void setPositiveButton(String text,final View.OnClickListener listener)
-    {
-        Button button=new Button(context);
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        button.setLayoutParams(params);
-        button.setText(text);
-        button.setTextColor(Color.WHITE);
-        button.setTextSize(20);
-        button.setOnClickListener(listener);
-        buttonLayout.addView(button);
-    }  /**
-     * 设置按钮
-     * @param text
-     * @param listener
-     */
-    public void setNegativeButton(String text,final View.OnClickListener listener)
-    {
-        Button button=new Button(context);
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        button.setLayoutParams(params);
-        button.setText(text);
-        button.setTextColor(Color.WHITE);
-        button.setTextSize(20);
-        button.setOnClickListener(listener);
-        if(buttonLayout.getChildCount()>0)
-        {
-            params.setMargins(20, 0, 0, 0);
-            button.setLayoutParams(params);
-            buttonLayout.addView(button, 1);
-        }else{
-            button.setLayoutParams(params);
-            buttonLayout.addView(button);
-        }  }
-    /**
-     * 关闭对话框
-     */
-    public void dismiss() {
-        ad.dismiss();
-    } }
+
+    public static class Builder {
+
+        private Context context;
+        private String messageView;
+        private String positiveButtonText;  //前进按钮
+        private String negativeButtonText;  //后退按钮
+        private String dialogView;
+        private int textcolor;
+//        private View contentView;
+        private DialogInterface.OnClickListener positiveButtonClickListener;
+        private DialogInterface.OnClickListener negativeButtonClickListener;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder setMessage(String message,int textcol) {
+            this.messageView = message;
+            this.textcolor = textcol;
+            return this;
+        }
+
+
+        public Builder setMessage(int message) {
+            this.messageView = (String) context.getText(message);
+            return this;
+        }
+
+
+
+//        public Builder setContentView(View v) {
+//            this.contentView = v;
+//            return this;
+//        }
+
+        /**
+         * Set the positive button resource and it's listener
+         *
+         * @param positiveButtonText
+         * @return
+         */
+        public Builder setPositiveButton(int positiveButtonText,
+                                         DialogInterface.OnClickListener listener) {
+            this.positiveButtonText = (String) context
+                    .getText(positiveButtonText);
+            this.positiveButtonClickListener = listener;
+            return this;
+        }
+
+        public Builder setPositiveButton(String positiveButtonText,
+                                         DialogInterface.OnClickListener listener) {
+            this.positiveButtonText = positiveButtonText;
+            this.positiveButtonClickListener = listener;
+            return this;
+        }
+
+        public Builder setNegativeButton(int negativeButtonText,
+                                         DialogInterface.OnClickListener listener) {
+            this.negativeButtonText = (String) context
+                    .getText(negativeButtonText);
+            this.negativeButtonClickListener = listener;
+            return this;
+        }
+
+        public Builder setNegativeButton(String negativeButtonText,
+                                         DialogInterface.OnClickListener listener) {
+            this.negativeButtonText = negativeButtonText;
+            this.negativeButtonClickListener = listener;
+            return this;
+        }
+
+        public AlertDialog create() {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // instantiate the dialog with the custom Theme
+            final AlertDialog dialog = new AlertDialog(context);
+            View layout = inflater.inflate(R.layout.dialog_alert, null);
+//            dialog.addContentView(layout, new LayoutParams(
+//                    LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            // set the confirm button
+            if (positiveButtonText != null) {
+                ((NiceButton) layout.findViewById(R.id.positiveButton))
+                        .setText(positiveButtonText);
+                if (positiveButtonClickListener != null) {
+                    ((NiceButton) layout.findViewById(R.id.positiveButton))
+                            .setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    positiveButtonClickListener.onClick(dialog,
+                                            DialogInterface.BUTTON_POSITIVE);
+                                }
+                            });
+                }
+            } else {
+                // if no confirm button just set the visibility to GONE
+                layout.findViewById(R.id.positiveButton).setVisibility(
+                        View.GONE);
+            }
+            // set the cancel button
+            if (negativeButtonText != null) {
+                ((NiceButton) layout.findViewById(R.id.negativeButton))
+                        .setText(negativeButtonText);
+                if (negativeButtonClickListener != null) {
+                    ((NiceButton) layout.findViewById(R.id.negativeButton))
+                            .setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    negativeButtonClickListener.onClick(dialog,
+                                            DialogInterface.BUTTON_NEGATIVE);
+                                }
+                            });
+                }
+            } else {
+                // if no confirm button just set the visibility to GONE
+                layout.findViewById(R.id.negativeButton).setVisibility(
+                        View.GONE);
+            }
+            // set the content message
+            if (messageView != null) {
+                ((TextView) layout.findViewById(R.id.context)).setText(messageView);
+                ((TextView) layout.findViewById(R.id.context)).setTextColor(textcolor);
+            }
+//            else if (contentView != null) {
+//                // if no message set
+//                // add the contentView to the dialog body
+//                ((LinearLayout) layout.findViewById(R.id.content))
+//                        .removeAllViews();
+//                ((LinearLayout) layout.findViewById(R.id.content))
+//                        .addView(contentView, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
+//            }
+            dialog.setContentView(layout);
+            return dialog;
+        }
+    }
+
+}
