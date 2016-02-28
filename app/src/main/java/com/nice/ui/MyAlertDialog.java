@@ -3,11 +3,12 @@ package com.nice.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.Window;
 import android.widget.TextView;
-import android.view.ViewGroup.LayoutParams;
+
 import com.nice.R;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceTextView;
@@ -15,14 +16,20 @@ import com.nice.widget.NiceTextView;
 /**
  * Created by chen on 2016/2/28.
  */
-public class AlertDialog extends Dialog{
+public class MyAlertDialog extends AlertDialog{
 
-    protected AlertDialog(Context context) {
+    protected MyAlertDialog(Context context) {
         super(context);
     }
 
-    protected AlertDialog(Context context, int theme) {
+    protected MyAlertDialog(Context context, int theme) {
         super(context, theme);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+
     }
 
     public static class Builder {
@@ -96,11 +103,11 @@ public class AlertDialog extends Dialog{
             return this;
         }
 
-        public AlertDialog create() {
+        public MyAlertDialog create() {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             // instantiate the dialog with the custom Theme
-            final AlertDialog dialog = new AlertDialog(context);
+            final MyAlertDialog dialog = new MyAlertDialog(context);
             View layout = inflater.inflate(R.layout.dialog_alert, null);
 //            dialog.addContentView(layout, new LayoutParams(
 //                    LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -142,8 +149,9 @@ public class AlertDialog extends Dialog{
             }
             // set the content message
             if (messageView != null) {
-                ((TextView) layout.findViewById(R.id.context)).setText(messageView);
-                ((TextView) layout.findViewById(R.id.context)).setTextColor(textcolor);
+                NiceTextView dialogContent = (NiceTextView) layout.findViewById(R.id.dialog_content);
+                dialogContent.setText(messageView);
+                dialogContent.setTextColor(textcolor);
             }
 //            else if (contentView != null) {
 //                // if no message set
@@ -153,7 +161,7 @@ public class AlertDialog extends Dialog{
 //                ((LinearLayout) layout.findViewById(R.id.content))
 //                        .addView(contentView, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 //            }
-            dialog.setContentView(layout);
+            dialog.setCustomTitle(layout);
             return dialog;
         }
     }

@@ -3,9 +3,11 @@ package com.nice.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -119,16 +121,16 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_back_btn:
-                AlertDialog.Builder dialog = new AlertDialog.Builder(QuestionNoteActivity.this);
-                dialog .setMessage("您确定要退回订单吗？",R.color.black);
-                dialog.setNegativeButton("否",new DialogInterface.OnClickListener() {
+                MyAlertDialog dialog = new MyAlertDialog.Builder(QuestionNoteActivity.this)
+                .setMessage("您确定要退回订单吗？",R.color.black)
+                .setNegativeButton("否",new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         //设置你的操作事项
                     }
-                });
-                dialog.setPositiveButton("是",new DialogInterface.OnClickListener() {
+                })
+                .setPositiveButton("是",new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent1 = new Intent(QuestionNoteActivity.this, BackOrderActivity.class);
@@ -137,9 +139,11 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
                         bundle1.putSerializable("nicetSheet", entity);
                         intent1.putExtras(bundle1);
                         startActivity(intent1);
+                        dialog.dismiss();
                     }
-                });
-                dialog.create().show();
+                }).create();
+                dialog.show();
+
                 break;
             case R.id.back_layout:
                 finish();

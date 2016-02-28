@@ -196,7 +196,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         dialogs = new LoadingDialog(this);
         dialogs.setCanceledOnTouchOutside(false);
         if(QuestionUtil.getCompleteness(entity) < 100) {
-            com.nice.ui.AlertDialog.Builder dialog = new com.nice.ui.AlertDialog.Builder(QuestionContextActivity.this);
+            com.nice.ui.MyAlertDialog.Builder dialog = new com.nice.ui.MyAlertDialog.Builder(QuestionContextActivity.this);
             dialog .setMessage("您在问卷中有信息未填写！请确认问卷是否已全部完成。问题提交后，您将无法对其进行任何操作",R.color.red);
             dialog.setNegativeButton("返回操作",new DialogInterface.OnClickListener() {
 
@@ -209,25 +209,25 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
                 public void onClick(DialogInterface dialog, int which) {
                     NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
-                                @Override
-                                public void onCompleted() {
-                                    dialogs.dismiss();
-                                    QuestionUtil.delQuestion(String.valueOf(entity.shId));
-                                    Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
-                                    finish();
-                                }
+                        @Override
+                        public void onCompleted() {
+                            dialogs.dismiss();
+                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                            finish();
+                        }
 
-                                @Override
-                                public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                                }
+                        }
 
-                                @Override
-                                public void onNext(JSONObject jsonObject) {
+                        @Override
+                        public void onNext(JSONObject jsonObject) {
 
-                                }
-                            });
+                        }
+                    });
                 }
             });
             dialog.create().show();

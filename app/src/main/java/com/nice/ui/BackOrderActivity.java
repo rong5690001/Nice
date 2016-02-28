@@ -70,7 +70,7 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
 
     private void commit() {
         if (TextUtils.isEmpty(backorderInfo.getText().toString())) {
-            com.nice.ui.AlertDialog.Builder dialog = new com.nice.ui.AlertDialog.Builder(BackOrderActivity.this);
+            MyAlertDialog.Builder dialog = new MyAlertDialog.Builder(BackOrderActivity.this);
             dialog.setMessage("问卷退回的原因不能为空",R.color.black);
             dialog.setNegativeButton("关闭",new DialogInterface.OnClickListener() {
 
