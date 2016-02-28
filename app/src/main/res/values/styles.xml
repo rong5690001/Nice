@@ -21,4 +21,11 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="customLoading">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@mipmap/bootpicnew</item>
+    </style>
+
 </resources>

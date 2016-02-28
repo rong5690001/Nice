@@ -3,10 +3,8 @@
     package="com.nice">
 
     <!-- 二维码 -->
-    <uses-permission android:name="android.permission.CAMERA" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
@@ -47,7 +45,7 @@
     <!-- GPS权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- Power键权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 电话权限 -->
@@ -78,11 +76,7 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.MainActivity"
@@ -120,7 +114,7 @@
         <activity
             android:name=".ui.BackOrderActivity"
             android:label="@string/title_activity_back_order"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.CaptureActivity"
             android:label="@string/title_activity_capture"
@@ -130,7 +124,18 @@
             android:label="@string/title_activity_show"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
+
+        <activity
+            android:name=".ui.LoadingActivity"
+            android:label="@string/title_activity_loading"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
