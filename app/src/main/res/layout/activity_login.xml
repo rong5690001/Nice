@@ -22,8 +22,7 @@
         <com.nice.widget.NiceImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:src="@mipmap/head" />
+            android:layout_marginTop="20dp" />
         <!--用户名-->
         <LinearLayout
             android:layout_width="match_parent"
