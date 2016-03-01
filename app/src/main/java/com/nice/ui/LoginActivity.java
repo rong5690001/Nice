@@ -1,5 +1,6 @@
 package com.nice.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,7 +56,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 final String uiCode = LoginActivity.this.uiCode.getText().toString().trim();
                 final String uiPassword = LoginActivity.this.uiPassword.getText().toString();
                 if(TextUtils.isEmpty(uiCode) || TextUtils.isEmpty(uiPassword)){
-                    Toast.makeText(NiceApplication.instance(), "请填写用户名和密码", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(NiceApplication.instance(), "请填写用户名和密码", Toast.LENGTH_SHORT).show();
+                    MyAlertDialog.Builder dialog = new MyAlertDialog.Builder(LoginActivity.this);
+                    dialog.setMessage("请填写用户名和密码",R.color.black);
+                    dialog.setNegativeButton("关闭",new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            //设置你的操作事项
+                        }
+                    });
+                    dialog.create().show();
                     return;
                 }
                 NiceRxApi.login(uiCode, MD5.MD5Encode(uiPassword)).map(new Func1<NiceUser, NiceUser>() {
@@ -78,7 +89,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(NiceApplication.instance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        MyAlertDialog.Builder dialog = new MyAlertDialog.Builder(LoginActivity.this);
+                        dialog.setMessage("用户名或密码错误",R.color.black);
+                        dialog.setNegativeButton("关闭",new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                //设置你的操作事项
+                            }
+                        });
+                        dialog.create().show();
+//                        Toast.makeText(NiceApplication.instance(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

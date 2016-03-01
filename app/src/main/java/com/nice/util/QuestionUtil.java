@@ -170,26 +170,46 @@ public class QuestionUtil {
                 Set<Long> key3 = niceValue.mutiSelectedValues.keySet();
                 for (long id : key1) {
                     String key = String.valueOf(id);
-                    ValueJsonModel valueJsonModel = new ValueJsonModel();
-                    valueJsonModel.sqId = key;
-                    //判断是否选择说明题
-                    if (niceValue.selectedValues.get(id).contains("陈华榕陈华榕陈华榕陈华榕陈华榕")) {
-                        String[] v = niceValue.selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
-                        valueJsonModel.qaValue = v[0];
-                        if (v.length > 1) {
-                            valueJsonModel.qoMemo = v[1];
+                    if (!niceValue.selectedValues.get(id).equals("fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi")) {
+                        ValueJsonModel valueJsonModel = new ValueJsonModel();
+                        if (key.length() > 15) {
+                            key = key.substring(0, key.length() - 1);
                         }
-                    } else {
-                        valueJsonModel.qaValue = niceValue.selectedValues.get(id);
-                    }
-                    valueJsonModel.files = new ArrayList<>();
-                    if (valueJsonModel.qaValue.contains(".jpg") || valueJsonModel.qaValue.contains(".jpeg")) {
-                        for (int i = 0; i < 3; i++) {
+                        valueJsonModel.sqId = key;
+                        //判断是否选择说明题
+                        if (niceValue.selectedValues.get(id).contains("陈华榕陈华榕陈华榕陈华榕陈华榕")) {
+                            String[] v = niceValue.selectedValues.get(id).split("陈华榕陈华榕陈华榕陈华榕陈华榕");
+                            valueJsonModel.qaValue = v[0];
+                            if (v.length > 1) {
+                                valueJsonModel.qoMemo = v[1];
+                            }
+                        } else {
+                            valueJsonModel.qaValue = niceValue.selectedValues.get(id);
+                        }
+                        valueJsonModel.files = new ArrayList<>();
+                        if (valueJsonModel.qaValue.contains(".jpg") || valueJsonModel.qaValue.contains(".jpeg")) {
                             valueJsonModel.addFile(valueJsonModel.qaValue);
+                            if (niceValue.selectedValues.containsKey(id - 2)) {
+                                valueJsonModel.addFile(niceValue.selectedValues.get(id - 2));
+                                niceValue.selectedValues.put(id - 2, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                            }
+                            if (niceValue.selectedValues.containsKey(id - 1)) {
+                                valueJsonModel.addFile(niceValue.selectedValues.get(id - 1));
+                                niceValue.selectedValues.put(id - 1, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                            }
+                            if (niceValue.selectedValues.containsKey(id + 1)) {
+                                valueJsonModel.addFile(niceValue.selectedValues.get(id + 1));
+                                niceValue.selectedValues.put(id + 1, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                            }
+                            if (niceValue.selectedValues.containsKey(id + 2)) {
+                                valueJsonModel.addFile(niceValue.selectedValues.get(id + 2));
+                                niceValue.selectedValues.put(id + 2, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                            }
+
+                            valueJsonModel.qaValue = new File(valueJsonModel.qaValue).getName();
                         }
-                        valueJsonModel.qaValue = new File(valueJsonModel.qaValue).getName();
+                        result.add(valueJsonModel);
                     }
-                    result.add(valueJsonModel);
                 }
 
                 for (long id : key2) {
@@ -206,7 +226,7 @@ public class QuestionUtil {
                     for (String id_c : key3_child) {
                         String key = String.valueOf(id_c);
                         ValueJsonModel valueJsonModel = new ValueJsonModel();
-                        valueJsonModel.sqId = key;
+                        valueJsonModel.sqId = String.valueOf(id);
                         valueJsonModel.qaValue = mutiMap.get(id_c);
                         result.add(valueJsonModel);
                     }
@@ -262,7 +282,7 @@ public class QuestionUtil {
         for (NicetSheetQuestionGroup group : nicetSheet.SheetQuestionGroup) {
             result += preferences.getFloat(nicetSheet.shId + "" + group.qgId, 0f);
         }
-        return (int) (result * 100);
+        return (int) (result * 100) > 100 ? 100 : (int) (result * 100);
     }
 
     /**

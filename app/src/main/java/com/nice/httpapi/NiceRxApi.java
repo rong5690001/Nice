@@ -29,7 +29,9 @@ import rx.functions.Func1;
 
 public class NiceRxApi {
 
-    private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
+//    private static final String HOST_NAME = "http://139.219.141.225:8888/admin/logic";
+//    private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
+    private static final String HOST_NAME = "https://onsite.huaxiadnb.cn/admin/logic";
     private static final String LOGIN_URL = HOST_NAME + "/IOSAndroidDataService.ashx";
 
     private static Map getParams() {
