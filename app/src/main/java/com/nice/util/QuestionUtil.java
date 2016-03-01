@@ -189,21 +189,23 @@ public class QuestionUtil {
                         valueJsonModel.files = new ArrayList<>();
                         if (valueJsonModel.qaValue.contains(".jpg") || valueJsonModel.qaValue.contains(".jpeg")) {
                             valueJsonModel.addFile(valueJsonModel.qaValue);
-                            if (niceValue.selectedValues.containsKey(id - 2)) {
-                                valueJsonModel.addFile(niceValue.selectedValues.get(id - 2));
-                                niceValue.selectedValues.put(id - 2, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
-                            }
-                            if (niceValue.selectedValues.containsKey(id - 1)) {
-                                valueJsonModel.addFile(niceValue.selectedValues.get(id - 1));
-                                niceValue.selectedValues.put(id - 1, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
-                            }
-                            if (niceValue.selectedValues.containsKey(id + 1)) {
-                                valueJsonModel.addFile(niceValue.selectedValues.get(id + 1));
-                                niceValue.selectedValues.put(id + 1, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
-                            }
-                            if (niceValue.selectedValues.containsKey(id + 2)) {
-                                valueJsonModel.addFile(niceValue.selectedValues.get(id + 2));
-                                niceValue.selectedValues.put(id + 2, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                            if(String.valueOf(id).length() == 16) {
+                                if (niceValue.selectedValues.containsKey(id - 2)) {
+                                    valueJsonModel.addFile(niceValue.selectedValues.get(id - 2));
+                                    niceValue.selectedValues.put(id - 2, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                                }
+                                if (niceValue.selectedValues.containsKey(id - 1)) {
+                                    valueJsonModel.addFile(niceValue.selectedValues.get(id - 1));
+                                    niceValue.selectedValues.put(id - 1, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                                }
+                                if (niceValue.selectedValues.containsKey(id + 1)) {
+                                    valueJsonModel.addFile(niceValue.selectedValues.get(id + 1));
+                                    niceValue.selectedValues.put(id + 1, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                                }
+                                if (niceValue.selectedValues.containsKey(id + 2)) {
+                                    valueJsonModel.addFile(niceValue.selectedValues.get(id + 2));
+                                    niceValue.selectedValues.put(id + 2, "fdjsalkjfklsajklfdjsalkjfklsajdklfjdskaljfkdlsjaklfjdsakuiorewuqoiruewioqurewioqurioewuqioreuwqiourioewquioreuwioqurioewquoi");
+                                }
                             }
 
                             valueJsonModel.qaValue = new File(valueJsonModel.qaValue).getName();
