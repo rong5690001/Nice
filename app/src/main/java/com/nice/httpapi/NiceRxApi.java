@@ -11,6 +11,7 @@ import com.nice.model.NiceUser;
 import com.nice.model.NicetSheet;
 import com.nice.model.SignInModel;
 import com.nice.model.ValueJsonModel;
+import com.nice.util.MD5;
 import com.nice.util.QuestionUtil;
 
 import org.json.JSONArray;
@@ -30,13 +31,13 @@ import rx.functions.Func1;
 public class NiceRxApi {
 
 //    private static final String HOST_NAME = "http://139.219.141.225:8888/admin/logic";
-//    private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
-    private static final String HOST_NAME = "https://onsite.huaxiadnb.cn/admin/logic";
+    private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
+//    private static final String HOST_NAME = "https://onsite.huaxiadnb.cn/admin/logic";
     private static final String LOGIN_URL = HOST_NAME + "/IOSAndroidDataService.ashx";
 
-    private static Map getParams() {
+    private static Map getParams(String method,String mode) {
         Map params = new LinkedHashMap();
-        params.put("encryptCode", "0284c86a3ee1f5273ebc887797032948");
+        params.put("encryptCode", MD5.MD5Encode(method+mode+"1.0"));
         params.put("transfer", "121212");
         params.put("clientTimeStamp", String.valueOf(System.currentTimeMillis()));
         params.put("clientType", "android");
@@ -53,7 +54,7 @@ public class NiceRxApi {
      */
     public static Observable<NiceUser> login(String uiCode, String uiPassword) {
 
-        Map params = getParams();
+        Map params = getParams("uUserInfo","2001");
         params.put("method", "uUserInfo");
         params.put("mode", "2001");
 
@@ -81,7 +82,7 @@ public class NiceRxApi {
      */
     public static Observable<JSONObject> Download(List<String> shIds) {
 
-        Map params = getParams();
+        Map params = getParams("uSheet","1001");
 
         params.put("method", "uSheet");
         params.put("mode", "1001");
@@ -117,7 +118,7 @@ public class NiceRxApi {
     public static Observable<JSONObject> getNewQuestionInfo() {
 
         String uiId = String.valueOf(NiceApplication.user.uiId);
-        Map params = getParams();
+        Map params = getParams("uUserInfo","1002");
         params.put("method", "uUserInfo");
         params.put("mode", "1002");
         params.put("uiId", uiId);
@@ -143,7 +144,7 @@ public class NiceRxApi {
     public static Observable<JSONObject> getUploadedQuestion() {
 
         String uiId = String.valueOf(NiceApplication.user.uiId);
-        Map params = getParams();
+        Map params = getParams("uUserInfo","1003");
         params.put("method", "uUserInfo");
         params.put("mode", "1003");
         params.put("uiId", uiId);
@@ -170,7 +171,7 @@ public class NiceRxApi {
      */
     public static Observable<JSONObject> getNewQuestion() {
 
-        Map params = getParams();
+        Map params = getParams("uUserInfo","1002");
 
         params.put("method", "uUserInfo");
         params.put("mode", "1002");
@@ -199,7 +200,7 @@ public class NiceRxApi {
         Type type = new TypeToken<List<ValueJsonModel>>(){}.getType();
 //        List<ValueJsonModel> requestJson = gson.to(requestStr, type);
 
-        Map params = getParams();
+        Map params = getParams("uSheet","1002");
         params.put("method", "uSheet");
         params.put("mode", "1002");
         params.put("uiId", String.valueOf(NiceApplication.user.uiId));
@@ -227,7 +228,7 @@ public class NiceRxApi {
      */
     public static Observable<JSONObject> getSheetInfo(long shId) {
 
-        Map params = getParams();
+        Map params = getParams("uUserInfo","1005");
 
         params.put("method", "uUserInfo");
         params.put("mode", "1005");
@@ -254,7 +255,7 @@ public class NiceRxApi {
     public static Observable<JSONObject> backOrder(long id, String oiMemo) {
 
         String uiId = String.valueOf(NiceApplication.user.uiId);
-        Map params = getParams();
+        Map params = getParams("uUserInfo","1004");
         params.put("method", "uUserInfo");
         params.put("mode", "1004");
         params.put("uiId", uiId);
@@ -283,7 +284,7 @@ public class NiceRxApi {
         Gson gson = QSGsonFactory.create();
         String requestStr = gson.toJson(signInModel);
         String uiId = String.valueOf(NiceApplication.user.uiId);
-        Map params = getParams();
+        Map params = getParams("uSheet","2002");
         params.put("method", "uSheet");
         params.put("mode", "2002");
         params.put("uiId", uiId);
