@@ -260,7 +260,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String fileName = FileUtil.savePhoto(data, sqId);
+            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(FileUtil.getPhotopath(), 400, 500), sqId);
             if (!TextUtils.isEmpty(fileName)) {
                 examFragment.addValue(sqId, fileName);
                 examFragment.notifyDateChange();

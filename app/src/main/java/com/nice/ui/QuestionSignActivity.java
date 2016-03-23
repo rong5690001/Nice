@@ -9,14 +9,17 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +59,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -282,7 +286,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String fileName = FileUtil.savePhoto(data, sqId);
+            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(FileUtil.getPhotopath(), 400, 500), sqId);
             if(!TextUtils.isEmpty(fileName)){
                 Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
                 photo.setImageBitmap(bitmap);
@@ -352,17 +356,26 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.quest_sign_takephoto:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 1);
+//                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(FileUtil.getPhotopath())));
+                startActivityForResult(intent, Activity.DEFAULT_KEYS_DIALER);
                 break;
             case R.id.quest_sign_retakephoto:
                 Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent2, 1);
+                intent2.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+//                File out2 = new File("/sdcard/Image/"+ FileUtil.savePhoto(null, sqId));
+//                Uri uri2 = Uri.fromFile(out2);
+                // 获取拍照后未压缩的原图片，并保存在uri路径中
+                intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(FileUtil.getPhotopath())));
+                startActivityForResult(intent2, Activity.DEFAULT_KEYS_DIALER);
                 break;
             case R.id.back_layout:
                 finish();
                 break;
         }
     }
+
+
 
     @Override
     protected void onDestroy() {

@@ -5,12 +5,13 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.nice.NiceApplication;
 import com.nice.R;
@@ -44,10 +44,12 @@ import com.nice.widget.NiceTextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
@@ -72,7 +74,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private NicetSheet nicetSheet;
     private int signPosition;
 
-    public QuestionContextAdapter(NicetSheet nicetSheet, long shId, long qgId, NiceValue niceValue, String groupName, int isLastGroup, @NonNull List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
+    public QuestionContextAdapter(NicetSheet nicetSheet, long shId, long qgId, NiceValue niceValue, String groupName, int isLastGroup, List<NIcetSheetQuestion> datas, Context context, int... layoutId) {
         super(datas, context, layoutId);
         this.nicetSheet = nicetSheet;
         this.isLastGroup = isLastGroup;
@@ -484,6 +486,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
     private void onBindViewHolder_sign(AbsViewHolder holder, final int position) {
         signPosition = position;
         final long id = datas.get(position).sqId;
+        View view = View.inflate(context, R.layout.item_signname, null);
+        holder.setText(R.id.title, datas.get(position).sqTitle
+                + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         NiceImageView imageView = holder.getView(R.id.photo);
         NiceImageView btn = holder.getView(R.id.signname_btn);
         holder.setEnable(true);
@@ -519,6 +524,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
      */
     private void onBindViewHolder_upload_image(AbsViewHolder holder, final int position) {
         final long sqId = datas.get(position).sqId;
+        View view = View.inflate(context, R.layout.item_takephoto, null);
+        holder.setText(R.id.title, datas.get(position).sqTitle
+                + (TextUtils.isEmpty(datas.get(position).sqDescription) ? "" : "\n" + datas.get(position).sqDescription));
         int imageIndex = -1;
         SharedPreferences preferences = NiceApplication.instance().getQuestValuePreferencesQuest();
         NiceImageView[] imageViews = new NiceImageView[3];
@@ -559,6 +567,7 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 public void onClick(View v) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
                     ((QuestionContextActivity) context).startActivityForResult(intent, 1);
                 }
             });
