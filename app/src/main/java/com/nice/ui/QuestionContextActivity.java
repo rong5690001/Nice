@@ -208,6 +208,8 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
             dialog.setPositiveButton("确认提交",new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    dialogs.show();
                     NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                         @Override
                         public void onCompleted() {
