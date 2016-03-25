@@ -74,6 +74,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
     private String sqId;
     private LoadingDialog dialogs;
+    public static String imgUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,10 +263,12 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(FileUtil.getPhotopath(), 400, 500), sqId);
+            imgUrl =  FileUtil.getPhotopath();
+            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(imgUrl,2188.8,3891.2), sqId);
             if (!TextUtils.isEmpty(fileName)) {
                 examFragment.addValue(sqId, fileName);
                 examFragment.notifyDateChange();
+
             }
         }
 

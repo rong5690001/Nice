@@ -1,5 +1,6 @@
 package com.nice.adapter;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -35,6 +36,7 @@ import com.nice.ui.QuestionContextActivity;
 import com.nice.ui.SignNameActivity;
 import com.nice.util.BitmapUtil;
 import com.nice.util.Denisty;
+import com.nice.util.FileUtil;
 import com.nice.util.QuestionUtil;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceEditText;
@@ -566,8 +568,10 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
                     intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                    QuestionContextActivity.imgUrl = FileUtil.getPhotopath();
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(QuestionContextActivity.imgUrl)));
+                    EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
                     ((QuestionContextActivity) context).startActivityForResult(intent, 1);
                 }
             });

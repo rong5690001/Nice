@@ -162,6 +162,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     };
 
     private String sqId;//上传图片
+    private String imgUrl;
 
     @SuppressLint("SdCardPath")
     @Override
@@ -286,7 +287,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(FileUtil.getPhotopath(), 400, 500), sqId);
+            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(imgUrl,2188.8,3891.2), sqId);
             if(!TextUtils.isEmpty(fileName)){
                 Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
                 photo.setImageBitmap(bitmap);
@@ -356,8 +357,9 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.quest_sign_takephoto:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(FileUtil.getPhotopath())));
+                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                imgUrl = FileUtil.getPhotopath();
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(imgUrl)));
                 startActivityForResult(intent, Activity.DEFAULT_KEYS_DIALER);
                 break;
             case R.id.quest_sign_retakephoto:
