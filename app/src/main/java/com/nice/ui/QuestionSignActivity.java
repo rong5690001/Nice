@@ -287,7 +287,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(imgUrl,2188.8,3891.2), sqId);
+            String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(imgUrl), sqId);
             if(!TextUtils.isEmpty(fileName)){
                 Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
                 photo.setImageBitmap(bitmap);

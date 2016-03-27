@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,7 +85,11 @@ public class FileUtil {
 
         try {
             b = new FileOutputStream(fileName);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+            System.out.println("vvvvv_qian:"+bitmap.getByteCount());
+            float rate = 500*1024f / bitmap.getByteCount()*100;
+            rate = rate > 100 ? 100 : rate;
+            System.out.println("vvvvv_压缩比:" + rate);
+            bitmap.compress(Bitmap.CompressFormat.PNG, (int)rate, b);// 把数据写入文件
             if (!TextUtils.isEmpty(sqId)) {
                 SharedPreferences.Editor editor = NiceApplication.instance().getQuestValuePreferencesQuest().edit();
                 editor.putString(sqId, fileName);
@@ -113,7 +118,9 @@ public class FileUtil {
         String fileName = "";
         // 文件夹路径
         String pathUrl = Environment.getExternalStorageDirectory()+"/mymy/";
-        String imageName = "imageTest.jpg";
+//        String imageName = "imageTest.jpg";
+        new DateFormat();
+        String imageName = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
         File file = new File(pathUrl);
         file.mkdirs();// 创建文件夹
         fileName = pathUrl + imageName;
@@ -123,45 +130,49 @@ public class FileUtil {
     /**
      * 根据路径获取图片资源（已缩放）
      * @param url 图片存储路径
-     * @param width 缩放的宽度
-     * @param height 缩放的高度
      * @return
      */
-    public static Bitmap getBitmapFromUrl(String url, double width, double height) {
+    public static Bitmap getBitmapFromUrl(String url) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true; // 设置了此属性一定要记得将值设置为false
-        Bitmap bitmap = BitmapFactory.decodeFile(url);
+        Bitmap bitmap = BitmapFactory.decodeFile(url,options);
         // 防止OOM发生
         options.inJustDecodeBounds = false;
-        int mWidth = bitmap.getWidth();
-        int mHeight = bitmap.getHeight();
+//        int mWidth = bitmap.getWidth();
+//        int mHeight = bitmap.getHeight();
+        int mWidth = options.outWidth;
+        int mHeight = options.outHeight;
+        float width = 480f;
+        float height = 800f;
         Matrix matrix = new Matrix();
-        float scaleWidth = 1;
-        float scaleHeight = 1;
-//        try {
-//            ExifInterface exif = new ExifInterface(url);
-//            String model = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        // 按照固定宽高进行缩放
-        // 这里希望知道照片是横屏拍摄还是竖屏拍摄
-        // 因为两种方式宽高不同，缩放效果就会不同
-        // 这里用了比较笨的方式
-        if(mWidth <= mHeight) {
-            scaleWidth = (float) (width/mWidth);
-            scaleHeight = (float) (height/mHeight);
-        } else {
-            scaleWidth = (float) (height/mWidth);
-            scaleHeight = (float) (width/mHeight);
+        int be = 1;//be=1表示不缩放
+        if (mWidth > mHeight && mWidth > width) {//如果宽度大的话根据宽度固定大小缩放
+            be = (int) (options.outWidth / width);
+        } else if (mWidth < mHeight && mHeight > height) {//如果高度高的话根据宽度固定大小缩放
+            be = (int) (options.outHeight / height);
         }
-//        matrix.postRotate(90); /* 翻转90度 */
-        // 按照固定大小对图片进行缩放
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, mWidth, mHeight, matrix, true);
-        // 用完了记得回收
-        bitmap.recycle();
-        return newBitmap;
+        if (be <= 0)
+            be = 1;
+        options.inSampleSize = be;//设置缩放比例
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        bitmap = BitmapFactory.decodeFile(url, options);
+        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+    }
+
+
+    private static Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            options -= 10;//每次都减少10
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
     }
 
     public static byte[] Bitmap2Bytes(Bitmap bm) {

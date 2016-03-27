@@ -552,6 +552,9 @@ public class QuestionContextAdapter extends AbsAdapter<NIcetSheetQuestion> {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                        QuestionContextActivity.imgUrl = FileUtil.getPhotopath();
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(QuestionContextActivity.imgUrl)));
                         EventBus.getDefault().post(new SqIdEvent(String.valueOf(sqId) + "" + imageIndexFinal));
                         ((QuestionContextActivity) context).startActivityForResult(intent, 1);
                     }
