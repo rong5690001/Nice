@@ -79,11 +79,26 @@ public class GroupListFragment extends Fragment {
     }
 
     public List<String> getGroupNmae() {
+        for(int i =0;i<entity.SheetQuestionGroup.size();i++){
+            for(int j = i+1;j<entity.SheetQuestionGroup.size();j++){
+                if(entity.SheetQuestionGroup.get(i).qgSequence<entity.SheetQuestionGroup.get(j).qgSequence){
+                    NicetSheetQuestionGroup temp = entity.SheetQuestionGroup.get(i);
+                    entity.SheetQuestionGroup.set(i,entity.SheetQuestionGroup.get(j));
+                    entity.SheetQuestionGroup.set(j,temp);
+                }
+            }
+        }
         List<String> list = new ArrayList();
         for (NicetSheetQuestionGroup group : entity.SheetQuestionGroup) {
             list.add(group.qgName);
+
         }
-        return list;
+        System.out.println(list.size()+"jiaojiabin");
+        List<String> list1 = new ArrayList();
+        for (int i =0;i<list.size();i++){
+            list1.add(list.get(list.size()-1-i));
+        }
+        return list1;
     }
 
 
