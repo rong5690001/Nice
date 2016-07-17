@@ -18,17 +18,21 @@ import android.widget.Toast;
 import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
+import com.nice.httpapi.response.dataparser.NiceOrderInfoPaser;
 import com.nice.model.Event.SqIdEvent;
 import com.nice.model.Event.SwitchGroupEvent;
+import com.nice.model.NicetOrderInfo;
 import com.nice.model.NicetSheet;
 import com.nice.ui.fragment.ExamFragment;
 import com.nice.ui.fragment.GroupListFragment;
 import com.nice.util.FileUtil;
 import com.nice.util.QuestionUtil;
+import com.nice.util.StringUtils;
 import com.nice.widget.NiceButton;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -67,6 +71,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     NiceTextView questCompleteness;
 
     public NicetSheet entity;
+    private NicetOrderInfo orderInfo;
     private ExamFragment examFragment;
     //第几个分组
     public int groupIndex;
@@ -87,15 +92,35 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         Log.e(QuestionSignActivity.class.getSimpleName(), "订单ID：" + entity.shId);
         if (null != entity)
             initLayout();
+        getSheetInfo();
     }
 
     private void initLayout() {
         title.setText("问卷调查");
         rightBtnLayout.setVisibility(View.GONE);
 
-        questId.setText(String.valueOf(entity.shId));
         questCompleteness.setText(String.valueOf(QuestionUtil.getCompleteness(entity)) + "%");
         showExamFragment();
+    }
+
+    private void getSheetInfo() {
+        NiceRxApi.getSheetInfo(entity.shId).subscribe(new Subscriber<JSONObject>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(JSONObject jsonObject) {
+                orderInfo = NiceOrderInfoPaser.paser(jsonObject).get(0);
+                questId.setText(orderInfo.oiInternalCode);
+            }
+        });
     }
 
 
@@ -214,11 +239,7 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                     NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                         @Override
                         public void onCompleted() {
-                            dialogs.dismiss();
-                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
-                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
-                            finish();
+
                         }
 
                         @Override
@@ -228,7 +249,19 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
                         @Override
                         public void onNext(JSONObject jsonObject) {
-
+                            try {
+                                if(jsonObject.get("status").equals("1")){
+                                    dialogs.dismiss();
+                                    QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                                    Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
@@ -239,11 +272,6 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
             NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                 @Override
                 public void onCompleted() {
-                    dialogs.dismiss();
-                    QuestionUtil.delQuestion(String.valueOf(entity.shId));
-                    Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
-                    finish();
                 }
 
                 @Override
@@ -253,7 +281,21 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
 
                 @Override
                 public void onNext(JSONObject jsonObject) {
-
+                    try {
+                        if(jsonObject.get("status").equals("1")){
+                            dialogs.dismiss();
+                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                            dialogs.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                        dialogs.dismiss();
+                    }
                 }
             });
         }

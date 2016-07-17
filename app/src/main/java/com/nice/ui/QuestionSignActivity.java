@@ -52,6 +52,7 @@ import com.nice.util.StringUtils;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -339,18 +340,26 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onNext(JSONObject jsonObject) {
-                        SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
-                        editor.putBoolean(String.valueOf(entity.shId), true);
-                        if(editor.commit()) {
-                            Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("entity", entity);
-                            intent1.putExtras(bundle);
-                            startActivity(intent1);
-                            finish();
-                        }else{
+
+                        try {
+                            if(jsonObject.get("status").equals("1")){
+                                SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
+                                editor.putBoolean(String.valueOf(entity.shId), true);
+                                if(editor.commit()) {
+                                    Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("entity", entity);
+                                    intent1.putExtras(bundle);
+                                    startActivity(intent1);
+                                    finish();
+                                }
+                            } else {
+                                Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
                             Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
 
@@ -368,7 +377,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
 //                File out2 = new File("/sdcard/Image/"+ FileUtil.savePhoto(null, sqId));
 //                Uri uri2 = Uri.fromFile(out2);
                 // 获取拍照后未压缩的原图片，并保存在uri路径中
-                intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(FileUtil.getPhotopath())));
+                intent2.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(imgUrl)));
                 startActivityForResult(intent2, Activity.DEFAULT_KEYS_DIALER);
                 break;
             case R.id.back_layout:

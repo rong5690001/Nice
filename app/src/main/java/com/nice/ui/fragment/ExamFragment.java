@@ -15,6 +15,7 @@ import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.adapter.QuestionContextAdapter;
 import com.nice.httpapi.response.dataparser.NiceValuePaser;
+import com.nice.model.NIcetSheetQuestion;
 import com.nice.model.NiceValue;
 import com.nice.model.NicetSheetQuestionGroup;
 import com.nice.ui.QuestionContextActivity;
@@ -96,6 +97,15 @@ public class ExamFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
+        for(int i =1;i<group.SheetQuestion.size();i++){
+            for(int j = 0;j<group.SheetQuestion.size();j++){
+                if(group.SheetQuestion.get(i).sqSequence<group.SheetQuestion.get(j).sqSequence){
+                    NIcetSheetQuestion temp = group.SheetQuestion.get(i);
+                    group.SheetQuestion.set(i,group.SheetQuestion.get(j));
+                    group.SheetQuestion.set(j,temp);
+                }
+            }
+        }
         adapter = new QuestionContextAdapter(((QuestionContextActivity) getActivity()).entity, shId, group.qgId, getNiceValue(), group.qgName, isLastGroup, group.SheetQuestion, getActivity()
                 , R.layout.item_signleselect //	单项选择题 0
                 , R.layout.item_selectinstruction//单选说明题 1

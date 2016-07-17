@@ -28,7 +28,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -73,7 +75,9 @@ public class FileUtil {
             return null;
         }
         new DateFormat();
-        String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date now = new Date();
+        String name = DateFormat.format(format.format(now), Calendar.getInstance(Locale.CHINA)) + ".jpg";
         System.out.println("photo_name:" + name);
 //        Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
         FileOutputStream b = null;

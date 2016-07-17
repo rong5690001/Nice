@@ -20,6 +20,7 @@ import com.nice.widget.NiceEditText;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -69,7 +70,9 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void commit() {
+        System.out.print("0522_01");
         if (TextUtils.isEmpty(backorderInfo.getText().toString())) {
+            System.out.print("0522_02");
             MyAlertDialog.Builder dialog = new MyAlertDialog.Builder(BackOrderActivity.this);
             dialog.setMessage("问卷退回的原因不能为空",R.color.black);
             dialog.setNegativeButton("关闭",new DialogInterface.OnClickListener() {
@@ -87,13 +90,7 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
         NiceRxApi.backOrder(orderInfo.oiId, backorderInfo.getText().toString()).subscribe(new Subscriber<JSONObject>() {
             @Override
             public void onCompleted() {
-                if (QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId))) {
-                    Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post("QuestionNoteActivity.finish");
-                    finish();
-                } else {
-                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
-                }
+            System.out.print("0522_03");
 
             }
 
@@ -104,7 +101,20 @@ public class BackOrderActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onNext(JSONObject jsonObject) {
-
+                System.out.print("jiaojiabin--tuihui");
+                try {
+                    if(jsonObject.get("status").equals("1")){
+                        QuestionUtil.delQuestion(String.valueOf(nicetSheet.shId));
+                        Toast.makeText(NiceApplication.instance(), "已提交申请", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post("QuestionNoteActivity.finish");
+                        finish();
+                    } else {
+                        Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
+                        System.out.print("jiaojiabin--tuihui-----");
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(NiceApplication.instance(), "提交失败，请重试", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

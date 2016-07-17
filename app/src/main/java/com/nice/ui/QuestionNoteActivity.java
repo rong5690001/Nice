@@ -86,7 +86,6 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
         title.setText("问卷调查");
         rightBtnLayout.setVisibility(View.GONE);
 
-        questId.setText(String.valueOf(entity.shId));
         questName.setText(entity.shName);
 
         questCompleteness.setText(String.valueOf(QuestionUtil.getCompleteness(entity)) + "%");
@@ -109,6 +108,7 @@ public class QuestionNoteActivity extends AppCompatActivity implements OnClickLi
                 orderInfo = NiceOrderInfoPaser.paser(jsonObject).get(0);
                 address.setText(orderInfo.oiLocation);
                 username.setText(orderInfo.oiConName);
+                questId.setText(orderInfo.oiInternalCode);
                 phone.setText(orderInfo.oiConPhone);
                 date.setText(StringUtils.formatDate(orderInfo.oiStartDate)
                         + "至" + StringUtils.formatDate(orderInfo.oiEndDate));

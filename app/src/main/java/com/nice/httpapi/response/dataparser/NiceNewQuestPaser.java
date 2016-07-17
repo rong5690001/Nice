@@ -18,6 +18,7 @@ public class NiceNewQuestPaser {
 
     public static List<NiceQuestion> paser(JSONObject jsonObject){
         try {
+            if(jsonObject.isNull("result")) return null;
             String niceQusetion = jsonObject.getJSONArray("result").toString();
             Gson gson = QSGsonFactory.create();
             Type type = new TypeToken<List<NiceQuestion>>(){}.getType();
