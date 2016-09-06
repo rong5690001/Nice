@@ -73,8 +73,11 @@ public class IncompleteQuestionActivity extends AppCompatActivity implements Vie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent;
-                if(!NiceApplication.instance()
-                        .getPreferencesSign().getBoolean(String.valueOf(mAdapter.getItem(position).shId), false)) {
+                SharedPreferences sh = NiceApplication.instance()
+                        .getPreferencesSign();
+                String as = String.valueOf(mAdapter.getItem(position).shId);
+                String ss = sh.getString(as, "");
+                if("".equals(ss)) {
                     intent = new Intent(IncompleteQuestionActivity.this, QuestionNoteActivity.class);
                 }else{
                     intent = new Intent(IncompleteQuestionActivity.this, QuestionContextActivity.class);

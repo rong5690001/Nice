@@ -1,16 +1,10 @@
 package com.nice.httpapi;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nice.NiceApplication;
-import com.nice.R;
 import com.nice.httpapi.gson.QSGsonFactory;
 import com.nice.httpapi.request.RxRequest;
 import com.nice.httpapi.response.dataparser.NiceUserPaser;
@@ -18,13 +12,8 @@ import com.nice.model.NiceUser;
 import com.nice.model.NicetSheet;
 import com.nice.model.SignInModel;
 import com.nice.model.ValueJsonModel;
-import com.nice.ui.IncompleteQuestionActivity;
-import com.nice.ui.LoadingDialog;
-import com.nice.ui.LoadingDialog_hq;
-import com.nice.ui.QuestionContextActivity;
 import com.nice.util.MD5;
 import com.nice.util.QuestionUtil;
-import com.nice.widget.NiceButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,24 +21,20 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
 import rx.Observable;
 import rx.functions.Func1;
 
 public class NiceRxApi {
 
 //    private static final String HOST_NAME = "http://139.219.141.225:8888/admin/logic";
-//    private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
-    private static final String HOST_NAME = "https://onsite.huaxiadnb.cn/admin/logic";
+    private static final String HOST_NAME = "http://180.76.131.23/admin/logic";
+//    private static final String HOST_NAME = "https://onsite.huaxiadnb.cn/admin/logic";
     private static final String LOGIN_URL = HOST_NAME + "/IOSAndroidDataService.ashx";
-    private static LoadingDialog_hq dialogs;
-    private static QuestionContextActivity niceContent;
     private static Map getParams(String method,String mode) {
         Map params = new LinkedHashMap();
         params.put("encryptCode", MD5.MD5Encode(method+mode+"1.0"));
@@ -229,43 +214,6 @@ public class NiceRxApi {
                     }
                 });
     }
-    @Bind(R.id.submit_btn)
-    NiceButton submitBtn;
-    static int i=0;
-    ProgressBar progressBar=null;
-    private Handler handler=new Handler(){
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0x123:
-                    submitBtn.setClickable(false);
-                    i+=((Math.random()+1)*10);
-                    if(i>=100){
-                        i=100;
-                    }
-                    progressBar.setProgress(i);
-                    if(i!=100){
-                        handler.sendEmptyMessageDelayed(0x123,500);
-                        submitBtn.setText("正在获取本地数据"+i+"%");
-                    }else if(i==100){
-                        handler.sendEmptyMessageDelayed(0x321,500);
-//                        startActivity(new Intent(NewQuestActivity.this, IncompleteQuestionActivity.class));
-                        dialogs.dismiss();
-                    }
-                    break;
-//                case 0x321:
-//                    submitBtn.setText(打开);
-//                    submitBtn.setClickable(true);
-//                    submitBtn.setBackgroundResource(R.drawable.aa_button_after);
-//                    handler.sendEmptyMessageDelayed(0x110,1000);
-//                    break;
-                case 0x110:
-                    progressBar.setProgress(0);
-                    submitBtn.setBackgroundResource(R.drawable.btn_selector);
-                default:
-                    break;
-            }
-        };
-    };
 
     /**
      * 提交问卷
@@ -274,10 +222,6 @@ public class NiceRxApi {
      */
     public static Observable<JSONObject> commitQuestion(NicetSheet nicetSheet) {
         Gson gson = QSGsonFactory.create();
-        i = 0;
-        dialogs = new LoadingDialog_hq(niceContent);
-        dialogs.setCanceledOnTouchOutside(false);
-        dialogs.show();
         String requestStr = gson.toJson(QuestionUtil.getNiceValueJSONObject(nicetSheet));
 
         Type type = new TypeToken<List<ValueJsonModel>>(){}.getType();

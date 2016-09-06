@@ -17,4 +17,26 @@ public class SignInModel implements Serializable{
     public String siTime;
     public List<FileModel> files = new ArrayList<>();
 
+    public SignInModel(String shId, String silongitude, String silatitude, String siadd, String sipicurl, String siTime,List<FileModel> files) {
+        this.shId = shId;
+        this.silongitude = silongitude;
+        this.silatitude = silatitude;
+        this.siadd = siadd;
+        this.sipicurl = sipicurl;
+        this.siTime = siTime;
+        this.files = files;
+    }
+
+    public SignInModel(String shId, String silongitude, String silatitude, String siadd, String sipicurl, String siTime) {
+        this.shId = shId;
+        this.silongitude = silongitude;
+        this.silatitude = silatitude;
+        this.siadd = siadd;
+        this.sipicurl = sipicurl;
+        this.siTime = siTime;
+    }
+
+    public SignInModel() {
+
+    }
 }

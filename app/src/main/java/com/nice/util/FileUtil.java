@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.nice.NiceApplication;
+import com.nice.ui.BitmapWater;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,8 +46,6 @@ public class FileUtil {
 
         File file = null;
 
-        System.out.println(file.getParent());
-
         InputStream inputStream = null;
         OutputStream outputStream = null;
 
@@ -74,7 +73,6 @@ public class FileUtil {
                     "SD card is not avaiable/writeable right now.");
             return null;
         }
-        new DateFormat();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Date now = new Date();
         String name = DateFormat.format(format.format(now), Calendar.getInstance(Locale.CHINA)) + ".jpg";
@@ -89,11 +87,12 @@ public class FileUtil {
 
         try {
             b = new FileOutputStream(fileName);
-            System.out.println("vvvvv_qian:"+bitmap.getByteCount());
+//            System.out.println("vvvvv_qian:"+bitmap.getByteCount());
             float rate = 500*1024f / bitmap.getByteCount()*100;
             rate = rate > 100 ? 100 : rate;
             System.out.println("vvvvv_压缩比:" + rate);
-            bitmap.compress(Bitmap.CompressFormat.PNG, (int)rate, b);// 把数据写入文件
+//            new BitmapWater().createWatermark(bitmap,"jioajiao");
+            bitmap.compress(Bitmap.CompressFormat.PNG, (int)rate-15, b);// 把数据写入文件
             if (!TextUtils.isEmpty(sqId)) {
                 SharedPreferences.Editor editor = NiceApplication.instance().getQuestValuePreferencesQuest().edit();
                 editor.putString(sqId, fileName);
@@ -157,23 +156,24 @@ public class FileUtil {
         }
         if (be <= 0)
             be = 1;
-        options.inSampleSize = be;//设置缩放比例
-        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        options.inSampleSize = be+2;//设置缩放比例
+                //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(url, options);
+        bitmap = new BitmapWater().createWatermark(bitmap,StringUtils.getCurrentTime());
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
 
     private static Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        int options = 100;
-        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();//重置baos即清空baos
-            options -= 10;//每次都减少10
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+        image.compress(Bitmap.CompressFormat.JPEG, 43, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+//        int options = 100;
+//        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+//            baos.reset();//重置baos即清空baos
+//            options -= 10;//每次都减少10
+//            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
 
-        }
+//        }
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
         return bitmap;
@@ -181,8 +181,25 @@ public class FileUtil {
 
     public static byte[] Bitmap2Bytes(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bm.compress(Bitmap.CompressFormat.PNG, 43, baos);
         return baos.toByteArray();
+    }
+
+
+    private static void saveBitmap(Bitmap bit, int quality, String fileName,
+                                   boolean optimize) {
+        compressBitmap(bit, bit.getWidth(), bit.getHeight(), quality,
+                fileName.getBytes(), optimize);
+
+    }
+
+
+    private static native String compressBitmap(Bitmap bit, int w, int h, int quality, byte[] fileNameBytes, boolean optimize);
+
+    static {
+        System.loadLibrary("jpegbither");
+        System.loadLibrary("bitherjni");
+
     }
 
 }

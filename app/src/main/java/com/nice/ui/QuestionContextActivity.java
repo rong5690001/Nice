@@ -1,13 +1,17 @@
 package com.nice.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,27 +19,31 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
+import com.nice.httpapi.gson.QSGsonFactory;
 import com.nice.httpapi.response.dataparser.NiceOrderInfoPaser;
 import com.nice.model.Event.SqIdEvent;
 import com.nice.model.Event.SwitchGroupEvent;
+import com.nice.model.FileModel;
 import com.nice.model.NicetOrderInfo;
 import com.nice.model.NicetSheet;
+import com.nice.model.SignInModel;
 import com.nice.ui.fragment.ExamFragment;
 import com.nice.ui.fragment.GroupListFragment;
 import com.nice.util.FileUtil;
 import com.nice.util.QuestionUtil;
-import com.nice.util.StringUtils;
-import com.nice.widget.NiceButton;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,6 +81,14 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
     public NicetSheet entity;
     private NicetOrderInfo orderInfo;
     private ExamFragment examFragment;
+    //判断签到时是否离线签到 0否，有网已签到 1 是 没有网 签到没有提交
+    public int isSign;
+    public SignInModel signInModel;
+//    public double mysilongitude;
+//    public double mysilatitude;
+//    public String mysiadd;
+//    public String mysipicurl;
+//    public String mysiTime;
     //第几个分组
     public int groupIndex;
     public int isLastGroup = 0;//0:第一个分组 1:中间的分组 2:最后一个分组
@@ -88,6 +104,19 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         entity = (NicetSheet) getIntent().getSerializableExtra("entity");
+        isSign = getIntent().getExtras().getInt("mystr");
+        if(isSign == 1){
+            signInModel = (SignInModel) getIntent().getSerializableExtra("signInModel");
+            SharedPreferences mSharedPreferences = getSharedPreferences("sign", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            try {
+                editor.putString("signInModel",new JSONObject(QSGsonFactory.create().toJson(signInModel)).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            editor.putInt("isSign",isSign);
+            editor.commit();
+        }
         NiceApplication.instance().shId = entity.shId;
         Log.e(QuestionSignActivity.class.getSimpleName(), "订单ID：" + entity.shId);
         if (null != entity)
@@ -236,15 +265,171 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     dialogs.show();
+                    SharedPreferences  sp = getSharedPreferences("sign", Context.MODE_PRIVATE);
+
+                    isSign = sp.getInt("isSign",0);
+                    if(isSign == 1){
+                        signInModel = QSGsonFactory.create().fromJson(sp.getString("signInModel",""),SignInModel.class);
+                        String fileName = signInModel.sipicurl.substring(14);
+                        Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
+                        FileModel fileModel = new FileModel();
+                        fileModel.filename = new File(fileName).getName();
+                        try {
+                            fileModel.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
+                            signInModel.files.clear();
+                            signInModel.files.add(fileModel);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        NiceRxApi.signIn(signInModel).subscribe(new Subscriber<JSONObject>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(JSONObject jsonObject) {
+
+                                try {
+                                    if(jsonObject.get("status").equals("1")){
+                                        SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
+                                        editor.putBoolean(String.valueOf(entity.shId), true);
+                                    } else {
+                                        Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        });
+                    }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(JSONObject jsonObject) {
+                                    try {
+                                        if(jsonObject.get("status").equals("1")){
+                                            dialogs.dismiss();
+                                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                                            finish();
+                                        } else {
+                                            Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (JSONException e) {
+                                        Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }).start();
+
+                }
+            });
+            dialog.create().show();
+        } else {
+            dialogs.show();
+            SharedPreferences  sp = getSharedPreferences("sign", Context.MODE_PRIVATE);
+            isSign = sp.getInt("isSign",0);
+            if(isSign == 1){
+                signInModel = QSGsonFactory.create().fromJson(sp.getString("signInModel",""),SignInModel.class);
+                String fileName = signInModel.sipicurl.substring(14);
+                Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
+                FileModel fileModel = new FileModel();
+                fileModel.filename = new File(fileName).getName();
+                try {
+                    fileModel.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
+                    signInModel.files.clear();
+                    signInModel.files.add(fileModel);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                NiceRxApi.signIn(signInModel).subscribe(new Subscriber<JSONObject>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(JSONObject jsonObject) {
+
+                        try {
+                            if(jsonObject.get("status").equals("1")){
+                                SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
+                                editor.putBoolean(String.valueOf(entity.shId), true);
+                            } else {
+                                Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
                     NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
+                                @Override
+                                public void onCompleted() {
 
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(JSONObject jsonObject) {
+                                    try {
+                                        if(jsonObject.get("status").equals("1")){
+                                            dialogs.dismiss();
+                                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
+                                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
+                                            finish();
+                                        } else {
+                                            Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (JSONException e) {
+                                        Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         }
 
                         @Override
@@ -258,46 +443,17 @@ public class QuestionContextActivity extends AppCompatActivity implements View.O
                                     finish();
                                 } else {
                                     Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                    dialogs.dismiss();
                                 }
                             } catch (JSONException e) {
                                 Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                dialogs.dismiss();
                             }
                         }
                     });
                 }
-            });
-            dialog.create().show();
-        } else {
-            dialogs.show();
-            NiceRxApi.commitQuestion(entity).subscribe(new Subscriber<JSONObject>() {
-                @Override
-                public void onCompleted() {
-                }
+            }).start();
 
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(JSONObject jsonObject) {
-                    try {
-                        if(jsonObject.get("status").equals("1")){
-                            dialogs.dismiss();
-                            QuestionUtil.delQuestion(String.valueOf(entity.shId));
-                            Toast.makeText(NiceApplication.instance(), "上传成功", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(QuestionContextActivity.this, QuestionUploadActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
-                            dialogs.dismiss();
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(NiceApplication.instance(), "上传失败，请重试", Toast.LENGTH_SHORT).show();
-                        dialogs.dismiss();
-                    }
-                }
-            });
         }
     }
 

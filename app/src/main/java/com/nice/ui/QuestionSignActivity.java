@@ -9,17 +9,17 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -42,12 +42,12 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.nice.NiceApplication;
 import com.nice.R;
 import com.nice.httpapi.NiceRxApi;
+import com.nice.httpapi.response.dataparser.NiceSignPaser;
 import com.nice.model.Event.SqIdEvent;
 import com.nice.model.FileModel;
 import com.nice.model.NicetSheet;
 import com.nice.model.SignInModel;
 import com.nice.util.FileUtil;
-import com.nice.util.QuestionUtil;
 import com.nice.util.StringUtils;
 import com.nice.widget.NiceImageView;
 import com.nice.widget.NiceTextView;
@@ -60,12 +60,12 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import rx.Subscriber;
+
 
 public class QuestionSignActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -111,6 +111,8 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     private int mMinute;
     private int mSecond;
     private SignInModel signInModel;
+    private Location location;
+    private String purl = "";
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -256,7 +258,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         mHour = c.get(Calendar.HOUR_OF_DAY);//获取当前的小时数
         mMinute = c.get(Calendar.MINUTE);//获取当前的分钟数
         mSecond = c.get(Calendar.SECOND);//获取当前的秒数
-        String str2 = (mHour<10?"0"+mHour:mHour)+":"+(mMinute<10?"0"+mMinute:mMinute)+":"+(mSecond<10?"0"+mSecond:mSecond);
+        String str2 = (mHour < 10 ? "0" + mHour : mHour) + ":" + (mMinute < 10 ? "0" + mMinute : mMinute) + ":" + (mSecond < 10 ? "0" + mSecond : mSecond);
         title.setText("签到");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
@@ -281,6 +283,26 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         Marker marker = aMap.addMarker(markerOption);
     }
 
+    //判断当前是否有网
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) {
+        } else {
+            //如果仅仅是用来判断网络连接
+            //则可以使用 cm.getActiveNetworkInfo().isAvailable();
+            NetworkInfo[] info = cm.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     @SuppressLint("SdCardPath")
     @Override
@@ -289,10 +311,12 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             String fileName = FileUtil.savePhoto(FileUtil.getBitmapFromUrl(imgUrl), sqId);
-            if(!TextUtils.isEmpty(fileName)){
+            if (!TextUtils.isEmpty(fileName)) {
                 Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
+//               bitmap = new BitmapWater().createWatermark(bitmap,StringUtils.getCurrentTime());
                 photo.setImageBitmap(bitmap);
                 signInModel.sipicurl = "/sdcard/Image/" + fileName;
+                purl = signInModel.sipicurl;
                 FileModel fileModel = new FileModel();
                 fileModel.filename = new File(fileName).getName();
                 try {
@@ -317,7 +341,7 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_commit_btn:
-                if(!takePhotoed){
+                if (!takePhotoed) {
                     Toast.makeText(NiceApplication.instance(), "请先拍照", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -325,46 +349,78 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 signInModel.silongitude = String.valueOf(lng);
                 signInModel.silatitude = String.valueOf(lat);
                 signInModel.siadd = address.getText().toString();
-                signInModel.silongitude = String.valueOf(lng);
                 signInModel.siTime = StringUtils.getCurrentTime();
-                NiceRxApi.signIn(signInModel).subscribe(new Subscriber<JSONObject>() {
-                    @Override
-                    public void onCompleted() {
 
-                    }
+                String fileName = signInModel.sipicurl.substring(14);
+                Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/Image/" + fileName);
+                FileModel fileModel = new FileModel();
+                fileModel.filename = new File(fileName).getName();
+                try {
+                    fileModel.file = new String(Base64.encode(FileUtil.Bitmap2Bytes(bitmap), 0), "GB2312");
+                    signInModel.files.clear();
+                    signInModel.files.add(fileModel);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                if (isNetworkAvailable(this)) {
+                    signInModel = new SignInModel(signInModel.shId, signInModel.silongitude, signInModel.silatitude, signInModel.siadd, purl, signInModel.siTime,signInModel.files);
+                    saveValues(signInModel);
+                    NiceRxApi.signIn(signInModel).subscribe(new Subscriber<JSONObject>() {
+                        @Override
+                        public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(JSONObject jsonObject) {
-
-                        try {
-                            if(jsonObject.get("status").equals("1")){
-                                SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
-                                editor.putBoolean(String.valueOf(entity.shId), true);
-                                if(editor.commit()) {
-                                    Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("entity", entity);
-                                    intent1.putExtras(bundle);
-                                    startActivity(intent1);
-                                    finish();
-                                }
-                            } else {
-                                Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
                         }
 
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(JSONObject jsonObject) {
+
+                            try {
+                                if (jsonObject.get("status").equals("1")) {
+//                                    SharedPreferences.Editor editor = NiceApplication.instance().getPreferencesSign().edit();
+//                                    editor.putBoolean(String.valueOf(entity.shId), true);
+//                                    if (editor.commit()) {
+                                        Intent intent1 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("entity", entity);
+                                        intent1.putExtras(bundle);
+                                        intent1.putExtra("mystr", 0);
+                                        startActivity(intent1);
+                                        finish();
+//                                    }
+                                } else {
+                                    Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(NiceApplication.instance(), "签到失败请重试", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+                } else {
+//                    signInModel.silongitude = String.valueOf(location.getLongitude());
+//                    signInModel.silatitude = String.valueOf(location.getLatitude());
+                    // purl = signInModel.sipicurl;
+                    signInModel = new SignInModel(signInModel.shId, signInModel.silongitude, signInModel.silatitude, signInModel.siadd, purl, signInModel.siTime);
+                    saveValues(signInModel);
+                    Intent intent3 = new Intent(QuestionSignActivity.this, QuestionContextActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("entity", entity);
+                    bundle.putSerializable("signInModel", signInModel);
+                    intent3.putExtras(bundle);
+                    intent3.putExtra("mystr", 1);
+                    startActivity(intent3);
+                    finish();
+                }
+
 
                 break;
             case R.id.quest_sign_takephoto:
+//                isTakePhotoOpen();
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
                 imgUrl = FileUtil.getPhotopath();
@@ -372,6 +428,11 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
                 startActivityForResult(intent, Activity.DEFAULT_KEYS_DIALER);
                 break;
             case R.id.quest_sign_retakephoto:
+                if (imgUrl == null) {
+                    Toast.makeText(NiceApplication.instance(), "请先点击拍照", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+//                isTakePhotoOpen();
                 Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent2.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 //                File out2 = new File("/sdcard/Image/"+ FileUtil.savePhoto(null, sqId));
@@ -387,10 +448,20 @@ public class QuestionSignActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
+
+    /**
+     * 保存答案
+     */
+    public boolean saveValues(SignInModel niceSignValue) {
+        JSONObject jsonObject = NiceSignPaser.paser2JSONObject(niceSignValue);
+        SharedPreferences.Editor editor = NiceApplication.instance().getSignEditor();
+        editor.putString(niceSignValue.shId, jsonObject.toString());
+        return editor.commit();
+    }
+
 }
